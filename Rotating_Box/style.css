@@ -1,0 +1,96 @@
+body {
+    font-size: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/*.boxes {
+    width: 70vw;
+    height: 70vh;
+    background: navy;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+
+.rotate {
+    position:relative;
+}
+
+.origin {
+    height: calc(150px * sqrt(2));
+    width: calc(150px * sqrt(2));
+    background: black;
+    border-radius: 50%;
+}
+
+.box {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 75px;
+    left: 75px;
+    border: 3px solid white;
+}
+
+.box1 {
+    background: yellow;
+    transform: translate(-50px, -50px);
+}
+
+.box2 {
+    background: red;
+    transform: translate(-50px, 50px);
+}
+
+.box3 {
+    background: green;
+    z-index: 2;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+}
+
+.box4 {
+    background: indigo;
+    transform: translate(50px, 50px);
+}
+
+.box5 {
+    background: magenta;
+    transform: translate(50px, -50px);
+}
+
+.rotate {
+    animation: rotate-box 20s linear infinite;
+}
+
+@keyframes rotate-box {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.mark-rotate {
+    width: 10px;
+    height: 10px;
+    background: cyan;
+    border: 1px solid black;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    left: calc(70px * sqrt(2));
+}
