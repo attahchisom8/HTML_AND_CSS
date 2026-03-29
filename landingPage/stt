@@ -1,30 +1,18 @@
 /** VARIABLES */
 :root {
     --primary-color: #DFFF22;
-    --primary-color-light:  #ff7843;
     --btn-color: #1177FF;
 }
 
 *, *::before, *::after {
     box-sizing:border-box;
 }
-
-html {
-    font-family: Arial, Helvetica, sans-serif;
-}
 body {
     width: 100vw;
     margin: 0;
     padding: 0;
     overflow-x: hidden; /* Strict horizontal lock */
-    position: relative;
-    background: #000024;
-    color: white;
-}
-
-img {
-    height: auto;
-    max-width: 100%;
+    position: relative
 }
 
 /* LIGHT MODE */
@@ -32,7 +20,6 @@ img {
 body.light {
     color: black;
     background: white;
-    --primary-color: var(--primary-color-light);
 }
 
 body.light .navbar {
@@ -226,7 +213,7 @@ body.light .bar {
     height: 100%;
     background-size: cover;
     background-position: center;
-    animation: rotateImg 20s infinite;
+    animation: rotateImg 10s infinite;
     z-index: -2
 }
 
@@ -288,77 +275,4 @@ body.light .bar {
     }
 }
 
-
-/** ABOUT SECTION **/
-.section {
-    margin: 20px 2px;
-    border: 2px solid var(--primary-color);
-    border-radius: 30px;
-    z-index: 10;
-}
-.about {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.about h2 {
-    text-align: center;
-    font-size: 1.3rem;
-}
-
-.about-detail {
-    display: flex;
-    gap: 10px;
-}
-
-.my-pic {
-    width: 50%;
-}
-.my-pic img {
-    height: 100%;
-    object-fit: cover;
-}
-
-.text-about-me {
-    width: 50%;
-}
-.text-about-me h2 {
-    text-align: center;
-}
-
-.credentails {
-    height: 250px;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    margin-top: 5px;
-    background: linear-gradient(to right, #fd2755, #a315a2, #5500ef);
-}
-.credentails img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
-    animation: slide-images 30s ease-in-out infinite;
-}
-
-@keyframes slide-images {
-    0% {
-        transform: translateX(100%);
-    }
-    100% {
-        transform: translateX(-100%);
-    }
-}
-
-
-.credentails img:nth-child(1) {
-    animation-delay: 0;
-}
-.credentails img:nth-child(2) {
-    animation-delay: -15s;
-}
 
