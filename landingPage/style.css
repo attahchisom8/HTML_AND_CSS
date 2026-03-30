@@ -294,8 +294,13 @@ body.light .bar {
     margin: 20px 2px;
     border: 2px solid var(--primary-color);
     border-radius: 30px;
+    text-align: center;
     z-index: 10;
 }
+
+/* .section p {
+    width: 80%;
+} */
 
 @media (min-width: 768px) {
     .section > h2:first-child {
