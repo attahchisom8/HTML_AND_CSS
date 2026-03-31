@@ -60,6 +60,7 @@ const erase = () => {
 type();
 
 // Particle animation
+
 particlesJS("particles-js", {
   particles: {
     number: {value: 130},
@@ -90,3 +91,80 @@ particlesJS("particles-js", {
   }
 });
 
+// Observe to watch if the skiill section are in view then animate it
+
+const skillItems = document.querySelectorAll(".skill");
+const skillPercentage = {
+  rust: 30,
+  c: 80,
+  html: 90,
+  js: 85,
+  css: 80,
+  react_next: 68
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const progress = entry.target.querySelector(".progress");
+      const span = progress.querySelector(".percentage");
+      let target = 0;
+
+      if (progress.classList.contains("Rust"))
+        target = skillPercentage.rust;
+      if (progress.classList.contains("C"))
+        target = skillPercentage.c;
+      if (progress.classList.contains("html"))
+        target = skillPercentage.html;
+        
+      if (progress.classList.contains("js"))
+        target = skillPercentage.js;
+        
+      if (progress.classList.contains("css"))
+        target = skillPercentage.css;
+        
+      if (progress.classList.contains("react-next"))
+        target = skillPercentage.react_next;
+      
+      let width = 0;
+      const interval = setInterval(() => {
+        if (width >= target)
+          clearInterval(interval);
+        else {
+          width++;
+          progress.style.width = width + "%";
+          span.textContent = width + "%";
+        }
+      }, 20);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+skillItems.forEach((skill) => {
+  observer.observe(skill);
+});
+
+// Aniamatr all section classes
+const sections = document.querySelectorAll(".section");
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("active");
+      
+      // sectionObserver.unobserve(entry.target);
+    } else {
+      if (entry.target.classList.contains("active"))
+        entry.target.classList.remove("active");
+    }
+  })
+}, {
+  threshold: 0.05,
+  rootMargin: "0px 0px -50px 0px"
+});
+
+sections.forEach((section) => {
+  section.classList.add("reveal");
+  sectionObserver.observe(section);
+})
