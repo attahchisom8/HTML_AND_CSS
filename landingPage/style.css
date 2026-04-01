@@ -43,6 +43,10 @@ body.light .bar {
     background: black;
 }
 
+body.light .nav-links li a {
+    color: black;
+}
+
     /**-- NAVBAR SECTION --**/
 
 /* MOBILE MODE */
@@ -144,6 +148,10 @@ body.light .bar {
 /* NAVBAR -Desktop mods */
 
 @media (min-width: 768px) {
+    .navbar {
+        height: 80px;
+    }
+
     .nav-div {
         width: 100%;
         /*position: relative;*/
@@ -168,6 +176,7 @@ body.light .bar {
     .logo {
         position: relative;
         padding: 10px;
+        top: -15px;
     }
     .logo a {
         text-align: center;
