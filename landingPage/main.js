@@ -167,4 +167,28 @@ const sectionObserver = new IntersectionObserver((entries) => {
 sections.forEach((section) => {
   section.classList.add("reveal");
   sectionObserver.observe(section);
-})
+});
+
+/** Watch and Animate The Rxperience section **/
+
+const timeline = document.querySelector(".timeline");
+
+if (timeline) {
+  const timelineItems = timeline.querySelectorAll(".timeline-item");
+
+  const timelineObserver = new   IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("active");
+      } else {
+        if (entry.target.classList.contains("active")) {
+          entry.target.classList.remove("active");
+        }
+      }
+    })
+  }, { threshold: 0.1 });
+
+  timelineItems.forEach((item) => {
+    timelineObserver.observe(item);
+  });
+}

@@ -9,13 +9,17 @@
     box-sizing:border-box;
 }
 
-html {
-    font-family: Arial, Helvetica, sans-serif;
+html{
+    padding: 0;
+    margin: 0;
+    font-family: "Ppppins", Arial, Helvetica, sans-serif;
+    scroll-behavior: smooth;
 }
+
 body {
     width: 100vw;
-    margin: 0;
     padding: 0;
+    margin: 0;
     overflow-x: hidden; /* Strict horizontal lock */
     position: relative;
     background: #000024;
@@ -44,7 +48,14 @@ body.light .bar {
 }
 
 body.light .nav-links li a {
-    color: black;
+    color: #fff;
+}
+
+/** Desktop version of light mode */
+@media (min-width: 768px) {
+    bpdy.light .nav-links li a {
+        color: #000;
+    }
 }
 
     /**-- NAVBAR SECTION --**/
@@ -151,7 +162,6 @@ body.light .nav-links li a {
     .navbar {
         height: 80px;
     }
-
     .nav-div {
         width: 100%;
         /*position: relative;*/
@@ -361,6 +371,7 @@ body.light .nav-links li a {
 
 .text-about-me {
     width: 50%;
+    text-align: left;
 }
 .text-about-me h2 {
     text-align: center;
@@ -401,6 +412,7 @@ body.light .nav-links li a {
     animation-delay: -15s;
 }
 
+/** About Desktop mode **/
 @media (min-width: 768px) {
 
     .about {
@@ -412,7 +424,7 @@ body.light .nav-links li a {
 
     .text-about-me {
         width: 100%;
-        text-align: center;
+        text-align: left;
     }
 
     .my-pic {
@@ -455,7 +467,7 @@ body.light .nav-links li a {
 }
 
 
-/** DKILLS SECTION **/
+/** SKILLS SECTION **/
 .skills {
     position: relative;
 }
@@ -490,4 +502,90 @@ body.light .nav-links li a {
    justify-content: flex-end;
    color: white;
    text-align: center;
+}
+
+.percentage {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+
+/** EXPERIENCE SECTION **/
+
+.resume {
+    overflow: hidden;
+}
+.timeline {
+    position: relative;
+    max-width: 800px;
+    height: auto;
+   padding: 10px 0;
+   margin: 15px auto;
+}
+
+.timeline::after {
+    content: "";
+    position: absolute;
+    width: 4px;
+    top: 0;
+    left: 50%;
+    bottom: 0;
+    background: var(--primary-color);
+}
+
+.timeline-item {
+    opacity: 0;
+    width: 45%;
+    position: inherit;
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 0.275);
+}
+
+
+.left {
+    left: 0;
+    transform: translateX(-50px);
+    margin-left: 10px;
+}
+
+.left.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.right {
+    left: 55%;
+    transform: translateX(50px);
+}
+
+.right.active {
+    opacity: 1;
+    transform: translateX(0); /* moved back to 55% */
+}
+
+.content {
+    text-align: left;
+    padding: 10px 2px;
+}
+
+.content h3 {
+    text-align: center;
+}
+
+.content > span {
+    display: block;
+    text-align: center;
+}
+
+.icon-wrapper {
+    position:absolute;
+    width: 30px;
+    height: 3ppx;
+}
+
+.left .icon-wrapper {
+    left: 46%;
+}
+
+.right .icon-wrapper {
+    right: 46%;
 }
