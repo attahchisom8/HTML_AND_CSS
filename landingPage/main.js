@@ -192,3 +192,20 @@ if (timeline) {
     timelineObserver.observe(item);
   });
 }
+
+
+// To mark visited links
+
+const links = document.querySelectorAll(".nav-links li a");
+
+if (links.length > 0) {
+  links.forEach((link) => {
+    link.addEventListener("click", () => {
+      // irst reset all the links
+      links.forEach((l) => l.classList.remove("active-link"));
+
+      // then add  the class to the current link
+      link.classList.add("active-link");
+    });
+  });
+}
