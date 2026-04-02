@@ -51,7 +51,7 @@ body.light .bar {
 }
 
 body.light .nav-links li a {
-    color: #000;
+    color: #fff;
 }
 
 body.light .nav-links li a.active-link {
@@ -64,9 +64,13 @@ body.light .download-btn:hover {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.95);
 }
 
+body.light .nav-links li a:hover {
+    color: var(--btn-color);
+}
+
 /** Desktop version of light mode */
 @media (min-width: 768px) {
-    bpdy.light .nav-links li a {
+    body.light .nav-links li a {
         color: #000;
     }
 }
@@ -121,6 +125,10 @@ body.light .download-btn:hover {
     color: white;
     text-decoration: none;
     font-size: 20px;
+}
+
+.nav-links li a:hover {
+    color: var(--btn-color);
 }
 
 .nav-links li a.active-link {
@@ -633,7 +641,6 @@ body.light .download-btn:hover {
 .download-btn:active {
     transform: scale(0.8);
     box-shadow: 0 0 5px;
-    background: var(--visited-color);
 }
 
 .download-btn:focus {
