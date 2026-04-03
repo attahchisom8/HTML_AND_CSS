@@ -1,0 +1,33 @@
+:root {
+	--bg-color: #33ef22;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-color: var(--bg-color);
+	background: linear-gradient(
+	to right,
+	#67ef72,
+	#efefef,
+	var(--bg-color)
+	);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	width: 100%;
+}
+
+.container {
+	position: relative;
+	min-width: 768px;
+	max-width: 100%;
+	min-height: 480px;
+	overflow: hiden;
+}
