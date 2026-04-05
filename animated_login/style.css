@@ -16,18 +16,80 @@ body {
 	#efefef,
 	var(--bg-color)
 	);
+	width: 100%;
+	height: 100vh;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	height: 100vh;
-	width: 100%;
+align-items: center;
+justify-content: center;
 }
 
 .container {
-	position: relative;
-	min-width: 768px;
+	background: #fff;
+	width: 768px;
 	max-width: 100%;
 	min-height: 480px;
-	overflow: hiden;
+	border-radius: 16px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+	position: relative;
 }
+
+.container p {
+	font-size: 15px;
+	line-height: 0.4rem;
+}
+
+.container span {
+	font-size: 20px;
+}
+
+.form-container {
+  width: 50%;
+  height: 100%;
+  border: 3px solid yellow;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:  center;
+  text-align:  center;
+  padding: 10px 0;
+  position: absolute;
+}
+
+input {
+	width: 100%;
+	margin: 10px 0;
+	padding: 10px 15px;
+	background: #ddd;
+}
+
+button {
+	background: #4a3bed;
+	color: #fff;
+	border-radius: 5px;
+	border: 1px solid transparent;
+	padding: 10px 15px;
+}
+
+/*.form-container.sign-in {
+	top: 0;
+	left: 50%;
+	z-index: 2;
+}
+
+.form-container.sign-up {
+	top: 0;
+	left: 0;
+	z-index: 1;
+}*/
+
+/*form {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	overflow: hidden;
+	background: red;
+}*/
