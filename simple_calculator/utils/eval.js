@@ -77,11 +77,10 @@ const get_parent_idx = (expr) => {
 
 const exrract_operands = (expr) => {
   let opr_arr = [];
-  let idx = 1;
 
   expr = expr.replace(/\s/g, "");
 
-  for (let k = idx; k < expr.length; k += 2) {
+  for (let k = 1; k < expr.length; k += 2) {
     let end_idx;
 
     opr_arr.push(expr[k]);
