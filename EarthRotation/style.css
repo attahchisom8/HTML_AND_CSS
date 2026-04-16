@@ -81,7 +81,7 @@ body {
 	top: 0;
 	margin-left: calc(-1 * var(--moon-orbit) / 2);
 	margin-top: calc(-1 * var(--moon-orbit) / 2);
-	animation: orbit 15s linear infinite;
+	animation: orbit 2.5s linear infinite;
 }
 
 .moon::before {
