@@ -1,0 +1,45 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+.container {
+  width: inherit;
+  height: inherit;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 15px;
+}
+
+section {
+  width: 100%;
+}
+
+.section-screen {
+  height: 10vh;
+}
+ .section-buttons {
+  height: 85vh;
+   display: flex;
+   flex-direction: column;
+   background-color: transparent;
+ }
+
+.row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .button {
+  width: 50px;
+  height: 50px;
+  padding: 55px 70px;
+} */
