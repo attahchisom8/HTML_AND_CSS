@@ -22,6 +22,7 @@ const get_precedence = (opr) => {
       break;
 		case "*":
 			precedence = 3;
+      break;
 		case "+":
 			precedence = 5;
       break;
@@ -236,6 +237,8 @@ const performOperation = (expr, oprArr) => {
     "%": maths.mod,
   };
 
+  console.log("oprArr: ", JSON.stringify(oprArr, null, 1));
+
   for (let k = 0; k < oprArr.length; k++) {
     const item = oprArr[k];
 
@@ -277,6 +280,7 @@ const performOperation = (expr, oprArr) => {
           }
           if (isNaN(prevNums))
             return prevNums;
+          console.log(`prevNums: ${prevNums} and res: ${res} are passed to function`);
           console.log("res in prev: ", res);
           res = opr_obj[item.opr](prevNums, res);
           console.log("res in prev after operation: ", res);
@@ -284,6 +288,7 @@ const performOperation = (expr, oprArr) => {
           nextNums = getNextNumbers(expr, item.idx);
           if (isNaN(nextNums))
             return nextNums;
+          console.log(`res: ${res}, nextNums: ${nextNums} are passed to function`);
           console.log("res in next: ", res);
           res = opr_obj[item.opr](res, nextNums);
           console.log("res in next after operation: ", res);
@@ -297,6 +302,6 @@ const performOperation = (expr, oprArr) => {
 
 }
 
-const expr = "-2-2/5*4";
+const expr = "-2-8-5+44+3+300/5";
 console.log(expr);
 console.log(JSON.stringify(performOperation(expr, bodmasParser(extractOperands(expr))), null, 2));
