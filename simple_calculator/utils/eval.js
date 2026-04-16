@@ -224,7 +224,7 @@ const getNextNumbers = (expr, idx) => {
  */
 
 const performOperation = (expr, oprArr) => {
-  let prev_item = null;
+  let prev_item = null, initial = null;
   let k = 0, res = 0;
   let prevNums, nextNums;
   const opr_obj = {
@@ -237,7 +237,6 @@ const performOperation = (expr, oprArr) => {
   };
 
   for (let k = 0; k < oprArr.length; k++) {
-    let initial = null;
     const item = oprArr[k];
 
     if (item.idx === 0) {
@@ -254,6 +253,11 @@ const performOperation = (expr, oprArr) => {
       if (!prev_item) {
         console.log("item_opr and index", item.opr, item.idx);
         prevNums = getPreviousNumbers(expr, item.idx);
+        if ((item.idx === 2) && initial) {
+          prevNums = parseFloat(initial.opr + prevNums);
+          initial = null;
+          console.log("prevNums with initial: ", prevNums);
+        }
         if (isNaN(prevNums))
           return prevNums;
         nextNums = getNextNumbers(expr, item.idx);
@@ -265,7 +269,12 @@ const performOperation = (expr, oprArr) => {
         console.log("res in neutral after operation: ", res);
       } else {
         if (item.idx < prev_item.idx) {
-          prevNums = getPreviousNumbers(expr, item.idx);
+            prevNums = getPreviousNumbers(expr, item.idx);
+          if ((item.idx === 2) && initial) {
+            prevNums = parseFloat(initial.opr + prevNums);
+            initial = null;
+            console.log("prevNums with initial: ", prevNums);
+          }
           if (isNaN(prevNums))
             return prevNums;
           console.log("res in prev: ", res);
@@ -288,6 +297,6 @@ const performOperation = (expr, oprArr) => {
 
 }
 
-const expr = "-2-5/7";
+const expr = "-2-2/5*4";
 console.log(expr);
 console.log(JSON.stringify(performOperation(expr, bodmasParser(extractOperands(expr))), null, 2));
