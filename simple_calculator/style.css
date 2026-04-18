@@ -29,7 +29,9 @@ section {
   height: 85vh;
    display: flex;
    flex-direction: column;
+   justify-content: space-between;
    background-color: transparent;
+   position: relative;
  }
 
 .row {
@@ -38,8 +40,37 @@ section {
   justify-content: space-between;
 }
 
-/* .button {
-  width: 50px;
-  height: 50px;
-  padding: 55px 70px;
-} */
+button {
+  width: 33%;
+  height: 20px;
+  margin: 4px;
+  border: 3px solid  trasparent;
+  border-radius: 10%;
+  background: #229dff;
+  color: white;
+  padding: 25px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.operators button {
+  background: orangered;
+  width: 20%;
+}
+
+.equals {
+  position: absolute;
+  background: transparent;
+  left: 100%;
+  top: 100%;
+  transform: translate(-101%, -101%);
+}
+
+ .equals button {
+   position: relative;
+   left: 100%;
+   transform: translateX(-100%);
+ }
