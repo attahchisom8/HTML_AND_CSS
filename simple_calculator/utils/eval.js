@@ -11,223 +11,76 @@ const get_precedence = (opr) => {
 	let precedence;
 
 	switch (opr) {
+    case "()":
+      precedence = 1;
+      break;
 		case "of":
 			precedence = 2;
       break;
-		case "/":
+    case "/": case "*": case "%":
 			precedence = 3;
       break;
-    case "%":
-      precedence = 3;
-      break;
-		case "*":
-			precedence = 3;
-      break;
-		case "+":
-			precedence = 5;
-      break;
-	  case "-":
-			precedence = 5;
+		case "+": case "-":
+			precedence = 4;
       break;
     default:
-      /\(\)/.test(opr) ? precedence = 1 : precedence = 0;
+      precedence = 0;
       break;
 	};
 
   return precedence;
 }
 
-// console.log(`precedence: + => ${get_precedence("+")}, () => ${get_precedence("(1+ anything)")}`);
-
-
 /**
- * get_parent_idx: gets the outer  ending index of parenthesis
- * @expr: the given expression must have first term as "("
+ * extractTokens - extract tokens of numbers and operatorrs
+ * expr: the given expression
  *
- * Return: end idx
- */
-const get_parent_idx = (expr) => {
-  let p_count = 1, end_idx = 0;
-
-  if (expr[0] !== "(")
-    return `expression ${expr} must start with '('`;
-
-  for (const chr of expr.slice(1)) {
-    end_idx++;
-    if (chr === "(")
-      p_count++;
-    if (chr === ")")
-      p_count--;
-    if (p_count === 0) {
-      break;
-    }
-  }
-  if (p_count == 0)
-    return end_idx;
-
-  return "Invalid expression";
-}
-
-// console.log("nested expression: (2 * (3 + 2)): ", get_parent_idx("(2 * (3 + 2))+55"));
-
-
-
-/**
- * exrractOperands - extracts operators from a given expression into an array
- * @expr: given mathematical expression
- *
- * Return: an array of operators
+ * Return: An array of extracted tokens
  */
 
-const extractOperands = (expr) => {
-  let opr_arr = [], num_arr = [], k = 0;
-  let delims =['+', '-', '*', '/', '%'];
-
+const extractTokens = (expr) => {
   expr = expr.replace(/\s/g, "");
-
-  while (k < expr.length) {
-    let end_idx;
-
-    if (expr[k] === '(') {
-      let item_p = {};
-      const start_idx = k;
-
-      const p_expr = expr.slice(k);
-      end_idx = get_parent_idx(p_expr);
-      k = k + end_idx;
-
-      if (!isNaN(end_idx)) {
-        if (expr[k + 1] === ")")
-          return `extra closing bracket ')' found at ${p_expr}`;
-        item_p["opr"] = "()";
-        item_p["idx"] = {start_idx, end_idx: k};
-        opr_arr.push(item_p);
-      } else
-        return `${end_idx}: ${p_expr}`;
-    } else {
-      if (delims.includes(expr[k])) {
-        let item_opr = {};
-        item_opr["opr"] = expr[k];
-        item_opr["idx"] = k;
-        opr_arr.push(item_opr);
-      }
-      else {
-        let item_num = {};
-        item_num["num"] = expr[k];
-        item_num["idx"] = k;
-        num_arr.push(item_num);
-      }
-    }
-    k++;
-  }
-
-  return opr_arr;
+  return expr.split(/([\+\-\*\/\%\(\)])/).filter((t) => t != "");
 }
 
-// console.log(JSON.stringify(extractOperands("+2-7"), null, 2))
+// console.log(extractTokens("-2+5 - 7 +(3-333)"));
+
 
 /**
- * bodmasParser - gives prededencr to operators according
- * to bodmas rule
- * oprArr: an array of operator objects
- * 
- * Return: an array of operator objects wwith predence added
+ * bodmasParser - assigngs precedence to each operator token
+ * tokens: an array of token
+ *
+ * Return: an object of the token with essentail feilds
  */
 
-const bodmasParser = (oprArr) => {
-  oprArr.every((item) => {
-    if (item.precedence === 0) {
-      console.log("invalid expression");
-      return false;
-    }
-    const precedence = get_precedence(item.opr);
-    item["precedence"] = precedence;
-    return true;
+const bodmasParser = (tokens) => {
+  const arr = [];
+  tokens.forEach((token, idx) => {
+    if (['+', '-', '*', '/', '%'].includes(token))
+      arr.push({
+        opr: token,
+        idx,
+        precedence: get_precedence(token)
+      });
   });
 
-  return oprArr.sort((a, b) => a.precedence - b.precedence);
+  return arr.sort((a, b) => a.precedence - b.precedence);
 }
 
-// console.log(JSON.stringify(bodmasParser(extractOperands("2222 +3 + 5 % (333 * 8-(2+7)) -6+9388")), null, 2));
-
-
-/**
- * getPreviousNumbers - gets the numbers before a given inndex
- * just before the first operator encountered
- * expr: the given math expression
- * idx: the idx to start searching from
- * 
- * Return: the numbers just beore the idx
- */
-
-const getPreviousNumbers = (expr, idx) => {
-  let k = idx - 1, num = "";
-  const delims = ['+', '-', '*', '/', '%'];
-
-  if (idx === 0)
-    return "getPrevious Error: invalid expression";
-
-  if (!delims.includes(expr[idx]))
-    return "pass the index of an operator to get valid number";
-
-  while (k >= 0) {
-    if (delims.includes(expr[k]))
-      break;
-    num += expr[k];
-    k--;
-  }
-  num = num.split("").reverse().join("");
-
-  return parseFloat(num);
-}
-
-// console.log(getPreviousNumbers("11112+45", 5));
-
+// console.log(JSON.stringify(bodmasParser(extractTokens("2+5-(3+10)")), null, 1));
 
 /**
- * getNextNumbers - gets the numbers after a given inndex
- * just before the first operator encountered
- * expr: the given math expression
- * idx: the idx to start searching from
- * 
- * Return: the numbers just ater the idx
+ * performOperation - perform mathematical operation based on pre-
+ * cedence
+ * @tokens: an array of tokens
+ * @sortedArr - a sorted array of opertor tokens based on their
+ * precedence
+ *
+ * Return: a value based on the evaluation
  */
 
-const getNextNumbers = (expr, idx) => {
-  let k, num = "";
-  const delims = ['+', '-', '*', '/', '%'];
-
-  if (!delims.includes(expr[idx]) && (idx + 1) < expr.length)
-    return "pass the index of an operator to get valid number";
-
-  if (idx + 1 >= expr.length)
-    return "index out of range";
-
-  k = idx + 1;
-  while (k < expr.length) {
-    if (delims.includes(expr[k]))
-      break;
-    num += expr[k];
-    k++;
-  }
-
-  return parseFloat(num);
-}
-
-// console.log(getNextNumbers("11112+4", 5));
-
-/**
- * performOperation - make calculation according bidmas rule
- * expr: the given math expression
- * opr_arr: array of operator objects
- * 
- * Return: The result of the calculation
- */
-
-const performOperation = (expr, oprArr) => {
-  let prev_item = null, initial = null;
-  let k = 0, res = 0;
-  let prevNums, nextNums;
+const performOperation = (tokens, sortedArr) => {
+  let res = 0;
   const opr_obj = {
     "+": maths.sum,
     "-": maths.sub,
@@ -237,71 +90,56 @@ const performOperation = (expr, oprArr) => {
     "%": maths.mod,
   };
 
-  console.log("oprArr: ", JSON.stringify(oprArr, null, 1));
+  while (tokens.includes("(")) {
+    const startIdx = tokens.lastIndexOf("(");
+    const endIdx = tokens.indexOf(")", startIdx);
+    const subTokens = tokens.slice(startIdx + 1, endIdx);
+    sortedArr = bodmasParser(subTokens);
+    res = performOperation(subTokens, sortedArr);
+    tokens.splice(startIdx, endIdx - startIdx + 1, res);
+  }
 
-  for (let k = 0; k < oprArr.length; k++) {
-    const item = oprArr[k];
+  if (['+', '-'].includes(tokens[0])) {
+    if (tokens[0] === '+')
+      tokens.splice(0, 2, tokens[1] * 1);
+    else
+      tokens.splice(0, 2, tokens[1] * -1);
+    sortedArr = bodmasParser(tokens);
+  }
 
-    if (item.idx === 0) {
-      initial = item;
-      continue;
-
-    }
-
-    if (item.precedence === 1) {
-      const subExpr = expr.substring(item.idx.start_idx, item.idx.end_idx);
-      eval_simple_expr(subExpr);
-    } else {
-
-      if (!prev_item) {
-        console.log("item_opr and index", item.opr, item.idx);
-        prevNums = getPreviousNumbers(expr, item.idx);
-        if ((item.idx === 2) && initial) {
-          prevNums = parseFloat(initial.opr + prevNums);
-          initial = null;
-          console.log("prevNums with initial: ", prevNums);
-        }
-        if (isNaN(prevNums))
-          return prevNums;
-        nextNums = getNextNumbers(expr, item.idx);
-        if (isNaN(nextNums))
-          return nextNums;
-        console.log(`nextNums: ${nextNums}, prevNums: ${prevNums} are passed to function`);
-        console.log("res in nuetral: ", res);
-        res = opr_obj[item.opr](prevNums, nextNums);
-        console.log("res in neutral after operation: ", res);
-      } else {
-        if (item.idx < prev_item.idx) {
-            prevNums = getPreviousNumbers(expr, item.idx);
-          if ((item.idx === 2) && initial) {
-            prevNums = parseFloat(initial.opr + prevNums);
-            initial = null;
-            console.log("prevNums with initial: ", prevNums);
-          }
-          if (isNaN(prevNums))
-            return prevNums;
-          console.log(`prevNums: ${prevNums} and res: ${res} are passed to function`);
-          console.log("res in prev: ", res);
-          res = opr_obj[item.opr](prevNums, res);
-          console.log("res in prev after operation: ", res);
-        } else {
-          nextNums = getNextNumbers(expr, item.idx);
-          if (isNaN(nextNums))
-            return nextNums;
-          console.log(`res: ${res}, nextNums: ${nextNums} are passed to function`);
-          console.log("res in next: ", res);
-          res = opr_obj[item.opr](res, nextNums);
-          console.log("res in next after operation: ", res);
-        }
-      }
-      prev_item = item;
-    }
-  };
+  while (tokens.length > 0 && sortedArr.length > 0) {
+    // handles the case where sortedArr comes out of recursion with previous values
+    sortedArr = bodmasParser(tokens);
+    const item = sortedArr[0];
+    const k = item.idx;
+    const val1 = parseFloat(tokens[k - 1]);
+    const val2 = parseFloat(tokens[k + 1]);
+    res = opr_obj[item.opr](val1, val2);
+    tokens.splice(k - 1, 3, res);
+    sortedArr = bodmasParser(tokens);
+  }
 
   return res;
-
 }
 
-const expr = "-2-8-5+44+3+300/5";
+/**
+ * eval_simple_expr - evaluates simplemathematical expression
+ * @expr: The given mathematical expression
+ *
+ * Return: The evaluated result
+ */
+
+const eval_simple_expr = (expr) => {
+  const tokens = extractTokens(expr);
+  const sortedArr = bodmasParser(tokens);
+
+  return performOperation(tokens, sortedArr);
+}
+
+let expr;
+// expr = "+2+5- (3 * (4 -1))*3 / 7";
+// expr = "2 + 5 - 9";
+// expr = "-2-8-5+44+3+300/5";
+expr = "+3 + 8"
 console.log(expr);
-console.log(JSON.stringify(performOperation(expr, bodmasParser(extractOperands(expr))), null, 2));
+console.log(eval_simple_expr(expr));
