@@ -72,7 +72,7 @@ input {
   justify-content: space-between;
 }
 
-button, .equals {
+button {
   width: 33%;
   height: 20px;
   margin: 4px;
@@ -106,7 +106,9 @@ button, .equals {
   top: 100%;
   left: 100%;
   transform: translate(-105%, -105%);
-  padding: 0;
+  width: 30%;
+  height: 60px;
+  border: 1px solid white
 }
  
  .dot {
@@ -128,8 +130,9 @@ button, .equals {
  }
  
  .equals button {
-  background: yellow;
-  padding: inherit inherit;
+  background: transparent;
+  margin: 0;
+  padding: 35px 20px;
  }
  .dot button {
    border-radius: 50%;
