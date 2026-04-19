@@ -40,7 +40,7 @@ const get_precedence = (opr) => {
 
 const extractTokens = (expr) => {
   expr = expr.replace(/\s/g, "");
-  return expr.split(/([\+\-\*\/\%\(\)])/).filter((t) => t != "");
+  return expr.split(/([\+\-\*\/\%\(\)]|of)/).filter((t) => t != "");
 }
 
 // console.log(extractTokens("-2+5 - 7 +(3-333)"));
@@ -56,7 +56,7 @@ const extractTokens = (expr) => {
 const bodmasParser = (tokens) => {
   const arr = [];
   tokens.forEach((token, idx) => {
-    if (['+', '-', '*', '/', '%'].includes(token))
+    if (['+', '-', '*', '/', '%', 'of'].includes(token))
       arr.push({
         opr: token,
         idx,
@@ -119,7 +119,7 @@ const performOperation = (tokens, sortedArr) => {
     sortedArr = bodmasParser(tokens);
   }
 
-  return res;
+  return tokens[0];
 }
 
 /**
@@ -140,6 +140,7 @@ export const eval_simple_expr = (expr) => {
 // expr = "+2+5- (3 * (4 -1))*3 / 7";
 // expr = "2 + 5 - 9";
 // expr = "-2-8-5+44+3+300/5";
-expr = "+3 + 8"
+expr = "+3 + 8";
+expr = "2 of 7 * 2";
 console.log(expr);
-console.log(eval_simple_expr(expr)); */
+console.log(eval_simple_expr(expr));*/

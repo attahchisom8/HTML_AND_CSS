@@ -4,7 +4,7 @@
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   z-index: 1;
   background: #333;
@@ -12,7 +12,7 @@ body {
 
 .container {
   width: inherit;
-  height: inherit;
+  min-height: inherit;
   background: black;
   display: flex;
   flex-direction: column;
@@ -56,13 +56,14 @@ input {
   align-items: center;
   justify-content: center;
 }
- .section-buttons {
-  height: 78vh;
-   display: flex;
-   flex-direction: column;
-   justify-content: space-between;
-   background-color: transparent;
-   position: relative;
+
+.section-buttons {
+  min-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: transparent;
+  position: relative;
  }
 
 .row {
@@ -71,7 +72,7 @@ input {
   justify-content: space-between;
 }
 
-button {
+button, .equals {
   width: 33%;
   height: 20px;
   margin: 4px;
@@ -89,11 +90,6 @@ button {
   z-index: 1000;
 }
 
-/*button:active {
-  filter: brightness(120%);
-  transform: scale(0.8);
-  background: red;
-}*/
 
  .activity button {
    background: #8788dd;
@@ -106,17 +102,12 @@ button {
 
 .equals {
   position: absolute;
-  background: transparent;
-  left: 100%;
+  background: transparent ;
   top: 100%;
-  transform: translate(-101%, -101%);
+  left: 100%;
+  transform: translate(-105%, -105%);
+  padding: 0;
 }
-
- .equals button {
-   position: relative;
-   left: 100%;
-   transform: translateX(-100%);
- }
  
  .dot {
    position: absolute;
@@ -124,22 +115,44 @@ button {
    top: 100%;
    transform:translate(-50%, -100%);
    background: transparent;
+   width: 50px;
+   height: 50px;
+   border-radius: 50%;
+   border: 1px solid white;
+ }
+
+ .equals button, .dot button {
+  border: none;
+  width: 100%;
+  height: 100%;
  }
  
+ .equals button {
+  background: yellow;
+  padding: inherit inherit;
+ }
  .dot button {
-   position: relative;
-   left: 50%;
-   transform: translateX(-50%);
-   width: 30px;
-   height: 30px;
-   background: transparent;
-   border: 2px solid white;
    border-radius: 50%;
-   padding: 20px 20px;
+   padding: 30px 30px;
+   margin: 0;
+   background: transparent;
  }
  
 button:active {
   filter: brightness(120%);
   transform: scale(0.8);
   background: red;
+}
+
+/* Desktop version */
+@media (min-width: 768px) {
+  input {
+    cursor: pointer;
+    pointer-events: all;
+  }
+
+  body {
+    min-height:  100%;
+    width: 100%;
+  }
 }
