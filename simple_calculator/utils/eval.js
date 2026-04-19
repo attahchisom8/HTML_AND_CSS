@@ -129,17 +129,17 @@ const performOperation = (tokens, sortedArr) => {
  * Return: The evaluated result
  */
 
-const eval_simple_expr = (expr) => {
+export const eval_simple_expr = (expr) => {
   const tokens = extractTokens(expr);
   const sortedArr = bodmasParser(tokens);
 
   return performOperation(tokens, sortedArr);
 }
 
-let expr;
+/* let expr;
 // expr = "+2+5- (3 * (4 -1))*3 / 7";
 // expr = "2 + 5 - 9";
 // expr = "-2-8-5+44+3+300/5";
 expr = "+3 + 8"
 console.log(expr);
-console.log(eval_simple_expr(expr));
+console.log(eval_simple_expr(expr)); */
