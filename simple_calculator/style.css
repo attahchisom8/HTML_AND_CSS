@@ -172,7 +172,7 @@ button:active {
   
   .container {
    min-width: 500px;
-   width: 80%;
+   width: 50%;
    min-height: 400px;
    background: red;
    overflow: visible;
@@ -184,14 +184,17 @@ button:active {
   
   .section-buttons {
     height: 78%;
+    justify-content: flex-start;
   }
   
   .row {
     width: 80%;
-    margin: 20px auto;
+    margin: 0 auto;
   }
   
   button {
-    height: calc(100% / 7);
+    height: 20px;
+    padding: 0;
+    margin: 0;
   }
 }
