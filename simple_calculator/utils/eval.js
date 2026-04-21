@@ -69,6 +69,28 @@ const bodmasParser = (tokens) => {
 
 // console.log(JSON.stringify(bodmasParser(extractTokens("2+5-(3+10)")), null, 1));
 
+
+/**
+ * checkParenthesis - checks if all open  parenthesis are closed
+ * @tokens: tokens to check
+ *
+ * Return: true or false
+ */
+const checkParenthesis = (tokens) => {
+  let p_count = 0;
+
+  for (const token of tokens) {
+    if (token === "(")
+      p_count++;
+    if (token === ")")
+      p_count--;
+    if (p_count < 0)
+      return false;
+  }
+
+  return (p_count === 0);
+}
+
 /**
  * performOperation - perform mathematical operation based on pre-
  * cedence
@@ -89,6 +111,9 @@ const performOperation = (tokens, sortedArr) => {
     "/": maths.div,
     "%": maths.mod,
   };
+
+  if (!checkParenthesis(tokens))
+    return "invalid expression";
 
   while (tokens.includes("(")) {
     const startIdx = tokens.lastIndexOf("(");
@@ -142,5 +167,6 @@ export const eval_simple_expr = (expr) => {
 // expr = "-2-8-5+44+3+300/5";
 expr = "+3 + 8";
 expr = "2 of 7 * 2";
+expr = "2 + (4+7"
 console.log(expr);
 console.log(eval_simple_expr(expr));*/
