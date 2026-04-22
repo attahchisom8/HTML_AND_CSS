@@ -127,6 +127,9 @@ const performOperation = (tokens, sortedArr) => {
     tokens.splice(startIdx, endIdx - startIdx + 1, res);
   }
 
+  if (tokens.length === 1)
+    return tokens[0];
+
   if (['+', '-'].includes(tokens[0])) {
     if (tokens[0] === '+')
       tokens.splice(0, 2, tokens[1] * 1);
@@ -170,6 +173,7 @@ export const eval_simple_expr = (expr) => {
 // expr = "-2-8-5+44+3+300/5";
 expr = "+3 + 8";
 expr = "2 of 7 * 2";
-expr = "2 + (4+7"
+expr = "2 + (4+7",
+expr = "(2+5)";
 console.log(expr);
 console.log(eval_simple_expr(expr));*/

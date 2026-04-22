@@ -3,7 +3,7 @@ import { eval_simple_expr } from "./utils/eval.js";
 const buttons = document.querySelectorAll("button");
 const input = document.querySelector("textarea");
 let isNotOn = false, str = "";
-let res = null, history = "0";
+let res = null, history = "";
 let hist_arr = [], idx = 0;
 let hasReturned = false, hasRes = false;
 const switchBtn = Array.from(buttons).find((btn) => btn.textContent === "Off" || btn.textContent === "On");
@@ -11,6 +11,7 @@ const switchBtn = Array.from(buttons).find((btn) => btn.textContent === "Off" ||
 
 const handleEvents = (btnVal) => {
   let parsedStr = "";
+
   console.log(btnVal);
 
 
@@ -18,16 +19,15 @@ const handleEvents = (btnVal) => {
     isNotOn = !isNotOn;
 		hist_arr = [];
 		idx = 0;
-		history = "0";
+		history = "";
 		res = null;
+    str = "";
 
     if (isNotOn) {
-      str = "";
       if (switchBtn)
         switchBtn.textContent = "On"
       input.classList.add("inactive-state");
     } else {
-      str = "0";
       if (switchBtn)
         switchBtn.textContent = "Off";
 			hist_arr.push(history);
@@ -35,12 +35,10 @@ const handleEvents = (btnVal) => {
     }
     input.disabled = isNotOn;
   } else if (btnVal === "Ac") {
-    str = "0";
+    str = "";
     res = null;
   } else if (btnVal === "Del") {
-    str = str.substring(0, str.length - 1);
-    if (str === "")
-      str = "0";
+    str = (str.length > 0) ? str.substring(0, str.length - 1) : "";
   } else if (btnVal === "Hist") {
 		if (idx > 0) {
 		  idx--;
@@ -57,14 +55,16 @@ const handleEvents = (btnVal) => {
     history = str;
 		hist_arr.push(history);
 		idx = hist_arr.length;
-		history = "0";
-		parsedStr = str.replace(/÷/g, "/").replace(/x/g, "*");
+		history = "";
+		parsedStr = str.replace(/÷/g, "/").replace(/x/g, "*").replace(/(of)/g, " of ");
 		 for (const token of ['+', '-', '/', '*', ' of ', '%']) {
 			if (parsedStr.startsWith(token) && res) {
 			  parsedStr = res + parsedStr;
         break;
 			}
 		};
+    if (parsedStr === "")
+      return;
 		console.log(parsedStr);
     res = eval_simple_expr(parsedStr);
     if (res === undefined)
@@ -80,16 +80,16 @@ const handleEvents = (btnVal) => {
       }
       hasRes = false;
     }
-    if (str === "0") {
-    } else
-      str += btnVal;
+    str += btnVal;
 	}
 
 	if (input.disabled === true)
 		str = "";
-	if (str === "0")
-		str = "0";
-  input.value = str;
+  input.value = (str === "") ? "0" : str;
+  if (str === "")
+    input.classList.add("blink");
+  else
+    input.classList.remove("blink");
       
   if (hasReturned) {
     str = "";
@@ -115,11 +115,11 @@ document.addEventListener("keydown", (e) => {
     "ArrowDown": "Hist",
     "ArrowUp": "H↑",
     "*": "x",
-    "/": "÷"
+    "/": "÷",
   };
   const keyVal = keyMap[e.key] || e.key;
   
-  if (/^([0-9.+\-%()]|of)$/.test(keyVal) || Object.values(keyMap).includes(keyVal)) {
+  if (/^[0-9.+\-%()of]$/.test(keyVal) || Object.values(keyMap).includes(keyVal)) {
     e.preventDefault();
     handleEvents(keyVal);
   }
