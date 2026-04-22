@@ -17,6 +17,7 @@ const handleEvents = (e) => {
 		idx = 0;
 		history = "0";
 		res = null;
+		hasRes = false;
 
     if (isNotOn) {
       str = "";
@@ -52,17 +53,22 @@ const handleEvents = (e) => {
 		history = "0";
 		parsedStr = str.replace(/÷/g, "/");
 		parsedStr = parsedStr.replace(/x/g, "*");
-		['+', '-', '/', '*', ' of ', '%'].forEach((token) => {
-			if (parsedStr.startsWith(token) && res && hasRes)
+		 for (const token of ['+', '-', '/', '*', ' of ', '%']) {
+			if (parsedStr.startsWith(token))
+			if (res && hasRes)
 				parsedStr = res + parsedStr;
-				hasRes = false;
-		})
+			break;
+		};
+		console.log(parsedStr);
     res = eval_simple_expr(parsedStr);
     if (res === undefined)
       return;
     str = res + "";
     hasReturned = true;
-  } else {  
+    hasRes = true;
+  } else {
+    if (str[0] === "0" && str.length === 1)
+      str = str.slice(1);
     str += btnVal || e.key;
 	}
 
@@ -75,7 +81,6 @@ const handleEvents = (e) => {
   if (hasReturned) {
     str = "";
     hasReturned = false;
-    hasRes = true;
   }
 }
 
