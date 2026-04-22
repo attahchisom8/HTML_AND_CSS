@@ -7,9 +7,12 @@ let res = null, history = "0";
 let hist_arr = [], idx = 0;
 let hasReturned = false, hasRes = false;
 
+
 const handleEvents = (e) => {
+  e.preventDefault();
   let parsedStr = "";
 	let btnVal = e.target.textContent;
+
 
   if (["Off", "On"].includes(btnVal) || e.key === "Escape") {
     isNotOn = !isNotOn;
@@ -22,10 +25,12 @@ const handleEvents = (e) => {
     if (isNotOn) {
       str = "";
       btnVal = "On";
+      input.classList.add("inactive-state");
     } else {
       str = "0";
       btnVal = "Off";
 			hist_arr.push(history);
+      input.classList.remove("inactive-state");
     }
     input.disabled = isNotOn;
   } else if (btnVal === "Ac" || ["c", "C"].includes(e.key)) {
@@ -55,9 +60,12 @@ const handleEvents = (e) => {
 		parsedStr = parsedStr.replace(/x/g, "*");
 		 for (const token of ['+', '-', '/', '*', ' of ', '%']) {
 			if (parsedStr.startsWith(token))
-			if (res && hasRes)
+			if (res) {
 				parsedStr = res + parsedStr;
-			break;
+        break;
+      }
+      else
+        break;
 		};
 		console.log(parsedStr);
     res = eval_simple_expr(parsedStr);
@@ -69,7 +77,10 @@ const handleEvents = (e) => {
   } else {
     if (str[0] === "0" && str.length === 1)
       str = str.slice(1);
-    str += btnVal || e.key;
+    if (e.key)
+      btnVal = null;
+    str += btnVal  || e.key;
+    str = str.replace("Shift", "");
 	}
 
 	if (input.disabled === true)

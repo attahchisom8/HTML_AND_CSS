@@ -115,6 +115,9 @@ const performOperation = (tokens, sortedArr) => {
   if (!checkParenthesis(tokens))
     return "invalid expression";
 
+  if (/[a-zA-Z\*\/\%]/.test(tokens[0]))
+    return "invalid expression";
+
   while (tokens.includes("(")) {
     const startIdx = tokens.lastIndexOf("(");
     const endIdx = tokens.indexOf(")", startIdx);
