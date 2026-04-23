@@ -6,66 +6,64 @@ let isNotOn = false, str = "";
 let res = null, history = "0";
 let hist_arr = [], idx = 0;
 let hasReturned = false, hasRes = false;
+const switchBtn = Array.from(buttons).find((btn) => btn.textContent === "Off" || btn.textContent === "On");
 
 
-const handleEvents = (e) => {
-  e.preventDefault();
+const handleEvents = (btnVal) => {
   let parsedStr = "";
-	let btnVal = e.target.textContent;
+  console.log(btnVal);
 
 
-  if (["Off", "On"].includes(btnVal) || e.key === "Escape") {
+  if (["Off", "On"].includes(btnVal)) {
     isNotOn = !isNotOn;
 		hist_arr = [];
 		idx = 0;
 		history = "0";
 		res = null;
-		hasRes = false;
 
     if (isNotOn) {
       str = "";
-      btnVal = "On";
+      if (switchBtn)
+        switchBtn.textContent = "On"
       input.classList.add("inactive-state");
     } else {
       str = "0";
-      btnVal = "Off";
+      if (switchBtn)
+        switchBtn.textContent = "Off";
 			hist_arr.push(history);
       input.classList.remove("inactive-state");
     }
     input.disabled = isNotOn;
-  } else if (btnVal === "Ac" || ["c", "C"].includes(e.key)) {
+  } else if (btnVal === "Ac") {
     str = "0";
-  } else if (btnVal === "Del" || e.key === "Backspace") {
+    res = null;
+  } else if (btnVal === "Del") {
     str = str.substring(0, str.length - 1);
     if (str === "")
       str = "0";
-  } else if (btnVal === "Hist" || e.key === "ArrowDown") {
+  } else if (btnVal === "Hist") {
 		if (idx > 0) {
-			history = hist_arr[idx - 1];
-			idx--;
+		  idx--;
+			history = hist_arr[idx];
 		}
     str = history;
-  } else if (btnVal === "H↑" || e.key === "ArrowUp") {
+  } else if (btnVal === "H↑") {
 		if (idx + 1 < hist_arr.length) {
 			idx++;
 			history = hist_arr[idx];
 		}
 		str = history;
-	} else if (btnVal === "=" || e.key === "Enter") {
+	} else if (btnVal === "=") {
     history = str;
 		hist_arr.push(history);
 		idx = hist_arr.length;
 		history = "0";
-		parsedStr = str.replace(/÷/g, "/");
-		parsedStr = parsedStr.replace(/x/g, "*");
+		parsedStr = str.replace(/÷/g, "/").replace(/x/g, "*");
 		 for (const token of ['+', '-', '/', '*', ' of ', '%']) {
-			if (parsedStr.startsWith(token))
-			if (res) {
-				parsedStr = res + parsedStr;
+			if (parsedStr.startsWith(token) && res) {
+			  parsedStr = res + parsedStr;
         break;
-      }
-      else
-        break;
+			}
 		};
 		console.log(parsedStr);
     res = eval_simple_expr(parsedStr);
@@ -75,18 +73,22 @@ const handleEvents = (e) => {
     hasReturned = true;
     hasRes = true;
   } else {
-    if (str[0] === "0" && str.length === 1)
-      str = str.slice(1);
-    if (e.key)
-      btnVal = null;
-    str += btnVal  || e.key;
-    str = str.replace("Shift", "");
+    if (hasRes) {
+      if (/^[0-9.()]$/.test(btnVal)) {
+        str = "";
+        res = null;
+      }
+      hasRes = false;
+    }
+    if (str === "0") {
+    } else
+      str += btnVal;
 	}
 
 	if (input.disabled === true)
 		str = "";
-	if (str[0] === "0" && !isNaN(str[1]))
-		str = str.slice(1);
+	if (str === "0")
+		str = "0";
   input.value = str;
       
   if (hasReturned) {
@@ -97,8 +99,29 @@ const handleEvents = (e) => {
 
 if (buttons.length > 0) {
   buttons.forEach((button) => {
-    button.addEventListener("click", handleEvents);
+    button.addEventListener("click",  (e) => handleEvents(e.target.textContent.trim()));
   });
 }
 
-document.addEventListener("keydown", handleEvents);
+
+
+document.addEventListener("keydown", (e) => {
+  const keyMap = {
+    "Escape": isNotOn ? "On" : "Off",
+    "Enter": "=",
+    "c": "Ac",
+    "C": "Ac",
+    "Backspace": "Del",
+    "ArrowDown": "Hist",
+    "ArrowUp": "H↑",
+    "*": "x",
+    "/": "÷"
+  };
+  const keyVal = keyMap[e.key] || e.key;
+  
+  if (/^([0-9.+\-%()]|of)$/.test(keyVal) || Object.values(keyMap).includes(keyVal)) {
+    e.preventDefault();
+    handleEvents(keyVal);
+  }
+  
+});

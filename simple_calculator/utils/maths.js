@@ -59,7 +59,7 @@ export const div = (...args) => {
 
 	for (const arg of args.slice(1)) {
 		if (arg == 0)
-			return "Zero division Erfor";
+			return "Zero division Error";
 		div /= arg;
 	}
 

@@ -48,6 +48,10 @@ textarea {
   padding-top: 15px;
 }
 
+textarea.inactive-state {
+  background: #333;
+}
+
 .calc-brand {
   color: yellow;
   font-style: italic;
@@ -262,9 +266,5 @@ button:active {
 
   textarea:focus {
     border: none;
-  }
-
-  textarea.inactive-state {
-    background: #333;
   }
 }
