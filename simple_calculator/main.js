@@ -7,13 +7,21 @@ let res = null, history = "";
 let hist_arr = [], idx = 0;
 let hasReturned = false, hasRes = false;
 const switchBtn = Array.from(buttons).find((btn) => btn.textContent === "Off" || btn.textContent === "On");
+input.value = "0";
 
+const run = (s) => {
+console.log("str here:", s);
+if (s === "")
+  input.classList.add("blink");
+else
+  input.classList.remove("blink");
+}
+run(str)
 
 const handleEvents = (btnVal) => {
   let parsedStr = "";
 
   console.log(btnVal);
-
 
   if (["Off", "On"].includes(btnVal)) {
     isNotOn = !isNotOn;
@@ -86,10 +94,7 @@ const handleEvents = (btnVal) => {
 	if (input.disabled === true)
 		str = "";
   input.value = (str === "") ? "0" : str;
-  if (str === "")
-    input.classList.add("blink");
-  else
-    input.classList.remove("blink");
+  run(str);
       
   if (hasReturned) {
     str = "";

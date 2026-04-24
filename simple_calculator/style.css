@@ -48,14 +48,8 @@ textarea {
   padding-top: 15px;
 }
 
-textarea.inactive-state {
-  background: #333;
-  color: #333;
-}
 
 textarea.blink {
-  z-index: 0;
-  color: #ffff;
   animation: blink-state 2s linear infinite;
 }
 
@@ -68,6 +62,11 @@ textarea.blink {
     z-index: 0;
     color: #55bb55;
   }
+}
+
+textarea.inactive-state {
+  background: #333;
+  color: #333;
 }
 
 .calc-brand {
