@@ -10,11 +10,11 @@ const switchBtn = Array.from(buttons).find((btn) => btn.textContent === "Off" ||
 input.value = "0";
 
 const run = (s) => {
-console.log("str here:", s);
-if (s === "")
-  input.classList.add("blink");
-else
-  input.classList.remove("blink");
+  console.log("str here:", s);
+  if (s === "")
+    input.classList.add("blink");
+  else
+    input.classList.remove("blink");
 }
 run(str)
 
@@ -95,6 +95,8 @@ const handleEvents = (btnVal) => {
 		str = "";
   input.value = (str === "") ? "0" : str;
   run(str);
+  if (isNotOn)
+    input.classList.remove("blink");
       
   if (hasReturned) {
     str = "";
