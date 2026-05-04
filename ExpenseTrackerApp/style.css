@@ -1,0 +1,110 @@
+* {
+    box-sizing: norder-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-size: 15pt;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction:  column;
+    background:linear-gradient(
+        to right,
+        #000,
+        #dd5578,
+        #988977
+    );
+    color: #fff;
+   padding: 0;
+   margin: 0;
+   text-align: center;
+   width: 100%;
+   height: 100%;
+}
+
+input, button {
+    padding: 10px 10px;
+    margin: 20px;
+}
+
+input {
+    outline: none;
+    border: 3px solid transparent;
+    border-radius: 50px;
+    background: #999;
+    width: 80%;
+    margin: 20px auto;
+}
+
+input:focus {
+    background: #fff;
+    transform: scale(1.09);
+}
+
+button {
+    width: 50%;
+    height: 50px;
+    background: #000;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    margin: 0 auto;
+    color: inherit;
+}
+
+/*button:hover {
+    background: #dd5578;
+    transform: scale(1.1);
+}*/
+
+button:active {
+    filter: brightness(120%);
+    transform: scale(0.97);
+}
+
+ul {
+    list-style: none;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+li {
+   border-bottom: 2px solid #000;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   background: transparent;
+   gap: 10px;
+}
+
+li span {
+    display: flex;
+    width: 20%;
+    height: 20%;
+    gap: 25px;
+}
+
+li div {
+    display: flex;
+    text-align: left;
+    background: transparent;
+    width: 20%;
+    height: auto;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    /*word-break: break-all; */
+}
+
+li button {
+    width: 30%;
+    height: inherit;
+    margin-right: 0;
+}
+
+li span, li button {
+   margin-bottom: 10px;
+}

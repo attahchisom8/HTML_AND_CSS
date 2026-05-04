@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Expense Tracker</title>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <h1>Expense Tracker</h1>
+  <input
+    type="text"
+    id="expense-name"
+    placeholder="Expense name"
+    aria-label="expense-name"
+    />
+    <input
+      type="number"
+      id="amount"
+      placeholder="amount"
+      aria-label="amount"
+    />
+    <button id="add-expense">Add Expense</button>
+    <br>
+    <h2>Expenses</h2>
+    <ul id="expense-list"></ul>
+    <h3>Total: $<span id="total">0</span></h3>
+  <script src="main.js"></script>
+</body>
+</html>
