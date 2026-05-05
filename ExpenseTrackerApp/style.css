@@ -54,57 +54,64 @@ button {
     color: inherit;
 }
 
-/*button:hover {
-    background: #dd5578;
-    transform: scale(1.1);
-}*/
-
 button:active {
     filter: brightness(120%);
     transform: scale(0.97);
 }
 
-ul {
-    list-style: none;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 50px;
+table {
+    border: 1px solid #123;
+    background: #aaa;
+    border-collapse: collapse;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-li {
-   border-bottom: 2px solid #000;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
+thead {
+    border-bottom: inherit;
+    background: #888;
+}
+
+th {
+}
+
+tbody {
+    font-family: sans-serif;
+}
+
+tr {
    background: transparent;
-   gap: 10px;
 }
 
-li span {
-    display: flex;
-    width: 20%;
-    height: 20%;
-    gap: 25px;
-}
 
-li div {
-    display: flex;
+tr td {
     text-align: left;
     background: transparent;
-    width: 20%;
+    width: auto;
     height: auto;
     white-space: normal;
     overflow-wrap: anywhere;
     /*word-break: break-all; */
+    padding: 20px 0;
+    vertical-align: middle;
 }
 
-li button {
-    width: 30%;
+tr td:last-child {
+    text-align: center;
+}
+
+
+tr button {
+    width: 80%;
     height: inherit;
     margin-right: 0;
 }
 
-li span, li button {
-   margin-bottom: 10px;
+@media (min-width: 768px) {
+    button:hover {
+        background: #dd5578;
+        transform: scale(1.1);
+    
+    }
+
 }

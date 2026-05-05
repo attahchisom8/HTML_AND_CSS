@@ -14,19 +14,47 @@
   <input
     type="text"
     id="expense-name"
+    list="categories"
     placeholder="Expense name"
     aria-label="expense-name"
     />
+    <datalist id="categories">
+      <option value="Transpotation">
+      <option value="Food" />
+      <option value="Entertainment" />
+      <option value="Education" />
+      <option value="Funding" />
+      <option value="Grocessaries" />
+      <option value="Accesory purchases" />
+      <option value="Bills" />
+      <option value="Housing" />
+      <<option value="Others" />
+    </datalist>
     <input
       type="number"
       id="amount"
       placeholder="amount"
       aria-label="amount"
     />
+    <input
+      type="date"
+      id="expense-date"
+      arial-label="date"
+      placeholder="Date: Optional"
+    />
     <button id="add-expense">Add Expense</button>
     <br>
     <h2>Expenses</h2>
-    <ul id="expense-list"></ul>
+    <table id="expense-table">
+      <thead class="table-header">
+        <th id="th-category">category</th>
+        <th id="th-amount">Amount</th>
+        <th id="th-percentage">Percent</th>
+        <th id="th-date">Date</th>
+        <th id="delete-buttons">Remove</th>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
     <h3>Total: $<span id="total">0</span></h3>
   <script src="main.js"></script>
 </body>
