@@ -3,7 +3,8 @@ const amountInput = document.getElementById("amount");
 const dateInput = document.getElementById("expense-date");
 const expenseTable = document.getElementById("expense-table");
 const totalElem = document.getElementById("total");
-const tableBody = expenseTable.querySelector("tbody");
+let tableHead = document.querySelector("thead");
+let tableBody = expenseTable.querySelector("tbody");
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let lastAvg = 0;
 
@@ -18,9 +19,9 @@ expenses.forEach((exp) => {
 const handleInputs = () => {
   let expVal = expenseInput.value;
   let amountVal = amountInput.value;
-  
+
   if (amountVal <= 0 || !expVal) {
-    alert("please insert valid amount and expense name");
+    alert("Enter vaid amount and expense name");
     return;
   }
 
@@ -51,6 +52,33 @@ const updateUi = () => {
   avg = expenses.length > 0 ?  totalAmount / expenses.length : 0;
   let treeRow  = "";
 
+  if (expenses.length > 0) {
+    if (!tableHead) {
+      tableHead = document.createElement("thead");
+      tableHead.innerHTML = `
+      <thead class="table-header">
+        <th id="th-category">category</th>
+        <th id="th-amount">Amount</th>
+        <th id="th-percentage">Percent</th>
+        <th id="th-date">Date</th>
+        <th id="delete-buttons">Remove</th>
+        </thead>
+      `
+    }
+
+    if (!tableBody) {
+      tableBody = document.createElement("tbody");
+      tableBody.innerHTML = `<tbody></tbody>`;
+   }
+  } else {
+    if (tableHead)
+      tableHead.remove();
+    if (tableBody)
+      tableBody.remove();
+    tableBody = null;
+    tableHead = null;
+  }
+
   expenses.forEach((exp) => {
     percentVal = totalAmount > 0 ? Number((exp.amount * 100) / totalAmount).toFixed(1) : 0;
     const outOfBounds = lastAvg > 0 && exp.amount > (3 * lastAvg);
@@ -69,8 +97,12 @@ const updateUi = () => {
   `;
    });
   totalElem.textContent = totalAmount;
-  tableBody.innerHTML = treeRow;
-  expenseTable.appendChild(tableBody);
+  if (tableBody)
+    tableBody.innerHTML = treeRow;
+  if (tableHead)
+    expenseTable.appendChild(tableHead);
+  if (tableBody)
+    expenseTable.appendChild(tableBody);
   lastAvg = avg;
   console.log("expenseTable: ", expenseTable);
 
@@ -79,6 +111,10 @@ const updateUi = () => {
 const addExpense = document.getElementById("add-expense");
 
 addExpense.addEventListener("click", handleInputs);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter")
+    handleInputs();
+})
 
 console.log("expenseTable: ", expenseTable);
 

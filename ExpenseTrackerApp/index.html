@@ -10,6 +10,30 @@
 </head>
 
 <body>
+  <nav class="nav">
+    <div class="abs">
+      <ul class="main-tab">
+        <li>sort by ...</li>
+        <li>By Date</li>
+        <li>Name</li>
+      </ul>
+      <ul class="sub-tab">
+        <li>week</li>
+        <li>Month</li>
+        <li>year</li>
+      </ul>
+      <ul class="weekly-tab">
+        <li>week 1</li>
+        <li>week 2</li>
+        <li>week 3</li>
+      </ul>
+    </div>
+    <div class="toggle-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+  </nav>
   <h1>Expense Tracker</h1>
   <input
     type="text"
@@ -45,16 +69,7 @@
     <button id="add-expense">Add Expense</button>
     <br>
     <h2>Expenses</h2>
-    <table id="expense-table">
-      <thead class="table-header">
-        <th id="th-category">category</th>
-        <th id="th-amount">Amount</th>
-        <th id="th-percentage">Percent</th>
-        <th id="th-date">Date</th>
-        <th id="delete-buttons">Remove</th>
-      </thead>
-      <tbody id="table-body"></tbody>
-    </table>
+    <table id="expense-table"></table>
     <h3>Total: $<span id="total">0</span></h3>
   <script src="main.js"></script>
 </body>

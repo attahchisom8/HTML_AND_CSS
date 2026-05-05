@@ -70,9 +70,12 @@ table {
 thead {
     border-bottom: inherit;
     background: #888;
+    text-transform: uppercase;
+    font-size: 0.9rem;
 }
 
 th {
+    background: transparent;
 }
 
 tbody {
@@ -91,7 +94,7 @@ tr td {
     height: auto;
     white-space: normal;
     overflow-wrap: anywhere;
-    /*word-break: break-all; */
+    word-break: break-all;
     padding: 20px 0;
     vertical-align: middle;
 }
@@ -114,4 +117,24 @@ tr button {
     
     }
 
+    tr td {
+        text-align: center;
+        width: 20%;
+    }
+
+}
+
+/* NAVBAR */
+
+.nav {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    height: auto;
+    background: rgba(0, 0, 0, 0.95)
+}
+
+ul:first-child ~ li {
+    list-style: none;
+    color: yellow;
 }
