@@ -119,3 +119,20 @@ document.addEventListener("keydown", (e) => {
 console.log("expenseTable: ", expenseTable);
 
 updateUi();
+
+// Navbar manipulation
+
+const navBar = document.querySelector(".nav");
+const toggleMenu = document.querySelector(".toggle-menu");
+let subTabOpen = false, weekTabopen = false; 
+
+console.log(navBar);
+toggleMenu.addEventListener("click", () => {
+  toggleMenu.classList.toggle("is-active");
+  const ul = navBar.querySelector("ul");
+  ul.classList.toggle("is-active");
+  if (!ul.classList.contains("is-active")) {
+    subTabOpen = false;
+    weekTabopen = false;
+  }
+});
