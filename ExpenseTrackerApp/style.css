@@ -25,6 +25,10 @@ body {
    height: 100%;
 }
 
+h1 {
+    margin-top: 50px;
+}
+
 input, button {
     padding: 10px 10px;
     margin: 20px;
@@ -74,6 +78,10 @@ thead {
     font-size: 0.9rem;
 }
 
+.hide-thead {
+    display: none;
+}
+
 th {
     background: transparent;
 }
@@ -90,7 +98,7 @@ tr {
 tr td {
     text-align: left;
     background: transparent;
-    width: auto;
+    width: 20%;
     height: auto;
     white-space: normal;
     overflow-wrap: anywhere;
@@ -124,7 +132,7 @@ tr button {
 
 }
 
-/* NAVBAR */
+/* NAVBAR DTYLE */
 
 .nav {
     /*display: flex;
@@ -135,17 +143,68 @@ tr button {
     background: rgba(0, 0, 0, 0.95);
 }
 
+ul {
+    position: absolute;
+    width: 35%;
+    height: 150px;
+    background: #000;
+    border: 1px solid #dd5578;
+    top: 30px;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.5s ease;
+    z-index: 1000;
+}
+
+ul li {
+    margin: 15px 15px 15px 0;
+}
+
 ul:first-of-type > li:first-child {
     list-style: none;
     color: yellow;
 }
 
-ul {
-    display: none;
+.sub-tab {
+    top: 70px;
+    height: 170px;
+    transform: translateX(100%);
+    list-style: none;
 }
- ul.is-active {
-    display: list-item;
+
+.weekly-tab {
+    top: 100px;
+    height: 170px;
+    transform: translateX(200%);
+    list-style: none;
+}
+
+ .main-tab.is-active,
+ .main-tab.is-active + .sub-tab.sub-active,
+ .main-tab.is-active + .sub-tab.sub-active + .weekly-tab.week-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
  }
+ 
+.main-tab.is-active {
+    transform: translate(0, 0);
+}
+ 
+main-tab.is-active + .sub-tab.sub-active {
+    transform: translateX(0);
+}
+ 
+ .main-tab.is-active  li + li:active {
+     transform: scale(0.57);
+ }
+ 
+ .main-tab.is-active + .sub-tab.sub-active li:active,
+.main-tab.is-active + .sub-tab.sub-active + .weekly-tab.week-active li:active {
+    transform: scale(0.57);
+}
 
 .toggle-menu {
     width: 80px;
@@ -178,4 +237,13 @@ ul {
 .toggle-menu.is-active .bar:nth-child(3) {
     transform: translateY(-10px) rotate(-45deg);
     width: 30px;
+}
+
+#curr-view {
+    display: inline-block;
+    position: relative;
+    right: 0;
+    top: -30px;
+    margin-right: -50%;
+    background: transparent;
 }
