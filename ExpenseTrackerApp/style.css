@@ -146,7 +146,7 @@ tr button {
 ul {
     position: absolute;
     width: 35%;
-    height: 150px;
+    height: 170px;
     background: #000;
     border: 1px solid #dd5578;
     top: 30px;
@@ -169,14 +169,12 @@ ul:first-of-type > li:first-child {
 
 .sub-tab {
     top: 70px;
-    height: 170px;
     transform: translateX(100%);
     list-style: none;
 }
 
 .weekly-tab {
     top: 100px;
-    height: 170px;
     transform: translateX(200%);
     list-style: none;
 }

@@ -86,6 +86,9 @@ const updateUi = () => {
   totalElem.textContent = totalAmount;
   tableBody.innerHTML = tableRow;
   lastAvg = avg;
+  addExpense.disabled = false;
+  addExpense.style.opacity = 1;
+
   console.log("expenseTable: ", expenseTable);
 
 }
@@ -209,7 +212,8 @@ console.log("MainTab: ", mainTab);
   });
 
   
-// Handle Editing 
+// Handle Row Editing and Update
+
 const editPanel = (id) => {
   const tr = document.getElementById(`expense_${id}`);
   const expense = expenses.find((exp) => exp.id === id);
@@ -220,30 +224,28 @@ const editPanel = (id) => {
   }
   
   const percentVal = document.getElementById(`percentage_${id}`);
+  const date = formatDate(expense.date);
 
   const tableRow = `
-    <tr id="expense_${id}" style="color: #000">
   <td>
-    <input type="text" value="${expense.name} />
+  <input type="text" value="${expense.name}" id="edit-expense-name" />
   </td>
   <td>
-    <input type="number" value="${expense.amount}" />
+    <input type="number" value="${expense.amount}" id="edit-expense-amount" />
   </td>
-  <td>${percentVal.textContent}</td>
+  <td>${percentVal.textContent}</td> 
   <td>
-    <input type="date" value="${expense.date}" />
+    <input type="date" value="${date}" id="edit-expense-date" />
   </td>
   <td>
-    <button onclick="saveEdit('${id}')" style="color: #fff">Save
-    </button>
+    <button onclick="saveEdit('${id}')" style="color: #fff">Save</button>
   </td>
   <td>
     <button
-      onclick="${updateUi()}"
+      onclick="updateUi()"
       style="color: #fff"
       >Cancel</button>
     </td>
-      </tr>
   `;
   
   addExpense.disabled = true;
@@ -251,6 +253,41 @@ const editPanel = (id) => {
   addExpense.style.opacity = "0.3";
   tr.innerHTML = tableRow;
   console.log("tr", tr, "id", id);
+}
+
+
+const saveEdit = (id) => {
+  const expInput = document.getElementById("edit-expense-name");
+  console.log("expInput: ", expInput);
+  const amtInput = document.getElementById("edit-expense-amount");
+  const dInput = document.getElementById("edit-expense-date");
+  const editedExpVal = expInput.value;
+  const editedAmountVal = Number(amtInput.value);
+  const editedDate = dInput.value;
+  
+  if (editedAmountVal <= 0 || !editedExpVal) {
+    alert ("update with valid amount and expense name");
+    return;
+  }
+  
+  expenses = expenses.map((exp) => {
+    if (exp.id === id) {
+      return {
+        ...exp,
+        name: editedExpVal,
+        amount: editedAmountVal,
+        date: editedDate ? new Date(editedDate).toISOString() : new Date().toISOString(),
+      };
+    }
+    return exp;
+  });
+  
+  expInput.value = "";
+  amtInput.value = "";
+  dInput.value = "";
+  localStorage.setItem("expenses", JSON.stringify(expenses));
+
+  updateUi();
 }
 
   
