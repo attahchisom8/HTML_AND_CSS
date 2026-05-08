@@ -25,9 +25,25 @@
         <li>Cancel</li>
       </ul>
       <ul class="weekly-tab">
-        <li>week 1</li>
-        <li>week 2</li>
-        <li>week 3</li>
+        <li>This week</li>
+        <li>A week ago</li>
+        <li>2 weeks ago</li>
+        <li>3 weeks ago</li>
+        <li>Cancel</li>
+      </ul>
+      <ul class="monthly-tab">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+        <li>10</li>
+        <li>11</li>
+        <li>12</li>
         <li>Cancel</li>
       </ul>
     </div>
@@ -47,16 +63,16 @@
     aria-label="expense-name"
     />
     <datalist id="categories">
-      <option value="Transpotation">
+      <option value="Transportation">
       <option value="Food" />
       <option value="Entertainment" />
       <option value="Education" />
       <option value="Funding" />
-      <option value="Grocessaries" />
+      <option value="Grosaries" />
       <option value="Accesory purchases" />
       <option value="Bills" />
       <option value="Housing" />
-      <<option value="Others" />
+      <option value="Others" />
     </datalist>
     <input
       type="number"
@@ -80,8 +96,8 @@
         <th id="th-amount">Amount</th>
         <th id="th-percentage">Percent</th>
         <th id="th-date">Date</th>
-        <th id="edit-th">
-          <span class="edit-label"></span>
+        <th class="edit-th">
+          <span class="edit-label">Edit</span>
           <span class="edit-toggle">▶</span>
         </th>
         <th id="delete-buttons">Remove</th>
@@ -90,6 +106,6 @@
       <tbody></tbody>
     </table>
     <h3>Total: $<span id="total">0</span></h3>
-  <script src="main.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>

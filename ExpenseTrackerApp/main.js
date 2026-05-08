@@ -5,6 +5,7 @@ const expenseTable = document.getElementById("expense-table");
 const totalElem = document.getElementById("total");
 const tableHead = document.querySelector("thead");
  const tableBody = expenseTable.querySelector("tbody");
+ const addExpense = document.getElementById("add-expense");
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let lastAvg = 0;
 
@@ -51,7 +52,7 @@ const deleteExpense = (id) => {
 const updateUi = () => {
   let percentVal;
   const totalAmount = expenses.length > 0 ? expenses.reduce((sum, exp) => sum + exp.amount, 0) : 0;
-  avg = expenses.length > 0 ?  totalAmount / expenses.length : 0;
+  let avg = expenses.length > 0 ?  totalAmount / expenses.length : 0;
   let tableRow  = "";
 
   if (expenses.length === 0) {
@@ -75,11 +76,22 @@ const updateUi = () => {
   
     tableRow += `
     <tr id="expense_${exp.id}" style="color: #000">
-  <td>${name}</td> <td id='amount_${exp.id}' style="color: ${colorStyle}">$${exp.amount}</td> <td id='percentage_${exp.id}' style="color: ${colorStyle}">${percentVal}%</td> <td id="date_${exp.id}">${formatedDate}</td> <td id="edit_${exp.id}" class="edit-cell"><button onclick="editPanel('${exp.id}')" style="color: #fff">Edit</button></td> <td><button
-      id='btn_${exp.id}'
-      onclick="deleteExpense('${exp.id}')"
-      style="color: #fff"
-      >delete</button></td>
+    <td>${name}</td>
+    <td id='amount_${exp.id}' style="color: ${colorStyle}">$${exp.amount}</td>
+    <td id='percentage_${exp.id}' style="color: ${colorStyle}">${percentVal}%</td>
+    <td id="date_${exp.id}">${formatedDate}</td>
+    <td id="edit_${exp.id}" class="edit-cell">
+      <button
+        onclick="editPanel('${exp.id}')"
+        style="color: #fff">Edit</button>
+    </td>
+    <td>
+      <button
+        id='btn_${exp.id}'
+        onclick="deleteExpense('${exp.id}')"
+        style="color: #fff"
+        >delete</button>
+      </td>
       </tr>
   `;
    });
@@ -93,7 +105,6 @@ const updateUi = () => {
 
 }
 // add event listener fo simulate submission and upats Ui
-const addExpense = document.getElementById("add-expense");
 
 addExpense.addEventListener("click", handleInputs);
 document.addEventListener("keydown", (e) => {
@@ -109,6 +120,7 @@ const navBar = document.querySelector(".nav");
 const mainTab = document.querySelector(".main-tab");
 const subTab = document.querySelector(".sub-tab");
 const weeklyTab = document.querySelector(".weekly-tab");
+const monthlyTab = document.querySelector(".monthly-tab");
 const toggleMenu = document.querySelector(".toggle-menu");
 const currView = document.getElementById("curr-view");
 
@@ -121,6 +133,7 @@ toggleMenu.addEventListener("click", () => {
   if (!ul.classList.contains("is-active")) {
     subTab.classList.remove("sub-active");
     weeklyTab.classList.remove("week-active");
+    monthlyTab.classList.remove("month-active");
   }
 });
 
@@ -160,7 +173,9 @@ console.log("MainTab: ", mainTab);
     
     if (text === "Week") {
       weeklyTab.classList.add("week-active");
-      console.log("weekTab", weeklyTab)
+      monthlyTab.classList.remove("month-active");
+      console.log("weekTab", weeklyTab);
+      console.log("monthlyTab", monthlyTab);
       console.log("subTab", subTab);
       console.log("mainTab", mainTab);
     }
@@ -168,10 +183,17 @@ console.log("MainTab: ", mainTab);
     if (text === "Cancel") {
       subTab.classList.remove("sub-active");
       weeklyTab.classList.remove("week-active");
+      monthlyTab.classList.remove("month-active");
     }
     
     if (text === "Month") {
-      currView.textContent = "Monthly view";
+      monthlyTab.classList.add("month-active");
+      weeklyTab.classList.remove("week-active");
+      console.log("weekTab", weeklyTab);
+      console.log("monthlyTab", monthlyTab);
+      console.log("subTab", subTab);
+      console.log("mainTab", mainTab);
+
     }
     
     if (text === "Year") {
@@ -197,19 +219,41 @@ console.log("MainTab: ", mainTab);
       console.log("mainTab", mainTab);
     }
     
-    if (text === "week 1") {
-      currView.textContent = "Week 1 view";
+    if (text === "This week") {
+      currView.textContent = "This week view";
     }
     
-    if (text === "week 2") {
-      currView.textContent = "Week 2 view";
+    if (text === "A week ago") {
+      currView.textContent = "Last week view";
     }
     
-    if (text === "week 3") {
-       currView.textContent = "Week 3 view";
+    if (text === "2 weeks ago") {
+       currView.textContent = "Last 2 view";
+    }
+
+    if (text === "3 weeks ago") {
+      currView.textContent = "Last 3 weeks view";
     }
     console.log(currView);
   });
+
+  monthlyTab.addEventListener("click", (e) => {
+    const li = e.target.closest("li");
+
+    if (!li)
+        return;
+    
+    const  text = li.textContent.trim();
+
+    if (Number(text) >= 1 && Number(text) <= 12) {
+      // call some function
+    }
+
+    if (text === "Cancel") {
+      monthlyTab.classList.remove("month-active");
+    }
+
+  })
 
   
 // Handle Row Editing and Update
@@ -289,6 +333,14 @@ const saveEdit = (id) => {
 
   updateUi();
 }
+
+// handle hiding edit column
+
+const editToggle = document.querySelector(".edit-toggle");
+
+editToggle.addEventListener("click", () => {
+  expenseTable.classList.toggle("is-open");
+})
 
   
   
