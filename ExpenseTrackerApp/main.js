@@ -1,12 +1,17 @@
+import * as sortUtility from "./sortUtility/sortDate.js";
+import { sortName } from "./sortUtility/sortName.js";
+
 const expenseInput = document.getElementById("expense-name")
 const amountInput = document.getElementById("amount");
 const dateInput = document.getElementById("expense-date");
 const expenseTable = document.getElementById("expense-table");
 const totalElem = document.getElementById("total");
 const tableHead = document.querySelector("thead");
- const tableBody = expenseTable.querySelector("tbody");
- const addExpense = document.getElementById("add-expense");
+const tableBody = expenseTable.querySelector("tbody");
+const addExpense = document.getElementById("add-expense");
+// localStorage.setItem("expenses", JSON.stringify(sortUtility.testExpenses));
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+const defaultExpenses = [...expenses];
 let lastAvg = 0;
 
 const formatDate = (date) => {
@@ -157,6 +162,14 @@ console.log("MainTab: ", mainTab);
 
     if (text === "Name") {
       currView.textContent = "View by Category";
+      expenses = sortName(expenses);
+      updateUi();
+    }
+
+    if (text === "Default") {
+      currView.textContent = "Default view";
+      expenses = [...defaultExpenses];
+      updateUi();
     }
     console.log(currView);
   });
@@ -198,6 +211,9 @@ console.log("MainTab: ", mainTab);
     
     if (text === "Year") {
       currView.textContent = "Yearly view";
+       expenses = [...defaultExpenses];
+      expenses = sortUtility.yearlySort(expenses);
+      updateUi();
     }
     console.log(currView);
   });
@@ -221,18 +237,30 @@ console.log("MainTab: ", mainTab);
     
     if (text === "This week") {
       currView.textContent = "This week view";
+       expenses = [...defaultExpenses];
+      expenses = sortUtility.sortThisWeekExpense(expenses);
+      updateUi();
     }
     
     if (text === "A week ago") {
       currView.textContent = "Last week view";
+      expenses = [...defaultExpenses];
+      expenses = sortUtility.sortLast3WeeksExpenses(expenses);
+      updateUi();
     }
     
     if (text === "2 weeks ago") {
        currView.textContent = "Last 2 view";
+       expenses = [...defaultExpenses];
+       expenses = sortUtility.sortLast2WeeksExpenses(expenses);
+       updateUi();
     }
 
     if (text === "3 weeks ago") {
       currView.textContent = "Last 3 weeks view";
+      expenses = [...defaultExpenses];
+      expenses = sortUtility.sortLast3WeeksExpenses(expenses);
+      updateUi();
     }
     console.log(currView);
   });
@@ -246,7 +274,11 @@ console.log("MainTab: ", mainTab);
     const  text = li.textContent.trim();
 
     if (Number(text) >= 1 && Number(text) <= 12) {
-      // call some function
+      const monthVal  = Number(text) <= 9 ? "0" + text : text;
+      currView.textContent = `month ${text} view`;
+      expenses = [...defaultExpenses];
+      expenses = sortUtility.monthlySort(expenses, monthVal);
+      updateUi();
     }
 
     if (text === "Cancel") {

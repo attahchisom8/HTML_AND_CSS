@@ -155,9 +155,9 @@ tr button {
     visibility: visible;
 }
 
-/*.responsive-table.is-open .edit-toggle {
+.responsive-table.is-open .edit-toggle {
     transform: rotate(90deg);
-} */
+}
 
 .responsive-table .edit-th {
     width: 5%;
@@ -336,7 +336,7 @@ ul li {
     background: transparent;
 }
 
-/* Desktop vversion */
+/* Desktop version */
 @media (min-width: 768px) {
 
     ul {

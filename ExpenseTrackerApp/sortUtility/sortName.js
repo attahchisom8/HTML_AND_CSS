@@ -5,7 +5,7 @@
  * Return: in place sorted list of the array, not a new array
  */
 
-const sortName = (expenses) => {
+export const sortName = (expenses) => {
 	return expenses.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 }
 

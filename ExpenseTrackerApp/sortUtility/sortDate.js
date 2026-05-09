@@ -1,4 +1,4 @@
-const testExpenses = [
+export const testExpenses = [
   // 3 This Week (May 4 - May 9)
   { id: "101", name: "Grocery Run", amount: 45.50, date: "2026-05-08T10:00:00.000Z" },
   { id: "102", name: "Coffee", amount: 5.25, date: "2026-05-06T08:30:00.000Z" },
@@ -26,7 +26,7 @@ const testExpenses = [
   { id: "502", name: "Software Subscription", amount: 15.99, date: "2026-04-03T00:00:00.000Z" },
   { id: "503", name: "Pet Food", amount: 55.00, date: "2026-04-05T16:40:00.000Z" },
   { id: "504", name: "Home Maintenance", amount: 210.00, date: "2026-04-08T11:20:00.000Z" },
-  { id: "505", name: "Gift for Friend", amount: 35.00, date: "2026-04-10T14:00:00.000Z" }
+  { id: "505", name: "Gift for Friend", amount: 35.00, date: "2026-03-10T14:00:00.000Z" }
 ];
 
 /**
@@ -45,7 +45,7 @@ const getWeeklyRange = (date) => {
   const diffToMonday = day === 0 ? 6 : day - 1;
   const monday = new Date(today);
   monday.setUTCDate(today.getUTCDate() - diffToMonday);
-  if (day !== 0) {
+  if (day !== 0 && day !== 1) {
     return { monday, today: todayFullTime, sunday: null};
   }
 
@@ -56,9 +56,9 @@ const getWeeklyRange = (date) => {
   return {monday, today: null, sunday};
 }
 
-let date = new Date("2026-05-09T12:03:49.725Z");
+/* let date = new Date("2026-05-09T12:03:49.725Z");
 console.log(date);
-console.log(getWeeklyRange(date))
+console.log(getWeeklyRange(date)) */
 
 /**
  * getYersterdaysDate - get yersterday's date
@@ -74,10 +74,10 @@ const getYersterdaysDate = (date) => {
 
   return yersterday;
 }
-console.log("date: ", date);
+/* console.log("date: ", date);
 console.log("yersterday", getYersterdaysDate(date));
 let monday = getWeeklyRange(date).monday;
-console.log("weekly range", getWeeklyRange(getYersterdaysDate(monday)));
+console.log("weekly range", getWeeklyRange(getYersterdaysDate(monday))); */
 
 /**
  * 
@@ -86,7 +86,7 @@ console.log("weekly range", getWeeklyRange(getYersterdaysDate(monday)));
  * Return: A sorted array by weekly expenses
  */
 
-const sortThisWeekExpense = (expenses) => {
+export const sortThisWeekExpense = (expenses) => {
   const today = new Date();
   const week = getWeeklyRange(today);
   let endRangeWeek = week.today ? week.today : week.sunday;
@@ -100,7 +100,6 @@ const sortThisWeekExpense = (expenses) => {
   return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-console.log(sortThisWeekExpense(testExpenses));
 
 /**
  * sortLastWeekExpenses - sort last week expnses by their latest
@@ -110,7 +109,7 @@ console.log(sortThisWeekExpense(testExpenses));
  * Retrn: A sorted array by their by atest date
  */
 
-const sortLastWeekExpenses = (expenses) => {
+export const sortLastWeekExpenses = (expenses) => {
   const  today = new Date();
   const thisWeekMonday = getWeeklyRange(today).monday;
   const yerterdayIsSunday = getYersterdaysDate(thisWeekMonday);
@@ -124,4 +123,92 @@ const sortLastWeekExpenses = (expenses) => {
   return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
-console.log("last week expenses", sortLastWeekExpenses(testExpenses));
+// nsole.log("last week expenses", sortLastWeekExpenses(testExpenses));
+
+/**
+ * sortLast2WeeksExpenses - sorts the Last two weeks expenses by
+ * their date
+ * @expenses: the given expense array
+ * 
+ * Return: a sorted array by their date
+ */
+
+export const sortLast2WeeksExpenses = (expenses) => {
+  const today = new Date();
+  const monday = getWeeklyRange(today).monday;
+  monday.setUTCDate(monday.getUTCDate() - 14);
+  const last2Weeks = getWeeklyRange(monday);
+  console.log("last 2 weeks", last2Weeks);
+
+  expenses = expenses.filter((exp) => {
+    const expDate = new Date(exp.date);
+    return expDate >= last2Weeks.monday && expDate <= last2Weeks.sunday;
+  });
+
+  return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+// nsole.log("last 2 week expenses", sortLast2WeeksExpenses(testExpenses));
+
+
+/**
+ * sortLast3WeeksExpenses - sorts the Last three weeks expenses by
+ * their date
+ * @expenses: the given expense array
+ * 
+ * Return: a sorted array by their date
+ */
+
+export const sortLast3WeeksExpenses = (expenses) => {
+  const today = new Date();
+  const monday = getWeeklyRange(today).monday;
+  console.log("monday in 3 weeks: ", monday);
+  monday.setUTCDate(monday.getUTCDate() - 21);
+  const last3Weeks = getWeeklyRange(monday);
+  console.log("last 3 weeks", last3Weeks);
+
+  expenses = expenses.filter((exp) => {
+    const expDate = new Date(exp.date);
+    return expDate >= last3Weeks.monday && expDate <= last3Weeks.sunday;
+  });
+
+  return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+// console.log("last 3 week expenses", sortLast3WeeksExpenses(testExpenses));
+
+
+/**
+ * monthlySort - sorts expense by  monthsof the year
+ * @expenses: the given expenses arrayh
+ * @monthVal: the given month of the year
+ * 
+ * Return: A sorted list of expenses by monnth
+ */
+
+export const monthlySort = (expenses, monthVal) => {
+  const date = new Date();
+  const year = date.getUTCFullYear();
+  const monthSearch = `${year}-${monthVal}`;
+
+  expenses = expenses.filter((exp) => exp.date.includes(monthSearch));
+
+  return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+// console.log("monthly expenses: ", monthlySort(testExpenses, "03"));
+
+
+/**
+ * yearlySort - sorts expense by the current year
+ * @expenses: the given expenses arrayh
+ * 
+ * Return: A sorted list of expenses by year
+ */
+
+export const yearlySort = (expenses) => {
+  const date = new Date();
+  const year = date.getUTCFullYear().toString();
+
+  expenses = expenses.filter((exp) => exp.date.includes(year));
+
+  return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+// console.log("yearly expenses: ", yearlySort(testExpenses));
