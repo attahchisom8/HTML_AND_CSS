@@ -42,5 +42,15 @@ const getYersterdaysDate = (date) => {
 
   return yersterday;
 }
-console.log("date: ", date);
-console.log(getYersterdaysDate(date));
+// console.log("date: ", date);
+// console.log(getYersterdaysDate(date));
+
+const sortThisWeekExpense = (expenses) => {
+  const today = new Date();
+  const week = getWeeklyRange(date);
+  let endRangeWeek = week.today ? week.today : week.sunday;
+
+  expenses = expenses.filter((exp) => exp.date >= week.monday && exp.date <= endRangeWeek);
+
+  return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
