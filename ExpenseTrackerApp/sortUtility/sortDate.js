@@ -38,8 +38,7 @@ console.log(getWeeklyRange(date))
 const getYersterdaysDate = (date) => {
   const yersterday = new Date(date);
   yersterday.setHours(0, 0, 0, 0);
-  const today = new Date(yersterday).getDay();
-  yersterday.setDate(today - 1);
+  yersterday.setDate(yersterday.getDate() - 1);
 
   return yersterday;
 }
