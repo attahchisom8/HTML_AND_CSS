@@ -123,3 +123,5 @@ const sortLastWeekExpenses = (expenses) => {
 
   return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
+
+console.log("last week expenses", sortLastWeekExpenses(testExpenses));
