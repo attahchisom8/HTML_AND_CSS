@@ -214,12 +214,13 @@ tr button {
     background: #000;
     border: 1px solid #dd5578;
     top: 30px;
-    transform: translate(-50%, -50%);
+    left: 0;
     opacity: 0;
-    display: none;
-    pointer-events: auto;
-    transition: all 0.3s ease;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
     z-index: 1000;
+    will-change: transform, opacity;
 }
 
 ul li {
@@ -233,14 +234,34 @@ ul li {
     pointer-events: none;
 }
 
-.nav ul.is-visible {
-    opacity: 1;
-    display: block;
-}
-
 
 .weekly-tab li:not(:last-child) {
     border-bottom: 1px solid #dd5578;
+}
+
+.main-tab {
+    transform: translate(10%, 10px);
+}
+
+.sub-tab {
+    transform: translateX(90%);
+    top: 70px;
+}
+
+.weely-tab {
+    transform: translateX(180%);
+    top: 100px;
+}
+
+.monthly-tab {
+    transform: translateX(250%);
+    width: 25%;
+}
+
+.nav ul.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(0, 0);
 }
 
  .main-tab.is-visible {
@@ -250,11 +271,9 @@ ul li {
 .sub-tab.is-visible {
      transform: translateX(100%);
      list-style: none;
-     top: 70px;
  }
  
 .weekly-tab.is-visible {
-    top: 100px;
     list-style: none;
     text-align: left;
     overflow-y: auto;
@@ -262,13 +281,11 @@ ul li {
    transform: translateX(200%);
 }
 .monthly-tab.is-visible {
-    top: 100px;
     overflow-y: auto;
     overflow-x: hidden;
     transform: translateX(280%);
     list-style: none;
     text-align: left;
-    width: 25%;
 }
 
  
@@ -279,6 +296,14 @@ ul li {
 .nav ul li:active {
     transform: scale(0.57);
 }
+
+.nav ul:first-of-type li:first-child:hover {
+    background: transparent;
+ }
+
+ .nav ul li:hover {
+    background: #dd5578;
+ }
  
 
 .toggle-menu {
@@ -335,15 +360,15 @@ ul li {
         border: none;
     }
 
-    .monthly-tab {
+    .monthly-tab.is-visible {
         transform: translateX(267%);
         text-align: center;
         width: 15%;
     }
     
     .nav ul li {
-    cursor: pointer;
-}
+        cursor: pointer;
+    }
 
 }
 

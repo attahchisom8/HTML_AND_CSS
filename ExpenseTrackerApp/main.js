@@ -60,8 +60,7 @@ const deleteExpense = (id) => {
 
 const updateUi = () => {
   let percentVal;
-  let totalAmount = expenses.length > 0 ? expenses.reduce((sum, exp) => sum + exp.amount, 0) : 0;
-totalAmount = Number(totalAmount).toFixed(2); 
+  const totalAmount = expenses.length > 0 ? expenses.reduce((sum, exp) => sum + exp.amount, 0) : 0;
   let avg = expenses.length > 0 ?  totalAmount / expenses.length : 0;
   let tableRow  = "";
 
@@ -105,7 +104,7 @@ totalAmount = Number(totalAmount).toFixed(2);
       </tr>
   `;
    });
-  totalElem.textContent = totalAmount;
+  totalElem.textContent = Number(totalAmount).toFixed(2);
   tableBody.innerHTML = tableRow;
   lastAvg = avg;
   addExpense.disabled = false;
@@ -184,7 +183,7 @@ mainTab.addEventListener("click", (e) => {
   });
 
 
-  subTab.addEventListener("click", (e) => {
+subTab.addEventListener("click", (e) => {
     /*const li = e.target.closest("li");
     if (!li)
       return;
@@ -227,7 +226,7 @@ mainTab.addEventListener("click", (e) => {
 
 
   weeklyTab.addEventListener("click", (e) => {
-    const text = li.innerText;
+    const text = e.target.innerText;
     
     if (text === "Cancel") {
       weeklyTab.classList.remove("is-visible");
@@ -251,7 +250,7 @@ mainTab.addEventListener("click", (e) => {
     }
     
     if (text === "2 weeks ago") {
-       currView.textContent = "Last 2 view";
+       currView.textContent = "Last 2weeks view";
        expenses = [...defaultExpenses];
        expenses = sortUtility.sortLast2WeeksExpenses(expenses);
        updateUi();
