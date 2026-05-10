@@ -42,9 +42,9 @@ const handleInputs = () => {
     date: dateInput.value ? new Date(dateInput.value).toISOString() : new Date().toISOString(),
   }
 
+  defaultExpenses.push(expense);
   expenses.push(expense);
-  defaultExpenses = [...expenses];
-  localStorage.setItem("expenses", JSON.stringify(expenses));
+  localStorage.setItem("expenses", JSON.stringify(defaultExpenses));
   expenseInput.value = "";
   amountInput.value = "";
   dateInput.value = "";
@@ -52,9 +52,9 @@ const handleInputs = () => {
 }
 
 const deleteExpense = (id) => {
+  defaultExpenses = defaultExpenses.filter((exp) => exp.id !== id);
   expenses = expenses.filter((exp) => exp.id !== id);
-  defaultExpenses = [...expenses];
-  localStorage.setItem("expenses", JSON.stringify(expenses));
+  localStorage.setItem("expenses", JSON.stringify(defaultExpenses));
   updateUi();
 }
 
@@ -135,22 +135,23 @@ const toggleMenu = document.querySelector(".toggle-menu");
 const currView = document.getElementById("curr-view");
 
 // handle Toghling
+
+const closeAllSubabs = () => {
+  subTab.classList.remove("sub-active");
+  weeklyTab.classList.remove("week-active");
+  monthlyTab.classList.remove("month-active");
+}
 console.log(navBar);
 toggleMenu.addEventListener("click", () => {
-  toggleMenu.classList.toggle("is-active");
-  const ul = navBar.querySelector("ul");
-  ul.classList.toggle("is-active");
-  if (!ul.classList.contains("is-active")) {
-    subTab.classList.remove("sub-active");
-    weeklyTab.classList.remove("week-active");
-    monthlyTab.classList.remove("month-active");
-  }
+  const isActive = toggleMenu.classList.toggle("is-active");
+  if (!isActive)
+    closeAllSubabs();
 });
 
 // handle each Menu tab
 console.log("MainTab: ", mainTab);
 
-  mainTab.addEventListener("click", (e) => {
+  /* mainTab.addEventListener("click", (e) => {
     const li = e.target.closest("li");
     if (!li)
       return;
@@ -290,7 +291,7 @@ console.log("MainTab: ", mainTab);
       monthlyTab.classList.remove("month-active");
     }
 
-  })
+  }) */
 
   
 // Handle Row Editing and Update
@@ -350,6 +351,18 @@ const saveEdit = (id) => {
     alert ("update with valid amount and expense name");
     return;
   }
+
+  defaultExpenses = defaultExpenses.map((exp) => {
+    if (exp.id === id) {
+      return {
+        ...exp,
+        name: editedExpVal,
+        amount: editedAmountVal,
+        date: editedDate ? new Date(editedDate).toISOString() : new Date().toISOString(),
+      };
+    }
+    return exp;
+  });
   
   expenses = expenses.map((exp) => {
     if (exp.id === id) {
@@ -366,8 +379,7 @@ const saveEdit = (id) => {
   expInput.value = "";
   amtInput.value = "";
   dInput.value = "";
-  defaultExpenses = [...expenses];
-  localStorage.setItem("expenses", JSON.stringify(expenses));
+  localStorage.setItem("expenses", JSON.stringify(defaultExpenses));
 
   updateUi();
 }
