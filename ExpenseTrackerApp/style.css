@@ -196,7 +196,7 @@ tr button {
 
 }
 
-/* NAVBAR DTYLE */
+/* NAVBAR STYLE */
 
 .nav {
     /*display: flex;
@@ -217,17 +217,13 @@ tr button {
     transform: translate(-50%, -50%);
     opacity: 0;
     display: none;
-    pointer-events: none;
+    pointer-events: auto;
     transition: all 0.3s ease;
     z-index: 1000;
 }
 
 ul li {
     margin: 15px 15px 15px 0;
-}
-
-.nav ul li {
-    cursor: pointer;
 }
 
 .nav ul:first-of-type > li:first-child {
@@ -237,26 +233,35 @@ ul li {
     pointer-events: none;
 }
 
-.sub-tab {
-    top: 70px;
-    transform: translateX(100%);
-    list-style: none; 
+.nav ul.is-visible {
+    opacity: 1;
+    display: block;
 }
 
-.weekly-tab {
-    top: 100px;
-    transform: translateX(200%);
-    list-style: none;
-    text-align: left;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
 
 .weekly-tab li:not(:last-child) {
     border-bottom: 1px solid #dd5578;
 }
 
-.monthly-tab {
+ .main-tab.is-visible {
+     transform: translate(0, 0);
+ }
+ 
+.sub-tab.is-visible {
+     transform: translateX(100%);
+     list-style: none;
+     top: 70px;
+ }
+ 
+.weekly-tab.is-visible {
+    top: 100px;
+    list-style: none;
+    text-align: left;
+    overflow-y: auto;
+    overflow-x: hidden;
+   transform: translateX(200%);
+}
+.monthly-tab.is-visible {
     top: 100px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -266,33 +271,15 @@ ul li {
     width: 25%;
 }
 
- .main-tab.is-active,
- .main-tab.is-active + .sub-tab.sub-active,
- .main-tab.is-active + .sub-tab.sub-active + .weekly-tab.week-active,
- .main-tab.is-active + .sub-tab.sub-active + .weekly-tab + .monthly-tab.month-active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+ 
+ .nav ul:first-of-type li:first-child:active {
+     transform: none;
  }
  
-.main-tab.is-active {
-    transform: translate(0, 0);
-}
- 
-/* .main-tab.is-active + .sub-tab.sub-active {
-    transform: translateX(0);
-} */
-
- 
- .main-tab.is-active  li + li:active {
-     transform: scale(0.57);
- }
- 
- .main-tab.is-active + .sub-tab.sub-active li:active,
-.main-tab.is-active + .sub-tab.sub-active + .weekly-tab.week-active li:active,
-.main-tab.is-active + .sub-tab.sub-active + .weekly-tab + .monthly-tab.month-active li:active {
+.nav ul li:active {
     transform: scale(0.57);
 }
+ 
 
 .toggle-menu {
     width: 80px;
@@ -339,7 +326,7 @@ ul li {
 /* Desktop version */
 @media (min-width: 768px) {
 
-    ul {
+    .nav ul {
         width: 20%;
         height: 180px;
     }
@@ -353,6 +340,10 @@ ul li {
         text-align: center;
         width: 15%;
     }
+    
+    .nav ul li {
+    cursor: pointer;
+}
 
 }
 

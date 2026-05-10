@@ -212,4 +212,3 @@ export const yearlySort = (expenses) => {
   return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 // console.log("yearly expenses: ", yearlySort(testExpenses));
-

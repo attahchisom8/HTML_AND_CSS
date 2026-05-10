@@ -137,31 +137,34 @@ const currView = document.getElementById("curr-view");
 // handle Toghling
 
 const closeAllSubabs = () => {
-  subTab.classList.remove("sub-active");
-  weeklyTab.classList.remove("week-active");
-  monthlyTab.classList.remove("month-active");
+  subTab.classList.remove("is-visible");
+  weeklyTab.classList.remove("is-visible");
+  monthlyTab.classList.remove("is-visible");
 }
 console.log(navBar);
 toggleMenu.addEventListener("click", () => {
   const isActive = toggleMenu.classList.toggle("is-active");
-  if (!isActive)
+  if (!isActive) {
     closeAllSubabs();
+    mainTab.classList.remove("is-visible");
+    return;
+  }
+  mainTab.classList.add("is-visible");
 });
 
 // handle each Menu tab
 console.log("MainTab: ", mainTab);
 
-  /* mainTab.addEventListener("click", (e) => {
-    const li = e.target.closest("li");
+mainTab.addEventListener("click", (e) => {
+    /*const li = e.target.closest("li");
     if (!li)
       return;
     
-    const text = li.textContent.trim();
-    
-    console.log("li: ", li, "content", li.textContent);
+    const text = li.textContent.trim();*/
+    const text = e.target.innerText;
 
     if (text === "By Date") {
-      subTab.classList.add("sub-active");
+      subTab.classList.add("is-visible");
       console.log("subTab", subTab);
       console.log("mainTab", mainTab);
     }
@@ -182,17 +185,16 @@ console.log("MainTab: ", mainTab);
 
 
   subTab.addEventListener("click", (e) => {
-    const li = e.target.closest("li");
+    /*const li = e.target.closest("li");
     if (!li)
       return;
       
-    const text = li.textContent.trim();
-    
-    console.log("li: ", li, "content", li.textContent);
+    const text = li.textContent.trim();*/
+    const text = e.target.innerText;
     
     if (text === "Week") {
-      weeklyTab.classList.add("week-active");
-      monthlyTab.classList.remove("month-active");
+      weeklyTab.classList.add("is-visible");
+      monthlyTab.classList.remove("is-visible");
       console.log("weekTab", weeklyTab);
       console.log("monthlyTab", monthlyTab);
       console.log("subTab", subTab);
@@ -200,14 +202,13 @@ console.log("MainTab: ", mainTab);
     }
     
     if (text === "Cancel") {
-      subTab.classList.remove("sub-active");
-      weeklyTab.classList.remove("week-active");
-      monthlyTab.classList.remove("month-active");
+      closeAllSubabs();
+      return;
     }
     
     if (text === "Month") {
-      monthlyTab.classList.add("month-active");
-      weeklyTab.classList.remove("week-active");
+      monthlyTab.classList.add("is-visible");
+      weeklyTab.classList.remove("is-visible");
       console.log("weekTab", weeklyTab);
       console.log("monthlyTab", monthlyTab);
       console.log("subTab", subTab);
@@ -226,16 +227,10 @@ console.log("MainTab: ", mainTab);
 
 
   weeklyTab.addEventListener("click", (e) => {
-    const li = e.target.closest("li");
-    if (!li)
-      return;
-      
-    const text = li.textContent.trim();
-    
-    console.log("li: ", li, "content", li.textContent);
+    const text = li.innerText;
     
     if (text === "Cancel") {
-      weeklyTab.classList.remove("week-active");
+      weeklyTab.classList.remove("is-visible");
       console.log("weeklyTab", weeklyTab);
       console.log("subTab", subTab);
       console.log("mainTab", mainTab);
@@ -272,12 +267,7 @@ console.log("MainTab: ", mainTab);
   });
 
   monthlyTab.addEventListener("click", (e) => {
-    const li = e.target.closest("li");
-
-    if (!li)
-        return;
-    
-    const  text = li.textContent.trim();
+    const  text = e.target.innerText;
 
     if (Number(text) >= 1 && Number(text) <= 12) {
       const monthVal  = Number(text) <= 9 ? "0" + text : text;
@@ -288,10 +278,10 @@ console.log("MainTab: ", mainTab);
     }
 
     if (text === "Cancel") {
-      monthlyTab.classList.remove("month-active");
+      monthlyTab.classList.remove("is-visible");
     }
 
-  }) */
+  })
 
   
 // Handle Row Editing and Update
