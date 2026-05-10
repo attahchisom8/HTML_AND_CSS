@@ -207,7 +207,7 @@ tr button {
     background: rgba(0, 0, 0, 0.95);
 }
 
-ul {
+.nav ul {
     position: absolute;
     width: 35%;
     height: 170px;
@@ -216,9 +216,9 @@ ul {
     top: 30px;
     transform: translate(-50%, -50%);
     opacity: 0;
-    visibility: hidden;
+    display: none;
     pointer-events: none;
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
     z-index: 1000;
 }
 
