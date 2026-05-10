@@ -11,9 +11,10 @@ const tableBody = expenseTable.querySelector("tbody");
 const addExpense = document.getElementById("add-expense");
 // localStorage.setItem("expenses", JSON.stringify(sortUtility.testExpenses));
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
-const defaultExpenses = [...expenses];
+let defaultExpenses = [...expenses];
 let lastAvg = 0;
 
+// format date tp dd/mm/yy
 const formatDate = (date) => {
   const currDate = new Date(date);
   let year = currDate.getFullYear();
@@ -24,6 +25,7 @@ const formatDate = (date) => {
   return `${dayDate}/${month}/${year}`;
 }
 
+// handle user input and adding expense
 const handleInputs = () => {
   let expVal = expenseInput.value;
   let amountVal = amountInput.value;
@@ -41,6 +43,7 @@ const handleInputs = () => {
   }
 
   expenses.push(expense);
+  defaultExpenses = [...expenses];
   localStorage.setItem("expenses", JSON.stringify(expenses));
   expenseInput.value = "";
   amountInput.value = "";
@@ -50,13 +53,15 @@ const handleInputs = () => {
 
 const deleteExpense = (id) => {
   expenses = expenses.filter((exp) => exp.id !== id);
+  defaultExpenses = [...expenses];
   localStorage.setItem("expenses", JSON.stringify(expenses));
   updateUi();
 }
 
 const updateUi = () => {
   let percentVal;
-  const totalAmount = expenses.length > 0 ? expenses.reduce((sum, exp) => sum + exp.amount, 0) : 0;
+  let totalAmount = expenses.length > 0 ? expenses.reduce((sum, exp) => sum + exp.amount, 0) : 0;
+totalAmount = Number(totalAmount).toFixed(2); 
   let avg = expenses.length > 0 ?  totalAmount / expenses.length : 0;
   let tableRow  = "";
 
@@ -300,7 +305,7 @@ const editPanel = (id) => {
   }
   
   const percentVal = document.getElementById(`percentage_${id}`);
-  const date = formatDate(expense.date);
+  const date = expense.date.split("T")[0];
 
   const tableRow = `
   <td>
@@ -361,6 +366,7 @@ const saveEdit = (id) => {
   expInput.value = "";
   amtInput.value = "";
   dInput.value = "";
+  defaultExpenses = [...expenses];
   localStorage.setItem("expenses", JSON.stringify(expenses));
 
   updateUi();
@@ -377,3 +383,9 @@ editToggle.addEventListener("click", () => {
   
   
   updateUi();
+
+
+  window.editPanel = editPanel;
+  window.saveEdit = saveEdit;
+  window.deleteExpense = deleteExpense;
+  window.updateUi = updateUi;
