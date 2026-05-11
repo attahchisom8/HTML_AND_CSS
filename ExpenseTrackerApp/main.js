@@ -387,7 +387,6 @@ const renderChart = (expenses) => {
 
   categories = Object.keys(categoriesTotals);
   const totals = Object.values(categoriesTotals);
-  console.log("catgories", categories, "totals", totals);
 
   if (chart) {
     chart.data.labels = categories;
