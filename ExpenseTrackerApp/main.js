@@ -102,11 +102,14 @@ const updateUi = () => {
       </tr>
   `;
    });
+
+  requestAnimationFrame(() => {
   totalElem.textContent = Number(totalAmount).toFixed(2);
   tableBody.innerHTML = tableRow;
   lastAvg = avg;
   addExpense.disabled = false;
   addExpense.style.opacity = 1;
+})
 
 }
 // add event listener fo simulate submission and upats Ui
@@ -148,12 +151,12 @@ toggleMenu.addEventListener("click", () => {
 // handle each Menu tab
 
 mainTab.addEventListener("click", (e) => {
-    /*const li = e.target.closest("li");
+    const li = e.target.closest("li");
     if (!li)
       return;
     
-    const text = li.textContent.trim();*/
-    const text = e.target.textContent;
+    const text = li.textContent.trim();
+    // const text = e.target.textContent;
 
     if (text === "By Date") {
       subTab.classList.add("is-visible");
@@ -174,7 +177,12 @@ mainTab.addEventListener("click", (e) => {
 
 
 subTab.addEventListener("click", (e) => {
-    const text = e.target.textContent;
+  const li = e.target.closest("li");
+    if (!li)
+      return;
+    
+    const text = li.textContent.trim();
+    //const text = e.target.textContent;
     
     if (text === "Week") {
       weeklyTab.classList.add("is-visible");
@@ -201,8 +209,13 @@ subTab.addEventListener("click", (e) => {
   });
 
 
-  weeklyTab.addEventListener("click", (e) => {
-    const text = e.target.textContent;
+weeklyTab.addEventListener("click", (e) => {
+    const li = e.target.closest("li");
+    if (!li)
+      return;
+    
+    const text = li.textContent.trim();
+    // const text = e.target.textContent;
     
     if (text === "Cancel") {
       weeklyTab.classList.remove("is-visible");
@@ -223,7 +236,7 @@ subTab.addEventListener("click", (e) => {
     }
     
     if (text === "2 weeks ago") {
-       currView.textContent = "Last 2weeks view";
+       currView.textContent = "Last 2 weeks view";
        expenses = [...defaultExpenses];
        expenses = sortUtility.sortLast2WeeksExpenses(expenses);
        updateUi();
@@ -237,8 +250,13 @@ subTab.addEventListener("click", (e) => {
     }
   });
 
-  monthlyTab.addEventListener("click", (e) => {
-    const  text = e.target.textContent;
+monthlyTab.addEventListener("click", (e) => {
+  const li = e.target.closest("li");
+    if (!li)
+      return;
+    
+    const text = li.textContent.trim();
+    // const  text = e.target.textContent;
 
     if (Number(text) >= 1 && Number(text) <= 12) {
       const monthVal  = Number(text) <= 9 ? "0" + text : text;

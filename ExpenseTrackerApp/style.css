@@ -79,7 +79,11 @@ thead {
 }
 
 .hide-thead {
-    display: none;
+    display: table-row;
+    visibility: collapse;
+    opacity: 0;
+    line-height: 0;
+    height: 0;
 }
 
 th {
