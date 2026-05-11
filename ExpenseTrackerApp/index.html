@@ -7,6 +7,7 @@
   <title>Expense Tracker</title>
   <!-- Custom Styles -->
   <link rel="stylesheet" href="style.css">
+  <script src="chart.min.js"></script>
 </head>
 
 <body>
@@ -106,6 +107,11 @@
       <tbody></tbody>
     </table>
     <h3>Total: $<span id="total">0</span></h3>
+    <section>
+      <div class="chart-container">
+        <canvas id="expense-chart"></canvas>
+      </div>
+    </section>
   <script type="module" src="main.js"></script>
 </body>
 </html>

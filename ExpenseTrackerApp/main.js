@@ -62,17 +62,18 @@ const updateUi = () => {
   let percentVal;
   const totalAmount = expenses.length > 0 ? expenses.reduce((sum, exp) => sum + exp.amount, 0) : 0;
   let avg = expenses.length > 0 ?  totalAmount / expenses.length : 0;
-  let tableRow  = "";
+  // let tableRow  = "";
+  const fragment = document.createDocumentFragment();
 
   if (expenses.length === 0) {
     tableHead.classList.add("hide-thead");
-    totalElem.textContent = "0";
+    totalElem.textContent = "0.00";
     avg = 0;
     lastAvg = 0;
     tableBody.innerHTML = "";
     return;
   }
-  tableHead.classList.remove("hide-thead")
+  tableHead.classList.remove("hide-thead");
 
   expenses.forEach((exp) => {
     percentVal = totalAmount > 0 ? Number((exp.amount * 100) / totalAmount).toFixed(1) : 0;
@@ -80,9 +81,11 @@ const updateUi = () => {
     const colorStyle = outOfBounds ? "#ff0000" : "#000";
     const formatedDate = formatDate(exp.date);
     const name = exp.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const tr = document.createElement("tr");
   
-    tableRow += `
-    <tr id="expense_${exp.id}" style="color: #000">
+    tr.id = `expense_${exp.id}`;
+    tr.style.color = "#000";
+    tr.innerHTML = `
     <td>${name}</td>
     <td id='amount_${exp.id}' style="color: ${colorStyle}">$${exp.amount}</td>
     <td id='percentage_${exp.id}' style="color: ${colorStyle}">${percentVal}%</td>
@@ -99,16 +102,18 @@ const updateUi = () => {
         style="color: #fff"
         >delete</button>
       </td>
-      </tr>
   `;
+  fragment.appendChild(tr);
    });
 
   requestAnimationFrame(() => {
   totalElem.textContent = Number(totalAmount).toFixed(2);
-  tableBody.innerHTML = tableRow;
+  tableBody.innerHTML = "";
+  tableBody.appendChild(fragment);
   lastAvg = avg;
   addExpense.disabled = false;
   addExpense.style.opacity = 1;
+  renderChart(expenses);
 })
 
 }
@@ -366,8 +371,74 @@ const editToggle = document.querySelector(".edit-toggle");
 
 editToggle.addEventListener("click", () => {
   expenseTable.classList.toggle("is-open");
-})
+});
 
+// handle chart rendering
+
+let chart = null;
+
+const renderChart = (expenses) => {
+  const ctx = document.getElementById("expense-chart")
+  .getContext("2d");
+  const categoriesTotals = expenses.reduce((acc, exp) => {
+    acc[exp.name] = (acc[exp.name] || 0) + exp.amount;
+    return acc;
+  }, {});
+
+  categories = Object.keys(categoriesTotals);
+  const totals = Object.values(categoriesTotals);
+  console.log("catgories", categories, "totals", totals);
+
+  if (chart) {
+    chart.data.labels = categories;
+    chart.data.datasets[0].data = totals;
+    chart.data.datasets[1].data = new Array(categories.length).fill(lastAvg);
+    chart.update("none");
+    return;
+  }
+
+  chart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: categories,
+      datasets: [
+        {
+          label: "category spending",
+          data: totals,
+          backgroundColor: ["#dd5578", "#988977", "#ffee00", "#ff0000"],
+          borderRadius: 5,
+          order: 2
+        },
+        {
+          type: "line",
+          label: "average spending",
+          data: new Array(categories.length).fill(lastAvg),
+          borderColor: "#fff",
+          fill: false,
+          borderDash: [5, 5],
+          pointRadius: 1,
+          order: 5,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { color: "#ff" },
+          grid: {color: "rgba(255, 255, 255, 0.1)"}
+        },
+        x: { ticks: { color: "#fff" } },
+      },
+      plugins: {
+        legend: {categories: { color: "#fff"}},
+      }
+    }
+  })
+
+}
   
   
   updateUi();
