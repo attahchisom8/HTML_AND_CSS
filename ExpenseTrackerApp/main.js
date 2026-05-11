@@ -80,8 +80,6 @@ const updateUi = () => {
     const colorStyle = outOfBounds ? "#ff0000" : "#000";
     const formatedDate = formatDate(exp.date);
     const name = exp.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    console.log("lastAvg", lastAvg, "avg", avg);
-    console.log("exp date length: ", exp.date.toString().length, "exp date: ", exp.date, "formatedDate: ", formatedDate);
   
     tableRow += `
     <tr id="expense_${exp.id}" style="color: #000">
@@ -110,8 +108,6 @@ const updateUi = () => {
   addExpense.disabled = false;
   addExpense.style.opacity = 1;
 
-  console.log("expenseTable: ", expenseTable);
-
 }
 // add event listener fo simulate submission and upats Ui
 
@@ -119,9 +115,7 @@ addExpense.addEventListener("click", handleInputs);
 document.addEventListener("keydown", (e) => {
   if (e.key === "Enter")
     handleInputs();
-})
-
-console.log("expenseTable: ", expenseTable);
+});
 
 // Navbar manipulation
 
@@ -140,7 +134,7 @@ const closeAllSubabs = () => {
   weeklyTab.classList.remove("is-visible");
   monthlyTab.classList.remove("is-visible");
 }
-console.log(navBar);
+
 toggleMenu.addEventListener("click", () => {
   const isActive = toggleMenu.classList.toggle("is-active");
   if (!isActive) {
@@ -152,7 +146,6 @@ toggleMenu.addEventListener("click", () => {
 });
 
 // handle each Menu tab
-console.log("MainTab: ", mainTab);
 
 mainTab.addEventListener("click", (e) => {
     /*const li = e.target.closest("li");
@@ -160,12 +153,10 @@ mainTab.addEventListener("click", (e) => {
       return;
     
     const text = li.textContent.trim();*/
-    const text = e.target.innerText;
+    const text = e.target.textContent;
 
     if (text === "By Date") {
       subTab.classList.add("is-visible");
-      console.log("subTab", subTab);
-      console.log("mainTab", mainTab);
     }
 
     if (text === "Name") {
@@ -179,25 +170,15 @@ mainTab.addEventListener("click", (e) => {
       expenses = [...defaultExpenses];
       updateUi();
     }
-    console.log(currView);
   });
 
 
 subTab.addEventListener("click", (e) => {
-    /*const li = e.target.closest("li");
-    if (!li)
-      return;
-      
-    const text = li.textContent.trim();*/
-    const text = e.target.innerText;
+    const text = e.target.textContent;
     
     if (text === "Week") {
       weeklyTab.classList.add("is-visible");
       monthlyTab.classList.remove("is-visible");
-      console.log("weekTab", weeklyTab);
-      console.log("monthlyTab", monthlyTab);
-      console.log("subTab", subTab);
-      console.log("mainTab", mainTab);
     }
     
     if (text === "Cancel") {
@@ -208,10 +189,6 @@ subTab.addEventListener("click", (e) => {
     if (text === "Month") {
       monthlyTab.classList.add("is-visible");
       weeklyTab.classList.remove("is-visible");
-      console.log("weekTab", weeklyTab);
-      console.log("monthlyTab", monthlyTab);
-      console.log("subTab", subTab);
-      console.log("mainTab", mainTab);
 
     }
     
@@ -221,18 +198,14 @@ subTab.addEventListener("click", (e) => {
       expenses = sortUtility.yearlySort(expenses);
       updateUi();
     }
-    console.log(currView);
   });
 
 
   weeklyTab.addEventListener("click", (e) => {
-    const text = e.target.innerText;
+    const text = e.target.textContent;
     
     if (text === "Cancel") {
       weeklyTab.classList.remove("is-visible");
-      console.log("weeklyTab", weeklyTab);
-      console.log("subTab", subTab);
-      console.log("mainTab", mainTab);
     }
     
     if (text === "This week") {
@@ -262,11 +235,10 @@ subTab.addEventListener("click", (e) => {
       expenses = sortUtility.sortLast3WeeksExpenses(expenses);
       updateUi();
     }
-    console.log(currView);
   });
 
   monthlyTab.addEventListener("click", (e) => {
-    const  text = e.target.innerText;
+    const  text = e.target.textContent;
 
     if (Number(text) >= 1 && Number(text) <= 12) {
       const monthVal  = Number(text) <= 9 ? "0" + text : text;
@@ -320,16 +292,13 @@ const editPanel = (id) => {
   `;
   
   addExpense.disabled = true;
-  console.log("tr: ", tr, "id: ", id);
   addExpense.style.opacity = "0.3";
   tr.innerHTML = tableRow;
-  console.log("tr", tr, "id", id);
 }
 
 
 const saveEdit = (id) => {
   const expInput = document.getElementById("edit-expense-name");
-  console.log("expInput: ", expInput);
   const amtInput = document.getElementById("edit-expense-amount");
   const dInput = document.getElementById("edit-expense-date");
   const editedExpVal = expInput.value;
