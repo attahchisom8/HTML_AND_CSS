@@ -385,13 +385,13 @@ const renderChart = (expenses) => {
     return acc;
   }, {});
 
-  categories = Object.keys(categoriesTotals);
+  const categories = Object.keys(categoriesTotals);
   const totals = Object.values(categoriesTotals);
 
   if (chart) {
     chart.data.labels = categories;
     chart.data.datasets[0].data = totals;
-    chart.data.datasets[1].data = new Array(categories.length).fill(lastAvg);
+    chart.data.datasets[1].data = new Array(categories.length).fill(lastAvg || 0);
     chart.update("none");
     return;
   }
@@ -412,11 +412,11 @@ const renderChart = (expenses) => {
           type: "line",
           label: "average spending",
           data: new Array(categories.length).fill(lastAvg),
-          borderColor: "#fff",
+          borderColor: "blue",
           fill: false,
           borderDash: [5, 5],
-          pointRadius: 1,
-          order: 5,
+          pointRadius: 0,
+          order: 1,
         },
       ],
     },
@@ -426,13 +426,13 @@ const renderChart = (expenses) => {
       scales: {
         y: {
           beginAtZero: true,
-          ticks: { color: "#ff" },
+          ticks: { color: "#fff" },
           grid: {color: "rgba(255, 255, 255, 0.1)"}
         },
         x: { ticks: { color: "#fff" } },
       },
       plugins: {
-        legend: {categories: { color: "#fff"}},
+        legend: {labels: { color: "#fff"}},
       }
     }
   })

@@ -56,6 +56,9 @@ const getWeeklyRange = (date) => {
   return {monday, today: null, sunday};
 }
 
+/* let date = new Date("2026-05-09T12:03:49.725Z");
+console.log(date);
+console.log(getWeeklyRange(date)) */
 
 /**
  * getYersterdaysDate - get yersterday's date
@@ -71,7 +74,10 @@ const getYersterdaysDate = (date) => {
 
   return yersterday;
 }
-
+/* console.log("date: ", date);
+console.log("yersterday", getYersterdaysDate(date));
+let monday = getWeeklyRange(date).monday;
+console.log("weekly range", getWeeklyRange(getYersterdaysDate(monday))); */
 
 /**
  * 
@@ -84,6 +90,7 @@ export const sortThisWeekExpense = (expenses) => {
   const today = new Date();
   const week = getWeeklyRange(today);
   let endRangeWeek = week.today ? week.today : week.sunday;
+  console.log("monday", week.monday, "endRangeWeek", endRangeWeek);
 
   expenses = expenses.filter((exp) => {
     const expDate = new Date(exp.date);
@@ -116,6 +123,7 @@ export const sortLastWeekExpenses = (expenses) => {
   return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
 
+// nsole.log("last week expenses", sortLastWeekExpenses(testExpenses));
 
 /**
  * sortLast2WeeksExpenses - sorts the Last two weeks expenses by
@@ -130,6 +138,7 @@ export const sortLast2WeeksExpenses = (expenses) => {
   const monday = getWeeklyRange(today).monday;
   monday.setUTCDate(monday.getUTCDate() - 14);
   const last2Weeks = getWeeklyRange(monday);
+  console.log("last 2 weeks", last2Weeks);
 
   expenses = expenses.filter((exp) => {
     const expDate = new Date(exp.date);
@@ -138,6 +147,7 @@ export const sortLast2WeeksExpenses = (expenses) => {
 
   return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
+// nsole.log("last 2 week expenses", sortLast2WeeksExpenses(testExpenses));
 
 
 /**
@@ -163,6 +173,7 @@ export const sortLast3WeeksExpenses = (expenses) => {
 
   return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
+// console.log("last 3 week expenses", sortLast3WeeksExpenses(testExpenses));
 
 
 /**
@@ -182,6 +193,7 @@ export const monthlySort = (expenses, monthVal) => {
 
   return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
+// console.log("monthly expenses: ", monthlySort(testExpenses, "03"));
 
 
 /**
@@ -199,3 +211,4 @@ export const yearlySort = (expenses) => {
 
   return expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
 }
+// console.log("yearly expenses: ", yearlySort(testExpenses));
