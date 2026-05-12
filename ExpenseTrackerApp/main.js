@@ -113,7 +113,7 @@ const updateUi = () => {
   lastAvg = avg;
   addExpense.disabled = false;
   addExpense.style.opacity = 1;
-  renderChart(expenses);
+  renderCharts(expenses);
 })
 
 }
@@ -373,12 +373,32 @@ editToggle.addEventListener("click", () => {
   expenseTable.classList.toggle("is-open");
 });
 
-// handle chart rendering
+// handle charts rendering
 
-let chart = null;
+let chart = null, pieChart = null;
+const myColors = ["#dd5578", "#988977", "#ffee00"];
+const myColor2 =  [...myColors, "#00ffee"];
+let idx = 0;
 
-const renderChart = (expenses) => {
+const getColors = (arr, colors) => {
+  const threshold = 3 * lastAvg;
+  const colorArr = arr.map((t) => {
+    let currColor;
+    if (t < threshold)
+      currColor = colors[idx];
+    else
+      currColor = "#ff0000";
+    idx = (1 + idx) % colors.length;
+    return currColor;
+  });
+
+  return colorArr;
+}
+
+const renderCharts = (expenses) => {
   const ctx = document.getElementById("expense-chart")
+  .getContext("2d");
+  const ctxp = document.getElementById("expense-pie-chart")
   .getContext("2d");
   const categoriesTotals = expenses.reduce((acc, exp) => {
     acc[exp.name] = (acc[exp.name] || 0) + exp.amount;
@@ -387,11 +407,17 @@ const renderChart = (expenses) => {
 
   const categories = Object.keys(categoriesTotals);
   const totals = Object.values(categoriesTotals);
+  const diffToLastAvg = totals.map((t) => (t < lastAvg) ? lastAvg - t : 0);
+  const barColors = getColors(totals, myColors);
+  idx = 0;
+
+
+  // render composite chart
 
   if (chart) {
     chart.data.labels = categories;
     chart.data.datasets[0].data = totals;
-    chart.data.datasets[1].data = new Array(categories.length).fill(lastAvg || 0);
+    chart.data.datasets[1].data = diffToLastAvg;
     chart.update("none");
     return;
   }
@@ -399,44 +425,86 @@ const renderChart = (expenses) => {
   chart = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: categories,
+      labels: categories, 
       datasets: [
         {
           label: "category spending",
           data: totals,
-          backgroundColor: ["#dd5578", "#988977", "#ffee00", "#ff0000"],
-          borderRadius: 5,
-          order: 2
+          backgroundColor: barColors,
+          bordderRadius: 5
         },
         {
-          type: "line",
-          label: "average spending",
-          data: new Array(categories.length).fill(lastAvg),
-          borderColor: "blue",
-          fill: false,
-          borderDash: [5, 5],
-          pointRadius: 0,
-          order: 1,
-        },
-      ],
+          label: "diff to average",
+          data: diffToLastAvg,
+          backgroundColor: "rgba(255, 255, 255, 0.3)",
+          borderColor: "rgb(255, 255, 255, 0.5)",
+          borderRadius: 3,
+          borderWidth: 1,
+          borderDash: [2, 2],
+        }
+      ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       scales: {
-        y: {
-          beginAtZero: true,
-          ticks: { color: "#fff" },
-          grid: {color: "rgba(255, 255, 255, 0.1)"}
+        x: {
+          ticks: {color: "#fff"},
+          stacked: true,
+          grid: {color: "rgba(255, 255, 255, 0.2)"}
         },
-        x: { ticks: { color: "#fff" } },
+        y: {
+          ticks: {color: "#fff"},
+          stacked: true,
+          beginAtZero: true,
+          stack: true,
+          grid: {color: "rgba(255, 255, 255, 0.2)"}
+        }
       },
       plugins: {
-        legend: {labels: { color: "#fff"}},
+        legend: {labels: {color: "#fff"}},
+      }
+    },
+  });
+
+  // Render pie chart
+  const pieColors = getColors(totals, myColor2);
+  idx = 0;
+  console.log("pie colors", pieColors);
+
+  if (pieChart) {
+    pieChart.data.labels = categories;
+    pieChart.data.datasets[0].data = totals;
+    update();
+    return;
+  }
+
+  pieChart = new Chart(ctxp, {
+    type: "pie",
+    data: {
+      labels: categories,
+      datasets: [
+        {
+          label: "category spending",
+          data: totals,
+          backgroundColor: pieColors,
+          borderColor: "#fff",
+          borderWidth: 2,
+          hoverOffset: 20,
+        }
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {color: "#fff"},
+        }
       }
     }
   })
-
 }
   
   
