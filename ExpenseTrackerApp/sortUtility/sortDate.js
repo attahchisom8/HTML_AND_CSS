@@ -86,7 +86,6 @@ export const sortThisWeekExpense = (expenses) => {
   const today = new Date();
   const week = getWeeklyRange(today);
   let endRangeWeek = week.today ? week.today : week.sunday;
-  console.log("monday", week.monday, "endRangeWeek", endRangeWeek);
 
   expenses = expenses.filter((exp) => {
     const expDate = new Date(exp.date);
@@ -134,7 +133,6 @@ export const sortLast2WeeksExpenses = (expenses) => {
   const monday = getWeeklyRange(today).monday;
   monday.setUTCDate(monday.getUTCDate() - 14);
   const last2Weeks = getWeeklyRange(monday);
-  console.log("last 2 weeks", last2Weeks);
 
   expenses = expenses.filter((exp) => {
     const expDate = new Date(exp.date);
@@ -159,7 +157,6 @@ export const sortLast3WeeksExpenses = (expenses) => {
   console.log("monday in 3 weeks: ", monday);
   monday.setUTCDate(monday.getUTCDate() - 21);
   const last3Weeks = getWeeklyRange(monday);
-  console.log("last 3 weeks", last3Weeks);
 
   expenses = expenses.filter((exp) => {
     const expDate = new Date(exp.date);
