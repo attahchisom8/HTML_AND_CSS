@@ -54,8 +54,20 @@
       <span class="bar"></span>
     </div>
     <span id="curr-view">Default view</span>
+    <span class="tut">Tutorial</span>
   </nav>
   <h1>Expense Tracker</h1>
+  <div class="tutorial-panel">
+  <h2>Welcome to Mastermose Tech</h2>
+  
+  <p><strong>1. Log Your Spending:</strong><br> Use the form at the top to enter your expense name, category, and price. Click "Add" to save it.</p>
+  
+  <p><strong>2. Change Your View:</strong><br> Use the tabs to switch between your spending for this week, the last 3 weeks, or your entire history.</p>
+  
+  <p><strong>3. Watch the Charts:</strong><br> Your spending habits are shown in the graphs. If a category turns red, it means you've spent 3x more than your usual average there!</p>
+  
+  <p><strong>4. Edit or Delete:</strong><br> Use the icons next to each expense in the table to fix mistakes or remove old items.</p>
+  </div>
   <input
     type="text"
     id="expense-name"
@@ -107,7 +119,7 @@
       <tbody></tbody>
     </table>
     <h3>Total: $<span id="total">0</span></h3>
-    <section>
+    <section id="charts-section">
       <div class="chart-container composite-bar">
         <canvas id="expense-chart"></canvas>
       </div>

@@ -4,6 +4,7 @@
 
 html {
     height: 100%;
+    width: 100%;
 }
 
 body {
@@ -23,6 +24,7 @@ body {
    text-align: center;
    width: 100%;
    height: 100%;
+   position: relative;
 }
 
 h1 {
@@ -209,6 +211,8 @@ tr button {
     height: 50px;
     position: fixed;
     background: rgba(0, 0, 0, 0.95);
+    z-index: 999;
+    transform: translateZ(999); /* force on top for some browsers */
 }
 
 .nav ul {
@@ -356,6 +360,57 @@ tr button {
     background: transparent;
 }
 
+.tut {
+    display: inline-block;
+    position: relative;
+    top: -30px;
+    right: 10px;
+    transform: translateX(-10%);
+    color: #fff;
+    cursor: pointer;
+}
+
+.tut:hover {
+    color: #dd5578;
+}
+
+.tut:active {
+    transform: scale(0.57);
+}
+
+.tutorial-panel {
+    width: 70%;
+    min-height: 80vh;
+    position: absolute;
+    top: 50px;
+    left: 100%;
+    background: #000;
+    z-index:  999;
+    transition: transform 0.4s ease-out;
+    font-family: sans-serif;
+}
+
+.tutorial-panel.tut-active {
+    transform: translateX(-100%);
+}
+
+.tutorial-panel p {
+    padding-bottom: 20px;;
+}
+
+.tutorial-panel strong {
+    color: rgb(255, 2255, 0);
+}
+
+.tutorial-panel > *:not(h2) {
+    font-size: 0.95rem;
+}
+
+.tutorial-panel p {
+    width: 80%;
+    margin: auto;
+}
+
 /* Desktop version */
 @media (min-width: 768px) {
 
@@ -381,6 +436,13 @@ tr button {
     /*.nav ul li {
         cursor: pointer;
     }*/
+
+    .tutorial-panel {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+    }
 
 }
 
@@ -409,4 +471,8 @@ section {
 .space-at-end {
     margin-top: 5px;
     height: 5px;
+}
+
+.hide-charts {
+    display: none;
 }

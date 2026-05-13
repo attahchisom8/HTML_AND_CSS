@@ -9,10 +9,12 @@ const totalElem = document.getElementById("total");
 const tableHead = document.querySelector("thead");
 const tableBody = expenseTable.querySelector("tbody");
 const addExpense = document.getElementById("add-expense");
+const chartsSection = document.getElementById("charts-section");
 // localStorage.setItem("expenses", JSON.stringify(sortUtility.testExpenses));
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let defaultExpenses = [...expenses];
 let avg = 0;
+let chart = null, pieChart = null;
 
 // format date tp dd/mm/yy
 const formatDate = (date) => {
@@ -69,9 +71,22 @@ const updateUi = () => {
     totalElem.textContent = "0.00";
     avg = 0;
     tableBody.innerHTML = "";
+
+    if (chart) {
+      chart.destroy();
+      chart = null;
+    }
+    if (pieChart) {
+      pieChart.destroy();
+      pieChart = null;
+    }
+    chartsSection.classList.add("hide-charts");
+
     return;
   }
   tableHead.classList.remove("hide-thead");
+  chartsSection.classList.remove("hide-charts");
+  renderCharts(expenses);
 
   expenses.forEach((exp) => {
     percentVal = totalAmount > 0 ? Number((exp.amount * 100) / totalAmount).toFixed(1) : 0;
@@ -110,8 +125,7 @@ const updateUi = () => {
   tableBody.appendChild(fragment);
   addExpense.disabled = false;
   addExpense.style.opacity = 1;
-  renderCharts(expenses);
-})
+  });
 
 }
 // add event listener fo simulate submission and upats Ui
@@ -233,7 +247,7 @@ weeklyTab.addEventListener("click", (e) => {
     if (text === "A week ago") {
       currView.textContent = "Last week view";
       expenses = [...defaultExpenses];
-      expenses = sortUtility.sortLast3WeeksExpenses(expenses);
+      expenses = sortUtility.sortLastWeekExpenses(expenses);
       updateUi();
     }
     
@@ -372,12 +386,12 @@ editToggle.addEventListener("click", () => {
 
 // handle charts rendering
 
-let chart = null, pieChart = null;
 const myColors = ["#dd5578", "#988977", "#ffee00"];
 const myColor2 =  [...myColors, "#00ffee"];
-let idx = 0;
 
 const getColors = (arr, colors) => {
+  let idx = 0;
+
   const threshold = 3 * avg;
   const colorArr = arr.map((t) => {
     let currColor;
@@ -405,7 +419,6 @@ const renderCharts = (expenses) => {
   const categories = Object.keys(categoriesTotals);
   const totals = Object.values(categoriesTotals);
   const diffToAvg = totals.map((t) => (t < avg) ? avg - t : 0);
-  idx = 0;
   const barColors = getColors(totals, myColors);
 
 
@@ -414,11 +427,10 @@ const renderCharts = (expenses) => {
   if (chart) {
     chart.data.labels = categories;
     chart.data.datasets[0].data = totals;
+    chart.data.datasets[0].backgroundColor = barColors;
     chart.data.datasets[1].data = diffToAvg;
     chart.update("none");
-    return;
-  }
-
+  } else {
   chart = new Chart(ctx, {
     type: "bar",
     data: {
@@ -428,7 +440,7 @@ const renderCharts = (expenses) => {
           label: "category spending",
           data: totals,
           backgroundColor: barColors,
-          bordderRadius: 5
+          borderRadius: 5
         },
         {
           label: "diff to average",
@@ -454,7 +466,6 @@ const renderCharts = (expenses) => {
           ticks: {color: "#fff"},
           stacked: true,
           beginAtZero: true,
-          stack: true,
           grid: {color: "rgba(255, 255, 255, 0.2)"}
         }
       },
@@ -463,18 +474,17 @@ const renderCharts = (expenses) => {
       }
     },
   });
+}
 
   // Render pie chart
-  idx = 0;
   const pieColors = getColors(totals, myColor2);
 
   if (pieChart) {
     pieChart.data.labels = categories;
     pieChart.data.datasets[0].data = totals;
+    pieChart.data.datasets[0].backgroundColor = pieColors;
     pieChart.update("none");
-    return;
-  }
-
+  } else {
   pieChart = new Chart(ctxp, {
     type: "pie",
     data: {
@@ -527,9 +537,21 @@ const renderCharts = (expenses) => {
         }
       }
     }
-  })
+  });
 }
-  
+}
+
+// handle sliding tutorial panel
+const tutToggle = document.querySelector(".tut");
+const tutorialPanel = document.querySelector(".tutorial-panel");
+
+tutToggle.addEventListener("click", () => {
+  const tutorial = tutorialPanel.classList.toggle("tut-active");
+  if (tutorial)
+    tutToggle.textContent = "Close-tutorial";
+  else
+    tutToggle.textContent = "Tutorial"
+})
   
   updateUi();
 
