@@ -544,13 +544,19 @@ const renderCharts = (expenses) => {
 // handle sliding tutorial panel
 const tutToggle = document.querySelector(".tut");
 const tutorialPanel = document.querySelector(".tutorial-panel");
+const closePanelBtn = document.getElementById("close-panel-btn");
 
 tutToggle.addEventListener("click", () => {
   const tutorial = tutorialPanel.classList.toggle("tut-active");
-  if (tutorial)
-    tutToggle.textContent = "Close-tutorial";
-  else
-    tutToggle.textContent = "Tutorial"
+  if (tutorial) {
+    tutToggle.classList.add("hide-tut");
+    closePanelBtn.addEventListener("click", () => {
+      tutToggle.classList.remove("hide-tut");
+      tutorialPanel.classList.remove("tut-active");
+    })
+  } else {
+    tutToggle.classList.remove("hide-tut");
+  }
 })
   
   updateUi();

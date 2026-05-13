@@ -25,7 +25,7 @@ body {
    width: 100%;
    height: 100%;
    position: relative;
-   overflow: hidden;
+   overflow-x: hidden;
 }
 
 h1 {
@@ -356,18 +356,22 @@ tr button {
 #curr-view {
     display: inline-block;
     position: relative;
-    margin-right: -250px;
+    margin-right: -240px;
     top: -30px;
+    margin-right: -240;
     background: transparent;
 }
 
 .tut {
-    display: inline-block;
     position: relative;
     top: -30px;
-    left: -30px;
+    left: -10px;
     color: #fff;
     cursor: pointer;
+}
+
+.tut.hide-tut {
+    display: none;
 }
 
 .tut:hover {
@@ -379,7 +383,7 @@ tr button {
 }
 
 .tutorial-panel {
-    width: 70%;
+    width: 70vw;
     min-height: 80vh;
     position: fixed;
     top: 50px;
@@ -390,6 +394,7 @@ tr button {
     opacity: 0;
     visibility: hidden;
     transform: translateX(100%);
+    border: 1px solid #dd5578;
     transition: all 0.4s ease-out;
 }
 
@@ -416,6 +421,14 @@ tr button {
     margin: auto;
 }
 
+#close-panel-btn {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 0;
+    right: 0;
+}
+
 /* Desktop version */
 @media (min-width: 768px) {
 
@@ -438,16 +451,17 @@ tr button {
         transform: translateX(267%);
     }
     
-    /*.nav ul li {
-        cursor: pointer;
-    }*/
 
-    #currview {
+    #curr-view {
         margin-right: -55%;
     }
 
     .tut {
         left: -27px;
+    }
+
+    .tut.hide-tut {
+        display: inline-block;
     }
 
     .tutorial-panel {
