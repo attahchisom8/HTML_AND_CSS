@@ -400,6 +400,13 @@ section {
 }
 
 .pie-chart {
-    height: 90vh;
+    height: 90%;
     padding-top: 20px;
+    overflow-y: auto;
+    position: relative;
+}
+
+.space-at-end {
+    margin-top: 5px;
+    height: 5px;
 }

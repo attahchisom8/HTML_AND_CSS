@@ -12,7 +12,7 @@ const addExpense = document.getElementById("add-expense");
 // localStorage.setItem("expenses", JSON.stringify(sortUtility.testExpenses));
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let defaultExpenses = [...expenses];
-let lastAvg = 0;
+let avg = 0;
 
 // format date tp dd/mm/yy
 const formatDate = (date) => {
@@ -61,15 +61,13 @@ const deleteExpense = (id) => {
 const updateUi = () => {
   let percentVal;
   const totalAmount = expenses.length > 0 ? expenses.reduce((sum, exp) => sum + exp.amount, 0) : 0;
-  let avg = expenses.length > 0 ?  totalAmount / expenses.length : 0;
-  // let tableRow  = "";
+  avg = expenses.length > 0 ?  totalAmount / expenses.length : 0;
   const fragment = document.createDocumentFragment();
 
   if (expenses.length === 0) {
     tableHead.classList.add("hide-thead");
     totalElem.textContent = "0.00";
     avg = 0;
-    lastAvg = 0;
     tableBody.innerHTML = "";
     return;
   }
@@ -77,7 +75,7 @@ const updateUi = () => {
 
   expenses.forEach((exp) => {
     percentVal = totalAmount > 0 ? Number((exp.amount * 100) / totalAmount).toFixed(1) : 0;
-    const outOfBounds = lastAvg > 0 && exp.amount > (3 * lastAvg);
+    const outOfBounds = avg > 0 && exp.amount > (3 * avg);
     const colorStyle = outOfBounds ? "#ff0000" : "#000";
     const formatedDate = formatDate(exp.date);
     const name = exp.name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -110,7 +108,6 @@ const updateUi = () => {
   totalElem.textContent = Number(totalAmount).toFixed(2);
   tableBody.innerHTML = "";
   tableBody.appendChild(fragment);
-  lastAvg = avg;
   addExpense.disabled = false;
   addExpense.style.opacity = 1;
   renderCharts(expenses);
@@ -381,7 +378,7 @@ const myColor2 =  [...myColors, "#00ffee"];
 let idx = 0;
 
 const getColors = (arr, colors) => {
-  const threshold = 3 * lastAvg;
+  const threshold = 3 * avg;
   const colorArr = arr.map((t) => {
     let currColor;
     if (t < threshold)
@@ -407,9 +404,9 @@ const renderCharts = (expenses) => {
 
   const categories = Object.keys(categoriesTotals);
   const totals = Object.values(categoriesTotals);
-  const diffToLastAvg = totals.map((t) => (t < lastAvg) ? lastAvg - t : 0);
-  const barColors = getColors(totals, myColors);
+  const diffToAvg = totals.map((t) => (t < avg) ? avg - t : 0);
   idx = 0;
+  const barColors = getColors(totals, myColors);
 
 
   // render composite chart
@@ -417,7 +414,7 @@ const renderCharts = (expenses) => {
   if (chart) {
     chart.data.labels = categories;
     chart.data.datasets[0].data = totals;
-    chart.data.datasets[1].data = diffToLastAvg;
+    chart.data.datasets[1].data = diffToAvg;
     chart.update("none");
     return;
   }
@@ -435,7 +432,7 @@ const renderCharts = (expenses) => {
         },
         {
           label: "diff to average",
-          data: diffToLastAvg,
+          data: diffToAvg,
           backgroundColor: "rgba(255, 255, 255, 0.3)",
           borderColor: "rgb(255, 255, 255, 0.5)",
           borderRadius: 3,
@@ -468,14 +465,13 @@ const renderCharts = (expenses) => {
   });
 
   // Render pie chart
-  const pieColors = getColors(totals, myColor2);
   idx = 0;
-  console.log("pie colors", pieColors);
+  const pieColors = getColors(totals, myColor2);
 
   if (pieChart) {
     pieChart.data.labels = categories;
     pieChart.data.datasets[0].data = totals;
-    update();
+    pieChart.update("none");
     return;
   }
 
@@ -491,6 +487,7 @@ const renderCharts = (expenses) => {
           borderColor: "#fff",
           borderWidth: 2,
           hoverOffset: 20,
+          spacing: 10,
         }
       ],
     },
@@ -500,7 +497,33 @@ const renderCharts = (expenses) => {
       plugins: {
         legend: {
           position: "bottom",
-          labels: {color: "#fff"},
+          onClick: null,
+          labels: {
+            color: "#fff",
+            generateLabels: (chart) => {
+              return [
+                {
+                  text: "Overspending (>3x avg)",
+                  fillStyle: "#ff0000",
+                  strokeStyle: "#fff",
+                  lineWidth: 1,
+                  hidden: false,
+                  fontColor: "#fff",
+                },
+                ...myColor2.map((c) => {
+                  return {
+                    text: "Normal budget",
+                    fillStyle: c,
+                    strokeStyle: "#fff",
+                    lineWidth: 1,
+                    hidden: false,
+                    fontColor: "#fff"
+                  }
+                })
+              ]
+            }
+            
+          },
         }
       }
     }
