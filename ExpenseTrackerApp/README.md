@@ -54,11 +54,11 @@ This project taught me that a truly senior-level app requires more than just "wo
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/attahchisom8/ExpenseTrackerApp.git](https://github.com/attahchisom8/ExpenseTrackerApp.git)
+    git clone https://github.com/attahchisom8/ExpenseTrackerApp.git
     ```
 2.  **Navigate to the project folder:**
     ```bash
     cd ExpenseTrackerApp
 
-	3. **L**aunch the app:**
+3. **Launch the app:**
     Open index.html in your favorite browser or use a Live Server extension.
