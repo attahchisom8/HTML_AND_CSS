@@ -18,6 +18,12 @@ body {
         #dd5578,
         #988977
     );
+    /*background: radial-gradient(
+        circle at center,
+        #dd5578 20%,
+        #000 80%
+    );
+    background-attachment: fixed;*/
     color: #fff;
    padding: 0;
    margin: 0;

@@ -348,7 +348,7 @@ const saveEdit = (id) => {
     if (exp.id === id) {
       return {
         ...exp,
-        name: editedExpVal,
+        name: editedExpVal.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
         amount: editedAmountVal,
         date: editedDate ? new Date(editedDate).toISOString() : new Date().toISOString(),
       };
