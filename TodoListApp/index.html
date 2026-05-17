@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modern Todo-list app</title>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+  <script src="chart.min.js"></script>
+</head>
+
+<body>
+  <!-- NAVBBAR -->
+  <nav class="nav">
+    <div class="tabs">
+      <ul class="sort-tab">
+        <li>sort by ...</li>
+        <li>Expiration Date</li>
+        <li>priority</li>
+        <li>pending</li>
+        <li>completed</li>
+        <li>uncompleted</li>
+        <li>Cancel</li>
+      </ul>
+      <ul class="workspace-tab">
+        <li>Add workspace</li>
+        <li>Select workspace</li>
+        <li>Cancel</li>
+      </ul>
+      <ul class="workspaces"></ul>
+    </div>
+    <div class="toggle-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+    <span id="choose-workspace">Choose/Add workspace</span>
+    <span class="tut">Tutorial</span>
+    <input
+      type="text"
+      placeholder="Create your workspace"
+      id="create-workspace"
+    >
+  </nav>
+  <h1>Todo List</h1>
+
+  <!-- WORKSPACE SECTION -->
+  <section class="section-workspace">
+    <h2 id="curr-workspace"></h2>
+    <div class="tutorial-panel">
+      <button id="close-panel-btn">X</button>
+      <h2>Welcome to Mastermose Tech</h2>
+    
+      <p><strong>1. Quick Capture:</strong><br> Type your task at the bottom. Optionally click the priority <code>!!</code> button or the calendar icon 📅 to add a deadline, then hit "Add Task".</p>
+  
+      <p><strong>2. Automated Workspaces:</strong><br> Use the workspace menu to switch contexts. Any task you create is instantly saved directly inside the workspace you are currently looking at!</p>
+  
+      <p><strong>3. Keep an Eye on Priorities:</strong><br> Tasks are clearly marked by urgency. Don't let your high-priority items sit uncompleted for too long!</p>
+  
+      <p><strong>4. Task Management:</strong><br> Use the actions column to edit details, pause items, or smash the delete icon to clear completed work.</p>
+    </div>
+    <div class="task-input-container">
+      <input
+        type="text"
+        id="task-name"
+        placeholder="Add task to your workspace"
+        aria-label="task-name"
+      />
+        
+      <button
+        type="button"
+        id="set-priority"
+        title="set task priority"
+        aria-label="set-task-priority"
+      >!!</button>
+      <input
+        type="date"
+        id="task-date"
+        title="set overdue time"
+        arial-label="task-date"
+      />
+    </div>
+    <button id="add-task">Add Task</button>
+    <br>
+    <h3>Tasks</h3>
+    <table id="task-table" class="responsive-table">
+      <thead class="table-header">
+        <tr>
+        <th id="th-status">STATUS</th>
+        <th id="th-details">TASK DETAILS</th>
+        <th id="th-priority">PRIORITY</th>
+        <th id="th-actions">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
