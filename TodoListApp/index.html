@@ -7,103 +7,116 @@
   <title>Modern Todo-list app</title>
   <!-- Custom Styles -->
   <link rel="stylesheet" href="style.css">
-  <script src="chart.min.js"></script>
+  <script type="module" src="main.js" defer></script>
 </head>
 
 <body>
   <!-- NAVBBAR -->
-  <nav class="nav">
-    <div class="tabs">
-      <ul class="sort-tab">
-        <li>sort by ...</li>
-        <li>Expiration Date</li>
-        <li>priority</li>
-        <li>pending</li>
-        <li>completed</li>
-        <li>uncompleted</li>
-        <li>Cancel</li>
-      </ul>
-      <ul class="workspace-tab">
-        <li>Add workspace</li>
-        <li>Select workspace</li>
-        <li>Cancel</li>
-      </ul>
-      <ul class="workspaces"></ul>
-    </div>
-    <div class="toggle-menu">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </div>
-    <span class="tut">Tutorial</span>
-    <span id="choose-workspace">Choose/Add workspace</span>
-    <div class="create-workspace-container">
-      <input
-        type="text"
-        placeholder="Create your workspace"
-        id="create-workspace"
-      >
-      <button type="button" id="cancel-input-btn">x</button>
-    </div>
-  </nav>
-  <h1>Todo List</h1>
+  <aside class="sidebar-nav">
+    <nav class="nav">
+      <h1 class="desktop-header">Todo List</h1>
+      <div class="tabs">
+        <span class="desktop-sort">Sort Tasks</span>
+        <ul class="sort-tab">
+          <li>sort by ...</li>
+          <li>Expiration Date</li>
+          <li>priority</li>
+          <li>pending</li>
+          <li>completed</li>
+          <li>uncompleted</li>
+          <li>Cancel</li>
+        </ul>
+        <ul class="workspace-tab">
+          <li>Add workspace</li>
+          <li>Select workspace</li>
+          <li>Cancel</li>
+        </ul>
+        <ul class="workspaces"></ul>
+      </div>
+      <div class="toggle-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <span class="tut">Tutorial</span>
+      <span id="choose-workspace">Choose/Add workspace</span>
+      <div class="create-workspace-container">
+        <input
+          type="text"
+          placeholder="Create your workspace"
+          id="create-workspace"
+        >
+        <button type="button" id="cancel-input-btn">x</button>
+      </div>
+    </nav>
+  </aside>
 
   <!-- WORKSPACE SECTION -->
-  <section class="section-workspace">
-    <h2 id="curr-workspace"></h2>
-    <div class="tutorial-panel">
-      <button id="close-panel-btn">X</button>
-      <h2>Welcome to Mastermose Tech</h2>
+  <main class="main-content">
+    <h1 class="mobile-header">Todo List</h1>
+    <section class="section-workspace">
+      <h2 id="curr-workspace">Health workspace</h2>
+      <div class="time-date">
+        <div class="time date"></div>
+        <div class="time clock">
+          <div class="hand second" id="second-hand"></div>
+          <div class="hand minute" id="minute-hand"></div>
+          <div class="hand hour" id="hour-hand"></div>
+        </div>
+      </div>
+      <div class="tutorial-panel">
+        <button id="close-panel-btn">X</button>
+        <h2>Welcome to Mastermose Tech</h2>
+      
+        <p><strong>1. Quick Capture:</strong><br> Type your task at the bottom. Optionally click the priority <code>!!</code> button or the calendar icon 📅 to add a deadline, then hit "Add Task".</p>
     
-      <p><strong>1. Quick Capture:</strong><br> Type your task at the bottom. Optionally click the priority <code>!!</code> button or the calendar icon 📅 to add a deadline, then hit "Add Task".</p>
-  
-      <p><strong>2. Automated Workspaces:</strong><br> Use the workspace menu to switch contexts. Any task you create is instantly saved directly inside the workspace you are currently looking at!</p>
-  
-      <p><strong>3. Keep an Eye on Priorities:</strong><br> Tasks are clearly marked by urgency. Don't let your high-priority items sit uncompleted for too long!</p>
-  
-      <p><strong>4. Task Management:</strong><br> Use the actions column to edit details, pause items, or smash the delete icon to clear completed work.</p>
-    </div>
-    <div  id="mobile-date-show">mobile-date</div>
-    <div class="task-input-container">
-      <input
-        type="text"
-        id="task-name"
-        placeholder="Add task to your workspace"
-        aria-label="task-name"
-      />
-        
-      <select
-        id="set-priority"
-        title="set task priority"
-        aria-label="set-task-priority"
-      >
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-        </select>
-      <input
-        type="date"
-        id="task-date"
-        title="set overdue time"
-        arial-label="task-date"
-      />
-    </div>
-    <button id="add-task">Add Task</button>
-    <br>
-    <h3>Tasks</h3>
-    <table id="task-table" class="responsive-table">
-      <thead class="table-header">
-        <tr>
-        <th id="th-status">STATUS</th>
-        <th id="th-details">TASK DETAILS</th>
-        <th id="th-priority">PRIORITY</th>
-        <th id="th-actions">ACTIONS</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
+        <p><strong>2. Automated Workspaces:</strong><br> Use the workspace menu to switch contexts. Any task you create is instantly saved directly inside the workspace you are currently looking at!</p>
+    
+        <p><strong>3. Keep an Eye on Priorities:</strong><br> Tasks are clearly marked by urgency. Don't let your high-priority items sit uncompleted for too long!</p>
+    
+        <p><strong>4. Task Management:</strong><br> Use the actions column to edit details, pause items, or smash the delete icon to clear completed work.</p>
+      </div>
+      <div  id="mobile-date-show">mobile-date</div>
+      <div class="task-input-container">
+        <input
+          type="text"
+          id="task-name"
+          placeholder="Add task to your workspace"
+          aria-label="task-name"
+        />
+          
+        <select
+          id="set-priority"
+          title="set task priority"
+          aria-label="set-task-priority"
+        >
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+          </select>
+        <input
+          type="date"
+          id="task-date"
+          title="set overdue time"
+          arial-label="task-date"
+        />
+      </div>
+      <button id="add-task">Add Task</button>
+      <br>
+      <h3>Tasks</h3>
+      <table id="task-table" class="responsive-table">
+        <thead class="table-header">
+          <tr>
+          <th id="th-status">STATUS</th>
+          <th id="th-details">TASK DETAILS</th>
+          <th id="th-priority">PRIORITY</th>
+          <th id="th-actions">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
 
-  <script type="module" src="main.js"></script>
 </body>
 </html>
