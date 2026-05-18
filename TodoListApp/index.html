@@ -35,13 +35,16 @@
       <span class="bar"></span>
       <span class="bar"></span>
     </div>
-    <span id="choose-workspace">Choose/Add workspace</span>
     <span class="tut">Tutorial</span>
-    <input
-      type="text"
-      placeholder="Create your workspace"
-      id="create-workspace"
-    >
+    <span id="choose-workspace">Choose/Add workspace</span>
+    <div class="create-workspace-container">
+      <input
+        type="text"
+        placeholder="Create your workspace"
+        id="create-workspace"
+      >
+      <button type="button" id="cancel-input-btn">x</button>
+    </div>
   </nav>
   <h1>Todo List</h1>
 
@@ -60,6 +63,7 @@
   
       <p><strong>4. Task Management:</strong><br> Use the actions column to edit details, pause items, or smash the delete icon to clear completed work.</p>
     </div>
+    <div  id="mobile-date-show">mobile-date</div>
     <div class="task-input-container">
       <input
         type="text"
@@ -68,12 +72,15 @@
         aria-label="task-name"
       />
         
-      <button
-        type="button"
+      <select
         id="set-priority"
         title="set task priority"
         aria-label="set-task-priority"
-      >!!</button>
+      >
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+        </select>
       <input
         type="date"
         id="task-date"

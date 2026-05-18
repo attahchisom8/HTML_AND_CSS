@@ -1,4 +1,4 @@
-* {
+*, *::before, *::after {
     box-sizing: border-box;
 }
 
@@ -9,7 +9,7 @@ html {
 
 body {
     font-size: 15pt;
-    font-family: Georgia, serif;
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans';
     display: flex;
     flex-direction:  column;
     background: #fff;
@@ -24,7 +24,7 @@ body {
 }
 
 h1 {
-    margin-top: 50px;
+    margin-top: 100px;
 }
 
 input, button {
@@ -32,13 +32,11 @@ input, button {
     margin: 20px;
 }
 
-input {
+input, .task-input-container {
     outline: none;
     border: 3px solid transparent;
     border-radius: 50px;
     background: #999;
-    width: 80%;
-    margin: 20px auto;
 }
 
 input:focus {
@@ -46,14 +44,49 @@ input:focus {
     transform: scale(1.09);
 }
 
-button {
-    width: 50%;
+.task-input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+#task-name {
+   flex-grow: 1;
+}
+
+#set-priority {
+    color: #fff;
+    font-weight: bold;
+}
+
+#task-date {
+    color: #fff;
+    background: orangered;
+}
+#mobile-date-show {
+    position: relative;
+    width: 120px;
     height: 50px;
-    background: #000;
+    right: 20px;
+    border: 1px solid #fff;
+    border-radius: 50px;
+}
+
+.task-input-container * {
+    background: transparent;
+    width: auto;
+    height: auto;
+}
+
+button {
+    width: 80px;
+    height: 50px;
+    background: #7855ee;
     border: 1px solid transparent;
     border-radius: 10px;
     margin: 0 auto;
-    color: inherit;
+    color: #fff;
 }
 
 button:active {
@@ -171,6 +204,10 @@ tr button {
         transform: scale(1.1);
     
     }
+    
+    .task-input-container {
+        overflow: auto;
+    }
 
     tr td {
         text-align: center;
@@ -201,12 +238,14 @@ tr button {
 /* NAVBAR STYLE */
 
 .nav {
-    /*display: flex;
-    justify-content: flex-end;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    height: 50px;
+    height: 100px;
     position: fixed;
-    background: rgba(0, 0, 0, 0.95);
+    color: #fff;
+    background: #7855ee;
     z-index: 999;
     transform: translateZ(999); /* force on top for some browsers */
 }
@@ -215,9 +254,8 @@ tr button {
     position: absolute;
     width: 35%;
     height: 170px;
-    background: #000;
-    border: 1px solid #dd5578;
-    left: 0;
+    background: #7855ee;
+    border: 1px solid #fff    ;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -240,39 +278,21 @@ tr button {
     pointer-events: none;
 }
 
-.nav ul:not(:first-of-type) {
-    list-style: none;
+.sort-tab {
+    left: 0;
+    top: 80px;
+    /*transform: traslateX(-100%);*/
 }
 
-
-.weekly-tab li:not(:last-child) {
-    border-bottom: 1px solid #dd5578;
+.workspace-tab {
+    top: 80px;
+    right: 0;
+   transform: translateX(100%);
 }
 
-.main-tab {
-    top: 30px;
-}
-
-.sub-tab {
-    top: 70px;
-    transform: translate(90%);   
-}
-
-.weekly-tab {
-    text-align: left;
-    overflow-y: auto;
-    overflow-x: hidden;
-    top: 100px;
-    transform: translateX(180%);
-}
-
-.monthly-tab {
-    width: 25% !important;
-    top: 100px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    text-align: left;
-    transform: translateX(270%);
+.workspaces {
+    top: 120px;
+    right: 0;
 }
 
 .nav ul.is-visible {
@@ -281,16 +301,16 @@ tr button {
     pointer-events: auto;
 }
 
- .main-tab.is-visible {
+ sort-tab.is-visible {
      transform: translate(0, 0);
  }
  
 .sub-tab.is-visible {
-     transform: translateX(100%);
+     transform: translateX(0);
  }
  
-.weekly-tab.is-visible {
-   transform: translateX(200%);
+.subspaces.is-visible {
+   transform: translateX(-100%);
 }
 
 .monthly-tab.is-visible {
@@ -324,6 +344,8 @@ tr button {
     justify-content: space-around; 
     align-items: center;
     gap: 0;
+   position: relative;
+   left: -10%;
 }
 
 .bar {
@@ -348,20 +370,26 @@ tr button {
     width: 30px;
 }
 
-#curr-view {
+#choose-workspace {
     display: inline-block;
     position: relative;
-    margin-right: -240px;
-    top: -30px;
-    margin-right: -240;
     background: transparent;
+    height: auto;
+    width: 120px;
+    word-break: break-word;
+    cursor: pointer;
+}
+
+#choose-workspace:hover {
+    background: #dd5578;
+}
+
+#choose-workspace:active {
+    transform: scale(0.57);
 }
 
 .tut {
     position: relative;
-    top: -30px;
-    left: -10px;
-    color: #fff;
     cursor: pointer;
 }
 
@@ -427,6 +455,20 @@ tr button {
 
 .tutorial-panel em {
     color: #dd7722;
+}
+
+.create-workspace-container {
+    width: 0;
+    max-width: 700px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3 ease;
+}
+
+.create-workspace-container.show-workspace-container {
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Desktop version */
