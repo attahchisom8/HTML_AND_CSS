@@ -24,7 +24,16 @@ body {
 }
 
 .mose-brand {
-    display: block;
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 110px;
+    padding-left: 200px;
+}
+
+.mose-brand-tech {
     width: auto;
     max-width: 300px;
     height: 50px;
@@ -36,8 +45,6 @@ body {
     );
     backdrop-filter: contrast(10px);
     color: #fff;
-    margin-top: 110px;
-    margin-left: 110px;
     border: 2px solid #fff;
     border-radius: 10px;
     font-size: 0.85rem;
@@ -78,6 +85,15 @@ input:focus {
     color: #7855aa;
     text-align-last: left;
     padding: 0 15px;
+}
+
+.time-date {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 300px;
+    align-items: flex-end;
+    padding-right: 50px;
 }
 
 #task-name {
@@ -245,7 +261,7 @@ tr button {
     }
 
     .mose-brand {
-        margin: 15px 0 40px 520px;
+        margin: 15px 0 0 0;
     }
 
     button:hover {
