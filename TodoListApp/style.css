@@ -23,6 +23,30 @@ body {
    overflow-x: hidden;
 }
 
+.mose-brand {
+    display: block;
+    width: auto;
+    max-width: 300px;
+    height: 50px;
+    background: linear-gradient(
+        135deg,
+        #7855aa,
+        orangered,
+        #7855ee
+    );
+    backdrop-filter: contrast(10px);
+    color: #fff;
+    margin-top: 110px;
+    margin-left: 110px;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
 input, button {
     padding: 10px 10px;
     margin: 20px;
@@ -46,8 +70,14 @@ input:focus {
     position: relative;
     overflow: hidden;
     width: 100%;
-    max-width: 860px;
+    max-width: 800px;
     margin: 0 auto;
+}
+
+#curr-workspace {
+    color: #7855aa;
+    text-align-last: left;
+    padding: 0 15px;
 }
 
 #task-name {
@@ -214,6 +244,10 @@ tr button {
         grid-template-columns:  3fr 7fr;
     }
 
+    .mose-brand {
+        margin: 15px 0 40px 520px;
+    }
+
     button:hover {
         background: #dd5578;
         transform: scale(1.1);
@@ -278,11 +312,25 @@ tr button {
     margin-top: 120px;
 }
 
-.desktop-sort {
+
+.nav ul li {
+    margin: 15px 15px 15px 0;
+    cursor: pointer;
+}
+
+.nav ul li:hover {
+    background: #dd5578;
+ }
+
+.nav ul li:active {
+    transform: scale(0.57);
+}
+
+.navlist-desktop {
     display: none;
 }
 
-.nav ul {
+.navlist-mobile ul {
     position: absolute;
     width: 35%;
     height: 170px;
@@ -297,13 +345,8 @@ tr button {
     will-change: transform, opacity;
 }
 
-.nav ul li {
-    margin: 15px 15px 15px 0;
-    cursor: pointer;
-}
 
-
-.nav ul:first-of-type  li:first-child {
+.navlist-mobile ul:first-of-type  li:first-child {
     list-style: none;
     color: yellow;
     cursor: default;
@@ -327,7 +370,7 @@ tr button {
     right: 0;
 }
 
-.nav ul.is-visible {
+.navlist-mobile ul.is-visible {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -345,20 +388,13 @@ tr button {
    transform: translateX(-100%);
 }
  
- .nav ul:first-of-type li:first-child:active {
+ .navlist-mobile ul:first-of-type li:first-child:active {
      transform: none;
  }
  
-.nav ul li:active {
-    transform: scale(0.57);
-}
 
-.nav ul:first-of-type li:first-child:hover {
+ .navlist-mobile ul:first-of-type li:first-child:hover {
     background: transparent;
- }
-
- .nav ul li:hover {
-    background: #dd5578;
  }
  
 
@@ -505,7 +541,8 @@ tr button {
         background: #7855ee;
         color: #fff;
     }
-    .nav{
+
+    .nav {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -513,7 +550,7 @@ tr button {
         width: 100%;
         height: 100%;
         position: relative;
-        color: #a0a0a5;
+        color: #fff;
         background: transparent;
         z-index: 999;
         transform: translateZ(999);
@@ -521,32 +558,71 @@ tr button {
 
     .desktop-header {
         display: inline-block;
+        font-weight: bold;
     }
 
     .mobile-header {
         display: none;
     }
 
-    .desktop-sort {
-        display: inline-block;
-        cursor: pointer;
+    #choose-workspace {
+        display: none;
     }
 
-    .desktop-sort:hover {
+    #choose-workspace-desktop, #sort-desktop {
+        cursor: pointer;
+        display: inline-block;
+    }
+    #chooose-choose-workspace-desktop {
+        margin-top: 20px;
+    }
+
+    #sort-desktop:hover, #choose-workspace-desktop:hover {
         background: #dd5578;
     }
 
-    .desktop-sort:active {
+    #sort-desktop:active, #choose-workspace-desktop:active {
         transform: scale(0.57);
     }
 
-    .nav ul {
-        width: 20%;
-        height: 180px;
+    .navlist-mobile {
+        display: none;
+    }
+
+    .navlist-desktop {
+        display: list-item;
+    }
+
+    .navlist-desktop ul {
+        width: auto;
+        max-width: 250px;
+        height: auto;
+        max-height: 0;
+        word-break: break-word;
+        margin: 20px;
+        list-style: none;
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: contrast(1px);
+        filter: brightness(150%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 500;
+        overflow: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease,
+        max-height cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+
+    .navlist-desktop.desk-active {
         opacity: 1;
         visibility: visible;
-        transform: none;
-        border: none;
+        max-height: 300px;
+    }
+
+    .arrow.desk-active {
+        transform: rotate(90deg);
+        overflow-y: auto;
     }
 
     .toggle-menu {

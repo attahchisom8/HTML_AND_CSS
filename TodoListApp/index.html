@@ -15,8 +15,7 @@
   <aside class="sidebar-nav">
     <nav class="nav">
       <h1 class="desktop-header">Todo List</h1>
-      <div class="tabs">
-        <span class="desktop-sort">Sort Tasks</span>
+      <div class="tabs navlist-mobile">
         <ul class="sort-tab">
           <li>sort by ...</li>
           <li>Expiration Date</li>
@@ -32,6 +31,26 @@
           <li>Cancel</li>
         </ul>
         <ul class="workspaces"></ul>
+      </div>
+      <div class="tabs navlist-desktop">
+        <span id="sort-desktop"><span class="arrow">▶</span>  Sort Tasks</span>
+        <ul class="sort-tab-desktop">
+          <li>Expiration Date</li>
+          <li>priority</li>
+          <li>pending</li>
+          <li>completed</li>
+          <li>uncompleted</li>
+          <li>Cancel</li>
+        </ul>
+        <span id="choose-workspace-desktop"><span class="arrow">▶</span> Choose/Add workspace</span>
+        <ul class="workspace-tab-desktop">
+          <li>Add workspace</li>
+          <li>
+            <span id="select-workspace-desktop"><span class="arrow">▶</span>  Select workspace</span>
+            <ul class="workspaces-desktop"></ul>
+          </li>
+          <li>Cancel</li>
+        </ul>
       </div>
       <div class="toggle-menu">
         <span class="bar"></span>
@@ -53,11 +72,12 @@
 
   <!-- WORKSPACE SECTION -->
   <main class="main-content">
+    <span class="mose-brand">Brought to you by Mastermose production inc &copy;</span>
     <h1 class="mobile-header">Todo List</h1>
     <section class="section-workspace">
       <h2 id="curr-workspace">Health workspace</h2>
       <div class="time-date">
-        <div class="time date"></div>
+        <div class="time date">curr date</div>
         <div class="time clock">
           <div class="hand second" id="second-hand"></div>
           <div class="hand minute" id="minute-hand"></div>
@@ -76,7 +96,7 @@
     
         <p><strong>4. Task Management:</strong><br> Use the actions column to edit details, pause items, or smash the delete icon to clear completed work.</p>
       </div>
-      <div  id="mobile-date-show">mobile-date</div>
+      <div id="mobile-date-show">mobile-date</div>
       <div class="task-input-container">
         <input
           type="text"
@@ -98,7 +118,7 @@
           type="date"
           id="task-date"
           title="set overdue time"
-          arial-label="task-date"
+          aria-label="task-date"
         />
       </div>
       <button id="add-task">Add Task</button>
