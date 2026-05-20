@@ -622,6 +622,8 @@ tr button {
     .sidebar-nav {
         background: #7855ee;
         color: #fff;
+        height: 100vh;
+        overflow-y: auto;
     }
 
     .nav {
