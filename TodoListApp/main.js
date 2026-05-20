@@ -11,7 +11,7 @@ const tableBody = expenseTable.querySelector("tbody");
 const addExpense = document.getElementById("add-expense");
 const chartsSection = document.getElementById("charts-section");
 // localStorage.setItem("expenses", JSON.stringify(sortUtility.testExpenses));
-let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+// let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 let defaultExpenses = [...expenses];
 let avg = 0;
 let chart = null, pieChart = null;

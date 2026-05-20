@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modern Todo-list app</title>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js" defer></script>
+</head>
+<body>
+
+  <!-- SIDEBAR NAVIGATION PANEL -->
+  <aside class="sidebar-nav">
+    <div class="sidebar-brand-area">
+      <h1 class="desktop-title">Mastermose</h1>
+      <span class="badge">v2.5</span>
+    </div>
+
+    <!-- Mobile View Toggle Controls -->
+    <div class="toggle-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+
+    <nav class="app-navigation">
+      <!-- Group 1: Core Actions -->
+      <div class="nav-group core-actions">
+        <span class="group-label">Core Actions</span>
+        <ul class="nav-links">
+          <li class="nav-item-btn tut" id="toggle-tutorial-btn">
+            <span class="icon">💡</span> <span class="text">Tutorial</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Group 2: Workspaces -->
+      <div class="nav-group workspace-management">
+        <span class="group-label">Workspaces</span>
+        <span id="choose-workspace" class="mobile-only">Choose/Add workspace</span>
+        
+        <ul class="nav-links">
+          <li class="nav-item dropdown-trigger" id="choose-workspace-desktop">
+            <span class="arrow">▶</span> <span class="icon">📁</span> Switch Workspace
+          </li>
+          <!-- Expanded Desktop List -->
+          <li class="nav-dropdown-wrapper navlist-desktop">
+            <ul class="workspaces-desktop">
+              <li class="active-item">Health Workspace</li>
+              <li>Finance Hub</li>
+              <li>Engineering Core</li>
+            </ul>
+          </li>
+          <li class="nav-item-btn inline-add-btn" id="add-workspace-trigger">
+            <span class="icon">＋</span> Add Workspace
+          </li>
+        </ul>
+      </div>
+
+      <!-- Group 3: Data Filtering -->
+      <div class="nav-group filter-management">
+        <span class="group-label">Sort & Filter</span>
+        <ul class="nav-links">
+          <li class="nav-item dropdown-trigger" id="sort-desktop">
+            <span class="arrow">▶</span> <span class="icon">⚙️</span> Sort Tasks
+          </li>
+          <li class="nav-dropdown-wrapper navlist-desktop">
+            <ul class="sort-tab-desktop">
+              <li>Expiration Date</li>
+              <li>Priority Level</li>
+              <li>Pending Tasks</li>
+              <li>Completed Items</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Legacy Mobile Dropdown Containers (Kept intact for JS bindings) -->
+      <div class="tabs navlist-mobile">
+        <ul class="sort-tab">
+          <li>sort by ...</li>
+          <li>Expiration Date</li>
+          <li>priority</li>
+          <li>pending</li>
+          <li>completed</li>
+          <li>uncompleted</li>
+          <li>Cancel</li>
+        </ul>
+        <ul class="workspace-tab">
+          <li>Add workspace</li>
+          <li>Select workspace</li>
+          <li>Cancel</li>
+        </ul>
+        <ul class="workspaces"></ul>
+      </div>
+    </nav>
+
+    <!-- Footer Workspace Creator Field -->
+    <div class="sidebar-footer-action create-workspace-container">
+      <input type="text" placeholder="Create your workspace" id="create-workspace">
+      <button type="button" id="cancel-input-btn">✕</button>
+    </div>
+  </aside>
+
+  <!-- MAIN APP WORKSPACE CONTENT -->
+  <main class="main-content">
+    <div class="mose-brand">
+      <span class="mose-brand-tech">Brought to you by Mastermose production inc &copy;</span>
+    </div>
+    
+    <h1 class="mobile-header">Todo List</h1>
+    
+    <section class="section-workspace">
+      <h2 id="curr-workspace">Health workspace</h2>
+      
+      <!-- Clock & Date Display -->
+      <div class="time-date">
+        <div class="time clock">
+          <div class="hand second" id="second-hand"></div>
+          <div class="hand minute" id="minute-hand"></div>
+          <div class="hand hour" id="hour-hand"></div>
+          <div class="center-knob"></div>
+        </div>
+        <div class="time date">Wed May 20 2026</div>
+      </div>
+
+      <!-- Interactive Sliding Tutorial Panel -->
+      <div class="tutorial-panel">
+        <button id="close-panel-btn">✕</button>
+        <h2>Welcome to Mastermose Tech</h2>
+        <p><strong>1. Quick Capture:</strong><br> Type your task at the bottom. Optionally click the priority <code>!!</code> button or the calendar icon 📅 to add a deadline, then hit "Add Task".</p>
+        <p><strong>2. Automated Workspaces:</strong><br> Use the workspace menu to switch contexts. Any task you create is instantly saved directly inside the workspace you are currently looking at!</p>
+        <p><strong>3. Keep an Eye on Priorities:</strong><br> Tasks are clearly marked by urgency. Don't let your high-priority items sit uncompleted for too long!</p>
+        <p><strong>4. Task Management:</strong><br> Use the actions column to edit details, pause items, or smash the delete icon to clear completed work.</p>
+      </div>
+
+      <div id="mobile-date-show">mobile-date</div>
+
+      <!-- Task Creation Input Bar -->
+      <div class="task-input-container">
+        <input type="text" id="task-name" placeholder="Add task to your workspace" aria-label="task-name" />
+        <select id="set-priority" title="set task priority" aria-label="set-task-priority">
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+        <input type="date" id="task-date" title="set overdue time" aria-label="task-date" />
+      </div>
+      
+      <button id="add-task">Add Task</button>
+      
+      <!-- Interactive Data Storage Table -->
+      <h3>Tasks</h3>
+      <table id="task-table" class="responsive-table">
+        <thead class="table-header">
+          <tr>
+            <th id="th-status">STATUS</th>
+            <th id="th-details">TASK DETAILS</th>
+            <th id="th-priority">PRIORITY</th>
+            <th id="th-actions">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dynamic task rows injected by JS go here -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+</body>
+</html>
