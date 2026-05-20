@@ -1,11 +1,16 @@
+/* ===================================
+MOBILE  VERSIION OF BODY STYLE
+=================================== */
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
-html {
+html, body {
     height: 100vh;
     width: 100%;
     overflow: hidden;
+    padding: 0;
+    margin: 0;
 }
 
 body {
@@ -13,16 +18,319 @@ body {
     font-family: "Helvetica Neue", Arial, Helvetica, sans-serif, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans';
     display: flex;
     flex-direction:  column;
-    background: #fff;
+    background: #f8f9fa;
     color: #000;
-   padding: 0;
-   margin: 0;
    text-align: center;
-   width: 100%;
-   height: 100vh;
    position: relative;
    overflow-x: hidden;
+   overflow-y: auto;
 }
+
+.desktop-only {
+    display: none;
+}
+
+.mobile-only {
+    display: inline-block;
+}
+
+
+/* ===================================
+DESKTOP  VERSIION OF BODY STYLE
+=================================== */
+
+@media (min-width: 768px) {
+    body {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        grid-template-rows: 100vh;
+        text-align: left;
+    }
+    
+    .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        overflow-y: auto;
+    }
+    
+    .desktop-only {
+        display: inline-block;
+    }
+    
+    .mobile-only {
+        display: none;
+    }
+}
+
+/* ===================================
+MOBILE  VERSIION OF ASIDE STYLE
+=================================== */
+
+/* NAV STYLE */
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    color: #fff;
+    background: #7855ee;
+    z-index: 999;
+    transform: translateZ(999);
+    /* force on top for some browsers */
+}
+
+.nav ul li {
+    margin: 15px 15px 15px 0;
+    cursor: pointer;
+}
+
+.nav ul li:hover {
+    background: #dd5578;
+}
+
+.nav ul li:active {
+    transform: scale(0.57);
+}
+
+.navlist-desktop {
+    display: none;
+}
+
+.navlist-mobile ul {
+    position: absolute;
+    width: 35%;
+    height: 170px;
+    background: #7855ee;
+    border: 1px solid #fff;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    overflow-y: auto;
+    z-index: 1000;
+    will-change: transform, opacity;
+}
+
+
+.navlist-mobile ul:first-of-type li:first-child {
+    list-style: none;
+    color: yellow;
+    cursor: default;
+    pointer-events: none;
+}
+
+.sort-tab {
+    left: 0;
+    top: 80px;
+    transform: traslateX(-100%);
+}
+
+.workspace-tab {
+    top: 80px;
+    right: 0;
+    transform: translateX(100%);
+}
+
+.workspaces {
+    top: 120px;
+    right: 0;
+}
+
+.navlist-mobile ul.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+sort-tab.is-visible {
+    transform: translate(0, 0);
+}
+
+.sub-tab.is-visible {
+    transform: translateX(0);
+}
+
+.subspaces.is-visible {
+    transform: translateX(-100%);
+}
+
+.navlist-mobile ul:first-of-type li:first-child:active {
+    transform: none;
+}
+
+
+.navlist-mobile ul:first-of-type li:first-child:hover {
+    background: transparent;
+}
+
+
+.toggle-menu {
+    width: 80px;
+    height: 45px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    left: -10%;
+}
+
+.bar {
+    display: inline-block;
+    width: 50px;
+    height: 10px;
+    background: #fff;
+    transition: all 0.5s ease;
+}
+
+.toggle-menu.is-active .bar:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
+    width: 30px;
+}
+
+.toggle-menu.is-active .bar:nth-child(2) {
+    display: none;
+}
+
+.toggle-menu.is-active .bar:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+    width: 30px;
+}
+
+#choose-workspace {
+    display: inline-block;
+    position: relative;
+    background: transparent;
+    height: auto;
+    width: 120px;
+    word-break: break-word;
+    cursor: pointer;
+}
+
+#choose-workspace:hover {
+    background: #dd5578;
+}
+
+#choose-workspace:active {
+    transform: scale(0.57);
+}
+
+.tut {
+    position: relative;
+    cursor: pointer;
+}
+
+.tut.hide-tut {
+    display: none;
+}
+
+.tut:hover {
+    background: #dd5578;
+}
+
+.tut:active {
+    transform: scale(0.57);
+}
+
+.tutorial-panel {
+    width: 70vw;
+    max-height: 80vh;
+    position: fixed;
+    top: 50px;
+    right: 0;
+    background: #000;
+    z-index: 1000;
+    font-family: sans-serif;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%);
+    border: 1px solid #dd5578;
+    overflow-y: scroll;
+    transition: all 0.4s ease-out;
+}
+
+.tutorial-panel.tut-active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.tutorial-panel p {
+    padding-bottom: 20px;
+    ;
+}
+
+.tutorial-panel strong {
+    color: rgb(255, 2255, 0);
+}
+
+.tutorial-panel>*:not(h2) {
+    font-size: 0.95rem;
+}
+
+.tutorial-panel p {
+    width: 80%;
+    margin: auto;
+}
+
+#close-panel-btn {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 0;
+    right: 0;
+}
+
+.tutorial-panel em {
+    color: #dd7722;
+}
+
+.create-workspace-container {
+    width: auto;
+    max-width: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3 ease;
+}
+
+.create-workspace-container.show-workspace-container {
+    max-width: 300px;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ===================================
+DESKTOP  VERSIION OF ASIDE STYLE
+=================================== */
+
+/* brand Area */
+
+@media(min-width: 768px) {
+    .brand-area {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        gap: 10px;
+    }
+}
+
 
 .mose-brand {
     width: 100%;
@@ -53,6 +361,10 @@ body {
     display: flex;
     align-items: center;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+.mobile-only {
+    margin-top: 120px;
 }
 
 input, button {
@@ -320,12 +632,6 @@ tr button {
 /* DESKTOP VERSION OF BODY STYLE */
 
 @media (min-width: 768px) {
-    body {
-        display: grid;
-        grid-template-columns:  280px 1fr;
-        grid-template-rows: 100vh;
-    }
-
     .mose-brand {
         margin: 15px 0 0 0;
     }
@@ -372,249 +678,6 @@ tr button {
 
 /* NAVBAR STYLE */
 
-.nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100px;
-    position: fixed;
-    color: #fff;
-    background: #7855ee;
-    z-index: 999;
-    transform: translateZ(999); /* force on top for some browsers */
-}
-
-.desktop-header {
-    display: none;
-}
-
-.mobile-header {
-    display: inline-block;
-    margin-top: 120px;
-}
-
-
-.nav ul li {
-    margin: 15px 15px 15px 0;
-    cursor: pointer;
-}
-
-.nav ul li:hover {
-    background: #dd5578;
- }
-
-.nav ul li:active {
-    transform: scale(0.57);
-}
-
-.navlist-desktop {
-    display: none;
-}
-
-.navlist-mobile ul {
-    position: absolute;
-    width: 35%;
-    height: 170px;
-    background: #7855ee;
-    border: 1px solid #fff    ;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    overflow-y: auto;
-    z-index: 1000;
-    will-change: transform, opacity;
-}
-
-
-.navlist-mobile ul:first-of-type  li:first-child {
-    list-style: none;
-    color: yellow;
-    cursor: default;
-    pointer-events: none;
-}
-
-.sort-tab {
-    left: 0;
-    top: 80px;
-    transform: traslateX(-100%);
-}
-
-.workspace-tab {
-    top: 80px;
-    right: 0;
-   transform: translateX(100%);
-}
-
-.workspaces {
-    top: 120px;
-    right: 0;
-}
-
-.navlist-mobile ul.is-visible {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-}
-
- sort-tab.is-visible {
-     transform: translate(0, 0);
- }
- 
-.sub-tab.is-visible {
-     transform: translateX(0);
- }
- 
-.subspaces.is-visible {
-   transform: translateX(-100%);
-}
- 
- .navlist-mobile ul:first-of-type li:first-child:active {
-     transform: none;
- }
- 
-
- .navlist-mobile ul:first-of-type li:first-child:hover {
-    background: transparent;
- }
- 
-
-.toggle-menu {
-    width: 80px;
-    height: 45px;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around; 
-    align-items: center;
-    gap: 0;
-   position: relative;
-   left: -10%;
-}
-
-.bar {
-    display: inline-block;
-    width: 50px;
-    height: 10px;
-    background: #fff;
-    transition: all 0.5s ease;
-}
-
-.toggle-menu.is-active .bar:nth-child(1) {
-    transform: translateY(10px) rotate(45deg);
-    width: 30px;
-}
-
-.toggle-menu.is-active .bar:nth-child(2) {
-    display: none;
-}
-
-.toggle-menu.is-active .bar:nth-child(3) {
-    transform: translateY(-10px) rotate(-45deg);
-    width: 30px;
-}
-
-#choose-workspace {
-    display: inline-block;
-    position: relative;
-    background: transparent;
-    height: auto;
-    width: 120px;
-    word-break: break-word;
-    cursor: pointer;
-}
-
-#choose-workspace:hover {
-    background: #dd5578;
-}
-
-#choose-workspace:active {
-    transform: scale(0.57);
-}
-
-.tut {
-    position: relative;
-    cursor: pointer;
-}
-
-.tut.hide-tut {
-    display: none;
-}
-
-.tut:hover {
-    background: #dd5578;
-}
-
-.tut:active {
-    transform: scale(0.57);
-}
-
-.tutorial-panel {
-    width: 70vw;
-    max-height: 80vh;
-    position: fixed;
-    top: 50px;
-    right: 0;
-    background: #000;
-    z-index:  1000;
-    font-family: sans-serif;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(100%);
-    border: 1px solid #dd5578;
-    overflow-y: scroll;
-    transition: all 0.4s ease-out;
-}
-
-.tutorial-panel.tut-active {
-    visibility: visible;
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.tutorial-panel p {
-    padding-bottom: 20px;;
-}
-
-.tutorial-panel strong {
-    color: rgb(255, 2255, 0);
-}
-
-.tutorial-panel > *:not(h2) {
-    font-size: 0.95rem;
-}
-
-.tutorial-panel p {
-    width: 80%;
-    margin: auto;
-}
-
-#close-panel-btn {
-    position: absolute;
-    height: auto;
-    width: auto;
-    top: 0;
-    right: 0;
-}
-
-.tutorial-panel em {
-    color: #dd7722;
-}
-
-.create-workspace-container {
-    width: 0;
-    max-width: 700px;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3 ease;
-}
-
-.create-workspace-container.show-workspace-container {
-    width: 100%;
-    opacity: 1;
-    visibility: visible;
-}
 
 /* Desktop version OF Navbar */
 
@@ -760,31 +823,9 @@ tr button {
 
 section {
     width: 100%;;
-    height: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-/* chart style */
-.chart-container {
-    width: 80%;
-    min-height: 40vh;
-    margin: auto;
-    background: #000;
-}
 
-.pie-chart {
-    height: 90%;
-    padding-top: 20px;
-    overflow-y: auto;
-    position: relative;
-}
-
-.space-at-end {
-    margin-top: 5px;
-    height: 5px;
-}
-
-.hide-charts {
-    display: none;
-}
