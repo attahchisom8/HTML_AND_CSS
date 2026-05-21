@@ -320,6 +320,7 @@ DESKTOP  VERSIION OF ASIDE STYLE
     .sidebar-nav {
         background: #7855ee;
         color: #fff;
+        padding: 24px 16px;
     }
 
     /* brand Area */
@@ -335,6 +336,7 @@ DESKTOP  VERSIION OF ASIDE STYLE
 
     .navlist-desktop span {
         display: inline-block;
+        align-items: center;
     }
 
     .navlist-mobile {
@@ -347,34 +349,132 @@ DESKTOP  VERSIION OF ASIDE STYLE
         align-items: center;
         justify-content: center;
         width: 100%;
-        /*min-height: 50px;*/
         background: transparent;
         z-index: 999;
         transform: translateZ(999);
         margin: 20px auto;
         position: relative;
+        gap: 5px;
+        flex-grow: 1;
     }
-
+    
     .navlist-desktop ul {
         list-style: none;
     }
-
-    .navlist-desktop ul li {
-        font-size: 1rem;
-        background: rgba(255, 255, 255, 0.3);
+    
+    .nav-group {
+        display: flex;
+        flex-direction: column;
+        background: transparent;
     }
-
+    
+    .nav-group-label {
+        font-size: 1rem;
+        font-weight: 900;
+       color: rgba(255, 255, 255, 0.9);
+       text-transform: uppercase;
+    }
+    
+    .nav-links {
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin-left: 15px;
+    }
+    
+    .nav-item, .nav-item-btn {
+        padding: 15px 2px;
+        font-size: 0.85rem;
+        display: flex;
+        gap: 10px;
+    }
+    
+    .nav-item:hover, .nav-item-btn:hover {
+        background: rgba(255, 255, 255, 0.4);
+        transform:translateX(3px);
+    }
+    
+.nav-item:active, .nav-item-btn:active {
+        transform: scale(0.57);
+    }
+    
+    .nav-item.item-desk-active, .nav-item-btn.item-desk-active {
+        color: #00ffcc;
+    }
+    
+    .dropdown-wrapper {
+        padding-left: 10px;
+        height: auto;
+        max-height: 300;
+        /*opacity: 0;
+        visibility: hidden;*/
+        transition: max-height 0.4s cubic-bezier(1.25, 0, 0.98, 1) opacity 0.3s ease;
+    }
+    
+    .dropdown-wrapper.desk-active {
+        opacity: 1;
+        visibility: visible;
+        overflow-y: auto;
+        max-height: 500px;
+    }
+    
+    .dropdown-wrapper ul {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        padding: 20px 0 15px 15px;
+        font-size: 1.1rem;
+        width: 100%;
+        gap: 20px;
+    }
+    
+    .dropdown-wrapper ul li {
+        padding: 10px 16px;
+    }
+    
+    .dropdown-wrapper ul li:hover {
+        background: rgba(255, 255, 255, 0.4);
+        transform:translateX(3px)
+    }
+    
+    .dropdown-wrapper ul li:active {
+        transform: scale(0.57);
+    }
+    
+    .add-workspace-desktop {
+        color: #00ffcc;
+    }
+    
     .desk-search {
         display: flex;
-        gap: 0px;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .desk-search input {
+        width: 48%;
+        flex-grow: 1;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 5px;
+    }
+    
+    .desk-search button {
+       width: 40px;
+       height: 20px;
+       margin-right: 3px;
+       border: none;
+       background:inherit;
+       color: #f8f9fa;
+    }
+    
+    .arrow {
+        color: rgba(255, 255, 255, 0.5);
     }
 
-    .nav-item, .nav-item-btn
 
-
-    .arrow.desk-active {
+    .arrow.item-desk-active {
         transform: rotate(90deg);
-        overflow-y: auto;
     }
 
     .toggle-menu {
@@ -439,21 +539,12 @@ DESKTOP  VERSIION OF ASIDE STYLE
     margin-top: 120px;
 }
 
-input, button {
-    padding: 10px 10px;
-    margin: 20px;
-}
 
-input, .task-input-container {
+/*input, .task-input-container {
     outline: none;
     border: 3px solid transparent;
     border-radius: 50px;
     background: #999;
-}
-
-input:focus {
-    background: #fff;
-    transform: scale(1.09);
 }
 
 .task-input-container {
@@ -464,7 +555,7 @@ input:focus {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-}
+}*/
 
 #curr-workspace {
     color: #7855aa;
@@ -582,7 +673,7 @@ input:focus {
     height: auto;
 }
 
-button {
+.main-content button {
     width: 80px;
     height: 50px;
     background: #7855ee;
