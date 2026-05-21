@@ -332,6 +332,12 @@ DESKTOP  VERSIION OF ASIDE STYLE
         gap: 10px;
     }
 
+    .brand-version {
+        color: #00ffcc;
+        font-weight: 650;
+        font-style: italic;
+    }
+
     /* NAV STYLE */
 
     .navlist-desktop span {
@@ -406,9 +412,9 @@ DESKTOP  VERSIION OF ASIDE STYLE
     .dropdown-wrapper {
         padding-left: 10px;
         height: auto;
-        max-height: 300;
-        /*opacity: 0;
-        visibility: hidden;*/
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
         transition: max-height 0.4s cubic-bezier(1.25, 0, 0.98, 1) opacity 0.3s ease;
     }
     
@@ -442,10 +448,6 @@ DESKTOP  VERSIION OF ASIDE STYLE
         transform: scale(0.57);
     }
     
-    .add-workspace-desktop {
-        color: #00ffcc;
-    }
-    
     .desk-search {
         display: flex;
         gap: 10px;
@@ -457,6 +459,15 @@ DESKTOP  VERSIION OF ASIDE STYLE
         flex-grow: 1;
         border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 5px;
+        background: #dfdfdf;
+        outline: none;
+        box-shadow: 4px 4px 10px #fff;
+    }
+
+    .desk-search input:focus {
+        background: #f8f9fa;
+        transform: scale(1.1);
+        border: 1px solid #fff;
     }
     
     .desk-search button {
@@ -464,7 +475,7 @@ DESKTOP  VERSIION OF ASIDE STYLE
        height: 20px;
        margin-right: 3px;
        border: none;
-       background:inherit;
+       background: inherit;
        color: #f8f9fa;
     }
     
@@ -500,9 +511,11 @@ DESKTOP  VERSIION OF ASIDE STYLE
 
 
 /* ===================================
-DESKTOP  VERSIION OF ASIDE STYLE
+MOBILE  VERSIION OF ASIDE STYLE
 =================================== */
-
+.main-content {
+    padding: 0;
+}
 
 .mose-brand {
     width: 100%;
@@ -510,14 +523,12 @@ DESKTOP  VERSIION OF ASIDE STYLE
     background: transparent;
     display: flex;
     justify-content: flex-end;
-    margin-top: 110px;
-    padding-left: 200px;
+    margin-top: 65px;
 }
 
 .mose-brand-tech {
     width: auto;
     max-width: 300px;
-    height: 50px;
     background: linear-gradient(
         135deg,
         #7855aa,
@@ -535,9 +546,6 @@ DESKTOP  VERSIION OF ASIDE STYLE
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
 }
 
-.mobile-only {
-    margin-top: 120px;
-}
 
 
 /*input, .task-input-container {
@@ -559,19 +567,17 @@ DESKTOP  VERSIION OF ASIDE STYLE
 
 #curr-workspace {
     color: #7855aa;
-    text-align-last: left;
+    text-align: left;
     padding: 0 15px;
 }
 
 .time-date {
     display: flex;
-    flex-direction: column;
     width: 100%;
-    height: 300px;
-    align-items: flex-end;
-    justify-content: center;
-    padding-right: 50px;
-    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 50px;
+    gap: 8px;
     background-color: transparent;
 }
 
@@ -636,41 +642,47 @@ DESKTOP  VERSIION OF ASIDE STYLE
     justify-content: flex-end;
 }
 
+.task-input-container {
+    background: #dadada;
+    display: flex;
+    flex-direction: column;
+    min-width: 330px;
+    gap: 5px;
+    margiN: 20px auto;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 3px #000;
+    overflow: hidden;
+}
+
+
+#task-name, #set-priority, #task-date {
+   width: 100%;
+   height: 40px;
+   margin: auto;
+   border-radius: 5px;
+   outline: none !important;
+}
+
 #task-name {
-   flex-grow: 1;
+    background: #fcfcfc;
+}
+
+#task-name:focus {
+    border: 3px solid #7855ee;
+    transform: scale(1.01);
+    background: #f8f9fa;
 }
 
 #set-priority {
     color: #fff;
     font-weight: bold;
+    background: #7855ee;
 }
 
 #task-date {
     color: #fff;
     background: orangered;
-}
-#mobile-date-show {
-    position: relative;
-    width: 150px;
-    height: 50px;
-    left: 60%;
-    border: 1px solid #fff;
-    border-radius: 50px;
-    background: orangered;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    display: none;
-}
-
-#mobile-date-show.is-showing {
-    display: block;
-}
-
-.task-input-container * {
-    background: transparent;
-    width: auto;
-    height: auto;
 }
 
 .main-content button {
@@ -797,6 +809,11 @@ tr button {
 @media (min-width: 768px) {
     .mose-brand {
         margin: 15px 0 0 0;
+    }
+
+    .mose-brand-tech {
+        max-width: 500px;
+        padding: 10px 10px;
     }
 
     button:hover {
