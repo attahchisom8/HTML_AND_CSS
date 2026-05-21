@@ -79,7 +79,7 @@ MOBILE  VERSIION OF ASIDE STYLE
 
 /* NAV STYLE */
 
-nav {
+.navlist-mobile {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -89,20 +89,19 @@ nav {
     color: #fff;
     background: #7855ee;
     z-index: 999;
-    transform: translateZ(999);
-    /* force on top for some browsers */
+    transform: translateZ(999); /* force on top for some browsers */
 }
 
-.nav ul li {
+.navlist-mobile ul li {
     margin: 15px 15px 15px 0;
     cursor: pointer;
 }
 
-.nav ul li:hover {
+.navlist-mobile ul li:hover {
     background: #dd5578;
 }
 
-.nav ul li:active {
+.navlist ul li:active {
     transform: scale(0.57);
 }
 
@@ -188,7 +187,6 @@ sort-tab.is-visible {
     align-items: center;
     gap: 0;
     position: relative;
-    left: -10%;
 }
 
 .bar {
@@ -221,6 +219,7 @@ sort-tab.is-visible {
     width: 120px;
     word-break: break-word;
     cursor: pointer;
+    margin-right: 20px;
 }
 
 #choose-workspace:hover {
@@ -236,9 +235,6 @@ sort-tab.is-visible {
     cursor: pointer;
 }
 
-.tut.hide-tut {
-    display: none;
-}
 
 .tut:hover {
     background: #dd5578;
@@ -319,9 +315,14 @@ sort-tab.is-visible {
 DESKTOP  VERSIION OF ASIDE STYLE
 =================================== */
 
-/* brand Area */
 
 @media(min-width: 768px) {
+    .sidebar-nav {
+        background: #7855ee;
+        color: #fff;
+    }
+
+    /* brand Area */
     .brand-area {
         display: flex;
         align-items: center;
@@ -329,7 +330,78 @@ DESKTOP  VERSIION OF ASIDE STYLE
         font-weight: 800;
         gap: 10px;
     }
+
+    /* NAV STYLE */
+
+    .navlist-desktop span {
+        display: inline-block;
+    }
+
+    .navlist-mobile {
+        display: none;
+    }
+    
+    .navlist-desktop {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        /*min-height: 50px;*/
+        background: transparent;
+        z-index: 999;
+        transform: translateZ(999);
+        margin: 20px auto;
+        position: relative;
+    }
+
+    .navlist-desktop ul {
+        list-style: none;
+    }
+
+    .navlist-desktop ul li {
+        font-size: 1rem;
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .desk-search {
+        display: flex;
+        gap: 0px;
+    }
+
+    .nav-item, .nav-item-btn
+
+
+    .arrow.desk-active {
+        transform: rotate(90deg);
+        overflow-y: auto;
+    }
+
+    .toggle-menu {
+        display: none;
+    }
+
+     .tutorial-panel {
+        width: 50%;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+        pointer-events: auto;
+        overscroll-behavior: contain;
+    }
+
+    .tutorial-panel:hover {
+        transform: scale(1.01);
+    }
+
+
 }
+
+
+/* ===================================
+DESKTOP  VERSIION OF ASIDE STYLE
+=================================== */
 
 
 .mose-brand {
@@ -676,150 +748,6 @@ tr button {
 
 }
 
-/* NAVBAR STYLE */
-
-
-/* Desktop version OF Navbar */
-
-@media (min-width: 768px) {
-    .sidebar-nav {
-        background: #7855ee;
-        color: #fff;
-        height: 100vh;
-        overflow-y: auto;
-    }
-
-    .nav {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        width: 100%;
-        height: 100%;
-        position: relative;
-        color: #fff;
-        background: transparent;
-        z-index: 999;
-        transform: translateZ(999);
-    }
-
-    .desktop-header {
-        display: inline-block;
-        font-weight: bold;
-    }
-
-    .mobile-header {
-        display: none;
-    }
-
-    #choose-workspace {
-        display: none;
-    }
-
-    #choose-workspace-desktop, #sort-desktop {
-        cursor: pointer;
-        display: inline-block;
-    }
-
-    #chooose-workspace-desktop {
-        margin-top: 20px;
-    }
-
-    #sort-desktop:hover, #choose-workspace-desktop:hover {
-        background: #dd5578;
-    }
-
-    #sort-desktop:active, #choose-workspace-desktop:active {
-        transform: scale(0.57);
-    }
-
-    .navlist-mobile {
-        display: none;
-    }
-
-    .navlist-desktop {
-        display: list-item;
-        list-style: none;
-    }
-
-    .navlist-desktop ul {
-        width: auto;
-        max-width: 250px;
-        height: auto;
-        max-height: 0;
-        word-break: break-word;
-        margin: 20px;
-        list-style: none;
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: contrast(1px);
-        filter: brightness(150%);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        opacity: 0;
-        visibility: hidden;
-        z-index: 500;
-        overflow: hidden;
-        transition: opacity 0.4s ease, visibility 0.4s ease,
-        max-height cubic-bezier(0.075, 0.82, 0.165, 1);
-    }
-
-    .navlist-desktop.desk-active {
-        opacity: 1;
-        visibility: visible;
-        max-height: 300px;
-    }
-
-    .arrow.desk-active {
-        transform: rotate(90deg);
-        overflow-y: auto;
-    }
-
-    .toggle-menu {
-        display: none;
-    }
-
-    .weekly-tab li:not(:last-child) {
-        border: none;
-    }
-
-    .monthly-tab {
-        transform: translateX(260%);
-        text-align: center;
-        width: 15% !important;
-    }
-
-    .monthly-tab.is-visible {
-        transform: translateX(267%);
-    }
-    
-
-    #curr-view {
-        margin-right: -55%;
-    }
-
-    .tut {
-        left: -27px;
-    }
-
-    .tut.hide-tut {
-        display: inline-block;
-    }
-
-    .tutorial-panel {
-        width: 50%;
-        max-height: 90vh;
-        display: flex;
-        flex-direction: column;
-        gap: 50px;
-        pointer-events: auto;
-        overscroll-behavior: contain;
-    }
-
-    .tutorial-panel:hover {
-        transform: scale(1.01);
-    }
-
-}
 
 section {
     width: 100%;;

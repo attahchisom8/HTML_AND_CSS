@@ -35,26 +35,34 @@
           <li>Cancel</li>
         </ul>
         <ul class="workspaces"></ul>
+
+        <div class="toggle-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+      </div>
+      <span class="tut">Tutorial</span>
+      <span id="choose-workspace">Choose/Add workspace</span>
       </div>
 
       <!-- Nav for Desktop -->
 
       <!-- roup 1 nav actions -->
-      <div class="nav-group core-actions navlink-desktop">
+      <div class="nav-group core-actions navlist-desktop">
         <span class="nav-group-label">Core Actions</span>
         <ul class="nav-links">
-          <li class="nav-item-btn tut">
+          <li class="nav-item-btn tut-desktop">
             <span class="icon">💡</span> <span class="text">Tutorial</span>
           </li>
           <li class="nav-itemm-btn desk-search">
             <input type="search" placeholder="search workspaces">
-            <button><iclass="fa-solid fa-search"></iclass> </button>
+            <button><i class="fa-solid fa-search"></i> </button>
           </li>
-        </ul><
+        </ul>
       </div>
 
       <!-- Group 2 workspaces -->
-      <div class="nav-group workspace-management navlink-desktop">
+      <div class="nav-group workspace-management navlist-desktop">
         <span class="nav-group-label">Workspaces</span>
         <ul class="nav-links">
           <li class="nav-item dropdown-trigger">
@@ -80,7 +88,7 @@
             <span class="arrow">▶</span> <i class="fa-solid fa-sync"></i> <span class="text">Update A Workspace</span>
           </li>
           <li class="dropdown-wrapper">
-            <ul class="wokspaces-desktop">
+            <ul class="workspaces-desktop">
               <li>Test workspace update</li>
               <li>Another test</li>
             </ul>
@@ -89,11 +97,11 @@
       </div>
 
       <!-- Grouup 3 Filter group -->
-      <div class="nav-group filter-management nav-link-desktop">
-        <span class="nav-group-label"><s>Sort & Filter</s></span>
+      <div class="nav-group filter-management navlist-desktop">
+        <span class="nav-group-label">Sort & Filter</span>
         <ul class="nav-links">
           <li class="nav-item dropdown-trigger">
-            <span class="arrow">▶</span> <span class="text">Sort Task</span>
+            <span class="arrow">▶</span> <span class="icon">⚙️</span> <span class="text">Sort Task</span>
           </li>
           <li class="dropdown-wrapper">
             <ul class="sort-tab-desktop">
@@ -102,18 +110,10 @@
               <li>pending</li>
               <li>completed</li>
               <li>uncompleted</li>
-              <li>Cancel</li>
             </ul>
           </li>
         </ul>
       </div>
-      <div class="toggle-menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
-      <span class="tut">Tutorial</span>
-      <span id="choose-workspace">Choose/Add workspace</span>
       <div class="create-workspace-container">
         <input
           type="text"
