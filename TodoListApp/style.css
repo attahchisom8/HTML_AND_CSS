@@ -418,7 +418,7 @@ DESKTOP  VERSIION OF ASIDE STYLE
         transition: max-height 0.4s cubic-bezier(1.25, 0, 0.98, 1) opacity 0.3s ease;
     }
     
-    .dropdown-wrapper.desk-active {
+    .dropdown-wrapper.item-desk-active {
         opacity: 1;
         visibility: visible;
         overflow-y: auto;
@@ -441,7 +441,7 @@ DESKTOP  VERSIION OF ASIDE STYLE
     
     .dropdown-wrapper ul li:hover {
         background: rgba(255, 255, 255, 0.4);
-        transform:translateX(3px)
+        transform: translateX(3px)
     }
     
     .dropdown-wrapper ul li:active {
@@ -511,7 +511,7 @@ DESKTOP  VERSIION OF ASIDE STYLE
 
 
 /* ===================================
-MOBILE  VERSIION OF ASIDE STYLE
+MOBILE  VERSIION OF MAIN STYLE
 =================================== */
 .main-content {
     padding: 0;
@@ -528,7 +528,7 @@ MOBILE  VERSIION OF ASIDE STYLE
 
 .mose-brand-tech {
     width: auto;
-    max-width: 300px;
+    max-width: 350px;
     background: linear-gradient(
         135deg,
         #7855aa,
@@ -544,6 +544,7 @@ MOBILE  VERSIION OF ASIDE STYLE
     display: flex;
     align-items: center;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+    padding: 0 4px;
 }
 
 
@@ -651,7 +652,6 @@ MOBILE  VERSIION OF ASIDE STYLE
     margiN: 20px auto;
     padding: 5px;
     border-radius: 10px;
-    box-shadow: 0 0 10px 3px #000;
     overflow: hidden;
 }
 
@@ -662,6 +662,7 @@ MOBILE  VERSIION OF ASIDE STYLE
    margin: auto;
    border-radius: 5px;
    outline: none !important;
+   border: none;
 }
 
 #task-name {
