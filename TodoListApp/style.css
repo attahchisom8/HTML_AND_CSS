@@ -685,20 +685,19 @@ button:active {
 
 table {
     border: 1px solid #123;
-    background: #123;
+    background: #fff;
     border-collapse: collapse;
     border-radius: 8px;
     margin: 0 10px;
-    color: #fff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 thead {
     border-bottom: inherit;
-    background: transparent;
+    background: #124;
+    color: #fff;
     text-transform: uppercase;
     font-size: 0.9rem;
-    padding: 10px 0;
 }
 
 .hide-thead {
@@ -719,10 +718,15 @@ tbody {
 
 tr {
    background: transparent;
+   padding: 15px 10px;
+}
+
+th td {
+    padding: 16px 10px;
 }
 
 
-tr td {
+td {
     text-align: left;
     background: transparent;
     width: 20%;
@@ -730,11 +734,10 @@ tr td {
     white-space: normal;
     overflow-wrap: anywhere;
     word-break: break-all;
-    padding: 20px 0;
     vertical-align: middle;
 }
 
-tr td:last-child {
+td:last-child {
     text-align: center;
 }
 
@@ -754,9 +757,9 @@ tr button {
 }
 
 .responsive-table .edit-th, .responsive-table .edit-cell {
-    width: 0; 
+    max-width: 0; 
     background-color: transparent;
-    transition: width 0.4s ease;
+    transition: max-width 0.4s ease;
 }
 
 .edit-toggle {
@@ -777,7 +780,7 @@ tr button {
 
 .responsive-table.is-open .edit-th,
 .responsive-table.is-open .edit-cell {
-    width: 10%;
+    max-width: 10%;
     opacity: 1;
     visibility: visible;
 }
@@ -786,8 +789,20 @@ tr button {
     transform: rotate(90deg);
 }
 
+#task-marker:checked + label {
+    background: yellow !important;
+}
+
 .responsive-table .edit-th {
     width: 5%;
+}
+/* FONT AWESOWE STYLES */
+.fa-pen-to-square {
+    color: #7855ee;
+}
+
+.fa-trash-can {
+    color: #dd0000;
 }
 
 /* ===================================
@@ -847,13 +862,13 @@ DESKTOP  VERSIION OF MAIN STYLE
 
     /* Table style */
 
-    tr td {
+    td {
         text-align: center;
         width: 16%;
     }
 
     .edit-cell {
-        text-align:     left;
+        text-align: left;
     }
 
     .edit-toggle {
