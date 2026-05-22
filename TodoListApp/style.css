@@ -513,6 +513,7 @@ DESKTOP  VERSIION OF ASIDE STYLE
 /* ===================================
 MOBILE  VERSIION OF MAIN STYLE
 =================================== */
+
 .main-content {
     padding: 0;
 }
@@ -546,25 +547,6 @@ MOBILE  VERSIION OF MAIN STYLE
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
     padding: 0 4px;
 }
-
-
-
-/*input, .task-input-container {
-    outline: none;
-    border: 3px solid transparent;
-    border-radius: 50px;
-    background: #999;
-}
-
-.task-input-container {
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-}*/
 
 #curr-workspace {
     color: #7855aa;
@@ -649,7 +631,7 @@ MOBILE  VERSIION OF MAIN STYLE
     flex-direction: column;
     min-width: 330px;
     gap: 5px;
-    margiN: 20px auto;
+    margin: 20px auto;
     padding: 5px;
     border-radius: 10px;
     overflow: hidden;
@@ -670,7 +652,7 @@ MOBILE  VERSIION OF MAIN STYLE
 }
 
 #task-name:focus {
-    border: 3px solid #7855ee;
+    border: 2px solid #7855ee;
     transform: scale(1.01);
     background: #f8f9fa;
 }
@@ -686,7 +668,7 @@ MOBILE  VERSIION OF MAIN STYLE
     background: orangered;
 }
 
-.main-content button {
+#add-task {
     width: 80px;
     height: 50px;
     background: #7855ee;
@@ -703,17 +685,20 @@ button:active {
 
 table {
     border: 1px solid #123;
-    background: #aaa;
+    background: #123;
     border-collapse: collapse;
     border-radius: 8px;
+    margin: 0 10px;
+    color: #fff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 thead {
     border-bottom: inherit;
-    background: #888;
+    background: transparent;
     text-transform: uppercase;
     font-size: 0.9rem;
+    padding: 10px 0;
 }
 
 .hide-thead {
@@ -805,9 +790,15 @@ tr button {
     width: 5%;
 }
 
-/* DESKTOP VERSION OF BODY STYLE */
+/* ===================================
+DESKTOP  VERSIION OF MAIN STYLE
+=================================== */
+
 
 @media (min-width: 768px) {
+    .main-content {
+        padding: 0 20px;
+    }
     .mose-brand {
         margin: 15px 0 0 0;
     }
@@ -820,16 +811,41 @@ tr button {
     button:hover {
         background: #dd5578;
         transform: scale(1.1);
-    
+    }
+
+    #curr-workspace {
+        font-weight: 1000;
     }
     
     .task-input-container {
-        overflow: auto;
+        flex-direction: row;
+        min-width: 100%;
+        padding: 15px;
+        margin: 5px;
     }
 
-    #mobile-date-show {
-    display: none;
+    #task-name {
+        flex-grow: 3;
+        font-weight: bold;
+        font-size: 1.1rem;
     }
+
+    #task-date, #set-priority {
+        flex-shrink: 3;
+    }
+
+    #add-task {
+        width: 150px;
+        margin: 0;
+    }
+
+    #tasks {
+        margin: 0;
+        font-weight: 700;
+        font-size: 2rem;
+    }
+
+    /* Table style */
 
     tr td {
         text-align: center;
@@ -864,5 +880,9 @@ section {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.space-at-bottom {
+    height: 50px;
 }
 

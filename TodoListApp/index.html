@@ -56,7 +56,12 @@
             <span class="icon">💡</span> <span class="text">Tutorial</span>
           </li>
           <li class="nav-itemm-btn desk-search">
-            <input type="search" placeholder="search workspaces">
+            <input
+              type="search"
+              placeholder="search workspaces"
+              list="datalist-workspaces"
+            />
+            <datalist id="datalist-workspaces"></datalist>
             <button><i class="fa-solid fa-search"></i> </button>
           </li>
         </ul>
@@ -86,7 +91,7 @@
             </ul>
           </li>
           <li class="nav-item dropdown-trigger">
-            <span class="arrow">▶</span> <i class="fa-solid fa-sync"></i> <span class="text">Update A Workspace</span>
+            <span class="arrow">▶</span> <i class="fa-solid fa-pen-square"></i> <span class="text">Update A Workspace</span>
           </li>
           <li class="dropdown-wrapper">
             <ul class="workspaces-desktop">
@@ -141,6 +146,7 @@
         </div>
         <div class="time date">wed may 15 2026</div>
       </div>
+      <div class="date-warning">Check your deadline against the date</div>
       <div class="tutorial-panel">
         <button id="close-panel-btn">X</button>
         <h2>Welcome to Mastermose Tech</h2>
@@ -181,7 +187,7 @@
       </div>
       <button id="add-task">Add Task</button>
       <br>
-      <h3>Tasks</h3>
+      <h3 id="tasks">Tasks</h3>
       <table id="task-table" class="responsive-table">
         <thead class="table-header">
           <tr>
@@ -191,9 +197,28 @@
           <th id="th-actions">ACTIONS</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <tr class="test-row">
+            <td>
+              <label for="task-marker">g</label>
+              <input
+              type="checkbox"
+              value="is-completed"
+              id="task-marer"
+              title="check the box to mark as completed"
+            />
+            </td>
+            <td>by Gods Grace i would go to a stadium to watch football</td>
+            <td>Low</td>
+            <td>
+              <i class="fa-solid fa-pen-to-square" title="upate item"></i>
+              <i class="fa-solid fa-trash-can" title="delete item"></i>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </section>
+    <section class="space-at-bottom">Bottom</section>
   </main>
 
 </body>
