@@ -34,6 +34,12 @@ body {
     display: inline-block;
 }
 
+input {
+    outline: none;
+    border: none;
+    border-radius: 4px;;
+}
+
 
 /* ===================================
 DESKTOP  VERSIION OF BODY STYLE
@@ -90,6 +96,15 @@ MOBILE  VERSIION OF ASIDE STYLE
     background: #7855ee;
     z-index: 999;
     transform: translateZ(999); /* force on top for some browsers */
+}
+
+.mobile-search-container {
+    display: flex;
+    margin: auto;
+    /*padding: 5px 0;*/
+    max-width: 0;
+    visibility: hidden;
+    opacity: 1;
 }
 
 .navlist-mobile ul li {
@@ -683,12 +698,24 @@ button:active {
     transform: scale(0.97);
 }
 
+.toggle-actions {
+    width: 100px;
+    height: 40px;
+    padding: 10px 10px;
+    background: #7855ee;
+    color: #fff;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
 table {
     border: 1px solid #123;
     background: #fff;
     border-collapse: collapse;
     border-radius: 8px;
     margin: 0 10px;
+    width: 100%;
+    table-layout: fixed;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -719,74 +746,80 @@ tbody {
 tr {
    background: transparent;
    padding: 15px 10px;
+   border-bottom: 1px solid #dfdfdf;
 }
 
-th td {
+tbody tr:hover {
+    background: #efefef;
+}
+
+th, td {
     padding: 16px 10px;
-}
-
-
-td {
-    text-align: left;
-    background: transparent;
-    width: 20%;
-    height: auto;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-all;
-    vertical-align: middle;
-}
-
-td:last-child {
     text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
 }
 
-
-tr button {
-    width: 80%;
-    height: inherit;
-    margin-right: 0;
+#th-status, td:nth-child(1) {
+    width: 10%;
 }
 
-.edit-th {
+#th-details, td:nth-child(2) {
+    width: 40%;
+    white-space: normal;
+    text-align: left;
+    font-weight: 0.85rem;
+}
+
+#th-priority, td:nth-child(3) {
+    width: 15%;
+}
+
+#th-actions, td:nth-child(4) {
+    width: 0;
+    white-space: nowrap;
+    padding: 16px 0;
     cursor: pointer;
+    overflow: hidden;
+    transition: padding 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    width 0.s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.responsive-table .edit-label {
-    display: none;
-}
-
-.responsive-table .edit-th, .responsive-table .edit-cell {
-    max-width: 0; 
-    background-color: transparent;
-    transition: max-width 0.4s ease;
-}
-
-.edit-toggle {
-    display: inline-block;
-}
-
-.responsive-table .edit-cell {
+td:nth-child(4) > * {
     opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s ease;
+    transition: opacity 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s;
 }
 
-.responsive-table.is-open .edit-label,
-.responsive-table.is-open .edit-cell {
-    display: table-cell;
+#th-date, td:nth-child(5) {
+    width: 20%;
+}
+
+.responsive-table :nth-child(4) > * {
+    opacity: 1;
 }
 
 
-.responsive-table.is-open .edit-th,
-.responsive-table.is-open .edit-cell {
-    max-width: 10%;
+.responsive-table.is-open #th-actions,
+.responsive-table.is-open td:nth-child(4) {
+    max-width: 15%;
     opacity: 1;
     visibility: visible;
 }
 
-.responsive-table.is-open .edit-toggle {
-    transform: rotate(90deg);
+.responsive-table.is-open #th-actions ,
+.responsive-table.is-open td:nth-child(4) {
+    width: 15%;
+    padding: 16px 10px;
+}
+
+.tb-status-container {
+    display: flex;
+}
+
+#task-marker {
+    display: none;
 }
 
 #task-marker:checked + label {
@@ -801,7 +834,7 @@ tr button {
     color: #7855ee;
 }
 
-.fa-trash-can {
+table .fa-trash-can {
     color: #dd0000;
 }
 
@@ -862,28 +895,13 @@ DESKTOP  VERSIION OF MAIN STYLE
 
     /* Table style */
 
-    td {
-        text-align: center;
-        width: 16%;
+    #th-actions, td:nth-child(4) {
+        width: 15%;
+        padding: 16px 10px;
     }
 
-    .edit-cell {
-        text-align: left;
-    }
-
-    .edit-toggle {
-        display: none;
-    }
-
-    .responsive-table .edit-label {
-        display: table-cell;
-    }
-
-    .responsive-table .edit-th,
-    .responsive-table .edit-cell {
-        visibility: visible;
+    .responsive-table td:nth-child(44) > * {
         opacity: 1;
-        width: 10%;
     }
 
 }

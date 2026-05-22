@@ -21,6 +21,15 @@
     </div>
     <nav class="nav">
       <div class="tabs navlist-mobile">
+        <div class="mobile-search-container">
+          <input
+            id="mobile-search"
+            type="search"
+            placeholder="search-workspaces"
+          />
+          <i class="fa-solid fa-search" id="search-mobile-workspace"></i>
+          <button class="cancel-btn">x</button>
+        </div>
         <ul class="sort-tab">
           <li>sort by ...</li>
           <li>Expiration Date</li>
@@ -188,29 +197,34 @@
       <button id="add-task">Add Task</button>
       <br>
       <h3 id="tasks">Tasks</h3>
+      <button class="toggle-actions mobile-only">actions</button>
       <table id="task-table" class="responsive-table">
         <thead class="table-header">
           <tr>
           <th id="th-status">STATUS</th>
           <th id="th-details">TASK DETAILS</th>
           <th id="th-priority">PRIORITY</th>
-          <th id="th-actions">ACTIONS</th>
+          <th id="th-actions">
+            <span class="actions-label">ACTIONS</span>
+          </th>
           <th id="th-date">DATE</th>
           </tr>
         </thead>
         <tbody>
           <tr class="test-row">
             <td>
-              <input
-              type="checkbox"
-              value="is-completed"
-              id="task-marker"
-              title="check the box to mark as completed"
-            />
-            <label
-              for="task-marker"
-              style="background: red; width: 15px; height: 15px; display: block"
-            ></label>
+              <div class="tb-status-container">
+                <input
+                  type="checkbox"
+                  value="is-completed"
+                  id="task-marker"
+                  title="check the box to mark as completed"
+                />
+                <label
+                  for="task-marker"
+                  style="background: red; width: 15px; height: 15px; display: block"
+                ><i class="fa-solid fa-xmark"></i></label>
+              </div>
             </td>
             <td>By God's Grace i would go to a stadium to watch football</td>
             <td>Low</td>
