@@ -26,12 +26,13 @@
             id="mobile-search"
             type="search"
             placeholder="search-workspaces"
+            required
           />
           <i class="fa-solid fa-search" id="search-mobile-workspace"></i>
-          <button class="cancel-btn">x</button>
-        </div>
+          <button class="search-cancel-btn">x</button>
+      </div>
         <ul class="sort-tab">
-          <li title="search workspaces"><i class="fa-solid fa-search"></i></li>
+          <li class="create-workspace-mobile" title="search workspaces"><i class="fa-solid fa-search"></i></li>
           <li>sort by ...</li>
           <li>Expiration Date</li>
           <li>priority</li>
@@ -70,6 +71,7 @@
               type="search"
               placeholder="search workspaces"
               list="datalist-workspaces"
+              required
             />
             <datalist id="datalist-workspaces"></datalist>
             <button><i class="fa-solid fa-search"></i> </button>
@@ -143,10 +145,36 @@
 
   <!-- WORKSPACE SECTION -->
   <main class="main-content">
-    <div class="dropdown-mobile-search">
+    <div class="dropdown-search-menu">
       <div class="found-search">
-        <span id="found-workspace">Test found workspace</span>
-        <span id="drowpdown-icon"><i class="fa-solid fa-ellipsis-vertical"></i></span>
+        <div class="found-workspace-item">
+          <span id="found-workspace">Test found workspace</span>
+          <span class="ellipse-icon" id="dropdown-icon"><i class="fa-solid fa-ellipsis-vertical"></i></span>
+          <div class="dropdown-mobile-actions mobile-only">
+            <span>switch into</span>
+            <span>update</span>
+            <span>delete</span>
+          </div>
+          <div class="dropdown-desktop-actions">
+            <span>switch into</span>
+            <span>update</span>
+            <span>delete</span>
+          </div>
+        </div>
+        <div class="delete-modal-box">
+          <dialog>
+            <p>Are you sure you want to delete this workspace</p>
+            <button id="dialog-cancel-btn">cancel</button>
+            <button id="dialog-delete-btn">delete</button>
+          </dialog>
+        </div>
+      </div>
+      <div class="no-search-result">
+        <div class="no-result-msg">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <h5></h5>No Result Found!</h5>
+        </div>
+        <p>Try adjusting your search/filters</p>
       </div>
     </div>
     <div class="mose-brand"><span class="mose-brand-tech">Brought to you by Mastermose production inc &copy;</span></div>
