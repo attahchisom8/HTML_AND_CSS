@@ -684,6 +684,12 @@ MOBILE  VERSIION OF MAIN STYLE
     padding: 0 4px;
 }
 
+.replacable-item {
+    display: flex;
+    width: 100%;
+    margin-left: 10px;
+}
+
 #curr-workspace {
     color: #7855aa;
     text-align: left;
