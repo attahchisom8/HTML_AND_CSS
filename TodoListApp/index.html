@@ -30,14 +30,18 @@
           />
           <i class="fa-solid fa-search" id="search-mobile-workspace"></i>
           <button class="search-cancel-btn">x</button>
-      </div>
+        </div>
         <ul class="sort-tab">
-          <li class="create-workspace-mobile" title="search workspaces"><i class="fa-solid fa-search"></i></li>
-          <li>sort by ...</li>
-	  <li>Task Details</li>
+          <li class="search-workspace-mobile" title="search workspaces"><i class="fa-solid fa-search"></i></li>
+          <li class="item-heading">sort by ...</li>
+	        <li>Task Details</li>
           <li>Expiration Date</li>
-          <li>Priority</li>
+          <li class="item-heading">Priorities</li>
+          <li>Low Priority</li>
+          <li>Medium Priority</li>
+          <li>High priority</li>
           <li>Pending</li>
+          <li class="item-heading">Status</li>
           <li>Completed</li>
           <li>Uncompleted</li>
           <li>Cancel</li>
@@ -45,9 +49,10 @@
         <ul class="workspace-tab">
           <li>Add workspace</li>
           <li>Select workspace</li>
+          <li>Delete workspace</li>
           <li>Cancel</li>
         </ul>
-        <ul class="workspaces"></ul>
+      <ul class="workspaces"></ul>
 
         <div class="toggle-menu">
           <span class="bar"></span>
@@ -55,7 +60,7 @@
           <span class="bar"></span>
       </div>
       <span class="tut">Tutorial</span>
-      <span id="choose-workspace">Choose/Add workspace</span>
+      <span class="choose-workspace">sel/add/del workspace</span>
       </div>
 
       <!-- Nav for Desktop -->
