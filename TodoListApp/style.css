@@ -118,10 +118,16 @@ MOBILE  VERSIION OF ASIDE STYLE
     padding: 15px 8px;
     opacity: 1;
     visibility: visible;
-    background: red;
+    background: transparent;
 }
 
+/*.mobile-search-container > * {
+    height: 100%;
+}*/
+
 .mobile-search-container input {
+    height: 100%;
+    border-radius: 10px;
     flex: 3;
 }
 

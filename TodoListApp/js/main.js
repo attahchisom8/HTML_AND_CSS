@@ -43,6 +43,7 @@ nav.addEventListener("click", (e) => {
   const  li = e.target.closest("li");
   const span = e.target.closest("span");
   const iTag = e.target.closest("i");
+  const button = e.target.closest("button");
 
   // Handle clickable nav items
 
@@ -65,6 +66,7 @@ nav.addEventListener("click", (e) => {
   // Handle menuitems  pressdown
 
   const navlistMobileAll = document.querySelectorAll(".navlist-mobile > *");
+
   if (li) {
     if (li.classList.contains("search-workspace-mobile")) {
       mobileSearchContainer.classList.add("search-active");
@@ -73,5 +75,25 @@ nav.addEventListener("click", (e) => {
 
     if (li.textContent.trim() === "Expiration Date")
       console.log("expired task");
+  }
+
+  if (button) {
+    console.log(button);
+    if (button.id === "close-panel-btn") {
+      tutorialPanel.classList.remove("tut-active");
+    }
+
+    if (button.id === "search-cancel-btn") {
+      navlistMobileAll.forEach((item) => item.classList.remove("search-active"));
+    }
+  }
+
+  if (iTag) {
+    console.log(iTag);
+    if (iTag.id === "search-mobile-workspace") {
+      mobileSearchContainer.classList.add("search-active");
+    navlistMobileAll.forEach((item) => item.classList.add("search-active"));
+    }
+
   }
 });
