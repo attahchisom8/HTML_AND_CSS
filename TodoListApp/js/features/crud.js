@@ -78,7 +78,7 @@ console.log(deleteWorkspace(testTodoData, workspace));*/
  * Return: The current workspace or test purposes
  */
 
-const addTask = (workspaceObj, currWorkspace, task) => {
+export const addTask = (workspaceObj, currWorkspace, task) => {
 	Object.keys(workspaceObj).some((workspace) => {
 		if (workspace === currWorkspace) {
 			workspaceObj[currWorkspace].push(task);
@@ -101,9 +101,61 @@ let task = {
 	progress: "undone"
 }
 let workspace = "Personal";
-workspace = "Health";
+// workspace = "Health";
 // console.log(addTask(myObj, workspace, task));
 
 /**
  * updateTask - update task enties
+ * @workspaceObj: The workspqce obj
+ * @currWorkspace: currWorkspace
+ * @task: The given task
+ *
+ * Return: modified task in currWorkspace
  */
+
+export const updateTask = (workspaceObj, currWorkspace, task) => {
+  workspaceObj[currWorkspace].forEach((item) => {
+    if (item.id === task.id) {
+      Object.assign(item, task);
+    }
+  });
+
+  return Object.fromEntries(
+    Object.entries(workspaceObj).filter(([k, v]) => k === currWorkspace)
+  );
+}
+
+/*task = {
+  ...task,
+  taskName: "Buy Acra",
+  priority: "Low",
+}
+
+ console.log(updateTask(myObj, workspace, task));*/
+
+
+/**
+ * deleteTask: deletes a task from a workspace
+ * @workspaceOj: The global house of all workspaces
+ * @currWorkspace: The current workspace
+ * task: The given task to delete
+ *
+ * Return: current workspace
+ */
+
+export const deleteTask = (workspaceObj, currWorkspace, id) => {
+  workspaceObj[currWorkspace].forEach((item, idx) => {
+    if (item.id === id) {
+      workspaceObj[currWorkspace].splice(idx, 1);
+    }
+  });
+
+  return Object.fromEntries(
+    Object.entries(workspaceObj).filter(([k, v]) => k === currWorkspace )
+  );
+}
+
+addTask(myObj, workspace, task);
+/* console.log("workspaceOj: ", myObj);
+const deletedTask = deleteTask(myObj, workspace, task.id);
+console.log("deleted task: ", deletedTask);*/
