@@ -40,6 +40,11 @@ input {
     border-radius: 4px;;
 }
 
+button:active {
+    filter: brightness(120%);
+    transform: scale(0.97);
+}
+
 
 /* ===================================
 DESKTOP  VERSIION OF BODY STYLE
@@ -218,6 +223,9 @@ MOBILE  VERSIION OF ASIDE STYLE
 .workspaces {
     top: 120px;
     right: 0;
+    list-style: none;
+    font-size: 0.90rem;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 /*sort-tab.is-visible {
@@ -374,45 +382,7 @@ MOBILE  VERSIION OF ASIDE STYLE
     color: #dd7722;
 }
 
-.create-workspace-container {
-    width: auto;
-    max-width: 0;
-    height: 70px;
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    opacity: 0;
-    visibility: hidden;
-    overflow: hidden;
-    padding-left: 10px;
-    transition: all 0.7s ease;
-}
 
-.create-workspace-container.show-workspace-container {
-    max-width: 300px;
-    opacity: 1;
-    visibility: visible;
-}
-
-.create-workspace-container > * {
-    height: 70%;
-}
-
-.create-workspace-container input {
-    outline: 1px solid #7855ee;
-    background: #dfdfdf;
-    flex: 3;
-}
-
-.create-workspace-container input:focus {
-    background: #fff;
-}
-
-.create-workspace-container button {
-    flex: 1;
-    color: #fff;
-    background: #7855ee;
-}
 
 /* ===================================
 DESKTOP  VERSIION OF ASIDE STYLE
@@ -732,6 +702,47 @@ MOBILE  VERSIION OF MAIN STYLE
     gap: 10px;;
 }
 
+.create-workspace-container {
+    width: auto;
+    max-width: 0;
+    height: 70px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    padding-left: 10px;
+    transition: all 0.7s ease;
+}
+
+.create-workspace-container.show-workspace-container {
+    max-width: 300px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.create-workspace-container > * {
+    height: 70%;
+}
+
+.create-workspace-container input {
+    outline: 1px solid #7855ee;
+    background: #dfdfdf;
+    flex: 3;
+}
+
+.create-workspace-container input:focus {
+    background: #fff;
+}
+
+.create-workspace-container button {
+    flex: 1;
+    color: #fff;
+    border-radius: 10px;
+    background: #7855ee;
+}
+
 .mose-brand {
     width: 100%;
     height: 50px;
@@ -771,6 +782,7 @@ MOBILE  VERSIION OF MAIN STYLE
 #curr-workspace {
     color: #7855aa;
     text-align: left;
+    text-transform: capitalize;
     padding: 0 15px;
 }
 
@@ -896,11 +908,6 @@ MOBILE  VERSIION OF MAIN STYLE
     border-radius: 10px;
     margin: 0 auto;
     color: #fff;
-}
-
-button:active {
-    filter: brightness(120%);
-    transform: scale(0.97);
 }
 
 .toggle-actions {

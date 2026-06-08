@@ -8,6 +8,11 @@ import * as searchRes from "./features/search.js";
 /* ===================================
 HANDLE DATA PARSING AND STORAGE
 =================================== */
+const workspaceTitle = document.querySelector("#curr-workspace");
+
+const nameWorkspaceTitle = (workspaceName) => {
+  return `${workspaceName}  workspace`;
+}
 
 const workspaceObj = JSON.parse(localStorage.getItem("workspaceObj")) || {
   "health": [],
@@ -24,12 +29,15 @@ const workspaceObj = JSON.parse(localStorage.getItem("workspaceObj")) || {
   "hobbies": [],
 }
 
+workspaceTitle.textContent = nameWorkspaceTitle("health");
+let currWorkspace = workspaceObj["health"];
 
 /* ===================================
 HANDLE TASKBAR OPERATIONS
 =================================== */
 
 const nav = document.querySelector("nav");
+const toggleMenu = document.querySelector(".toggle-menu");
 const sortTab = document.querySelector(".sort-tab");
 const workspaceTab = document.querySelector(".workspace-tab");
 const tutorialPanel = document.querySelector(".tutorial-panel");
@@ -39,6 +47,8 @@ const searchMenu = document.querySelector(".dropdown-search-menu");
 // const dropDownMobileActions = searchMenu.querySelector(".dropdown-mobile-actions");
 const replacableItem = document.querySelector(".replacable-item");
 const mobileWorkspaces = document.querySelector(".workspaces");
+///const chooseWorkspaceobile = document.querySelector(".choose-workspace");
+let currTabMode = null;
 
 nav.addEventListener("click", (e) => {
   const elem = e.target;
@@ -63,7 +73,9 @@ nav.addEventListener("click", (e) => {
     }
 
     if (text === "sel/add/del workspace") {
-      workspaceTab.classList.toggle("is-visible");
+      const isWsp = workspaceTab.classList.toggle("is-visible");
+      if (!isWsp)
+        mobileWorkspaces.classList.remove("is-visible");
     }
 
     /*if (span.id === "dropdown-icon") {
@@ -102,8 +114,69 @@ nav.addEventListener("click", (e) => {
     }
 
     if (text === "Select workspace") {
-      console.log("i am selecting");
       mobileWorkspaces.classList.add("is-visible");
+      currTabMode = "selectTab";
+    }
+
+    if (text === "Update workspace") {
+      mobileWorkspaces.classList.add("is-visible");
+      currTabMode = "updateTab";
+    }
+
+    if (text === "Delete workspace") {
+      mobileWorkspaces.classList.add("is-visible");
+      currTabMode = "deleteTab";
+    }
+
+    if (li.id === "sortTab-cancel-btn") {
+      sortTab.classList.remove("is-visible");
+      toggleMenu.classList.remove("is-active");
+    }
+
+    if (li.id === "workspaceTab-cancel-btn") {
+      workspaceTab.classList.remove("is-visible");
+      mobileWorkspaces.classList.remove("is-visible");
+    }
+
+    if (li.id === "workspaces-cancel-btn") {
+      mobileWorkspaces.classList.remove("is-visible");
+    }
+
+    if (currTabMode === "selectTab") {
+      const workspace = li;
+      if (mobileWorkspaces.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
+        const workspaceName = workspace.textContent.trim();
+        workspaceTitle.textContent = nameWorkspaceTitle(workspaceName);
+        currWorkspace = workspaceObj[workspaceName];
+        currTabMode = null;
+      }
+    }
+
+    if (currTabMode === "updateTab") {
+      const workspace = li;
+      if (mobileWorkspaces.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
+        mobileWorkspaces.classList.remove("is-visible");
+        workspaceTab.classList.remove("is-visible");
+
+        const workspaceName = workspace.textContent;
+        const itemDiv = document.createElement("div");
+      itemDiv.classList.add("create-workspace-container", "show-workspace-container");
+      itemDiv.innerHTML = `
+          <input
+            type="text"
+            value=${workspaceName}
+            placeholder="Update your workspace"
+            id="create-workspace"
+          />
+          <button 
+            type="button" 
+            id="create-btn"
+            class="fa-solid fa-sync"
+            ></button>
+          <button type="button" id="cancel-input-btn">x</button>
+      `;
+      replacableItem.replaceWith(itemDiv);
+      }
     }
   }
 
