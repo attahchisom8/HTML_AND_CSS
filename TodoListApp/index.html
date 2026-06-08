@@ -32,7 +32,7 @@
           <button id="search-cancel-btn">x</button>
         </div>
         <ul class="sort-tab">
-          <li class="search-workspace-mobile" title="search workspaces"><i class="fa-solid fa-search"></i></li>
+          <li class="search-workspace-mobile" title="search workspaces"><i class="fa-solid fa-search" id="search-item-icon"></i></li>
           <li class="item-heading">sort by ...</li>
 	        <li>Task Details</li>
           <li>Expiration Date</li>
@@ -139,14 +139,6 @@
           </li>
         </ul>
       </div>
-      <div class="create-workspace-container">
-        <input
-          type="text"
-          placeholder="Create your workspace"
-          id="create-workspace"
-        >
-        <button type="button" id="cancel-input-btn">x</button>
-      </div>
     </nav>
   </aside>
 
@@ -156,7 +148,7 @@
       <div class="found-search">
         <div class="found-workspace-item">
           <span id="found-workspace">Test found workspace</span>
-          <span class="ellipse-icon" id="dropdown-icon"><i class="fa-solid fa-ellipsis-vertical"></i></span>
+          <span class="fa-solid fa-ellipsis-vertical" id="dropdown-icon"></span>
           <div class="dropdown-mobile-actions mobile-only">
             <span>switch into</span>
             <span>update</span>

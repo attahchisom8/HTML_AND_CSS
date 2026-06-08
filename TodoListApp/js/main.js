@@ -34,7 +34,11 @@ const sortTab = document.querySelector(".sort-tab");
 const workspaceTab = document.querySelector(".workspace-tab");
 const tutorialPanel = document.querySelector(".tutorial-panel");
 const mobileSearchContainer = document.querySelector(".mobile-search-container");
-// const navlistMobile = document.querySelector(".navlist-mobile");
+const searchMenu = document.querySelector(".dropdown-search-menu");
+// const main = document.querySelectorAll(".main-content > *:not(:first-child)");
+// const dropDownMobileActions = searchMenu.querySelector(".dropdown-mobile-actions");
+const replacableItem = document.querySelector(".replacable-item");
+const mobileWorkspaces = document.querySelector(".workspaces");
 
 nav.addEventListener("click", (e) => {
   const elem = e.target;
@@ -61,6 +65,12 @@ nav.addEventListener("click", (e) => {
     if (text === "sel/add/del workspace") {
       workspaceTab.classList.toggle("is-visible");
     }
+
+    /*if (span.id === "dropdown-icon") {
+      console.log("i was clicked");
+      console.log(dropDownMobileActions);
+      dropDownMobileActions.classList.add("is-search-active");
+    }*/
   }
 
   // Handle menuitems  pressdown
@@ -68,13 +78,33 @@ nav.addEventListener("click", (e) => {
   const navlistMobileAll = document.querySelectorAll(".navlist-mobile > *");
 
   if (li) {
+    const text = li.textContent.trim();
+
     if (li.classList.contains("search-workspace-mobile")) {
       mobileSearchContainer.classList.add("search-active");
     navlistMobileAll.forEach((item) => item.classList.add("search-active"));
     }
 
-    if (li.textContent.trim() === "Expiration Date")
-      console.log("expired task");
+    if (text === "Add workspace") {
+      workspaceTab.classList.remove("is-visible");
+      const itemDiv = document.createElement("div");
+      itemDiv.classList.add("create-workspace-container", "show-workspace-container");
+      itemDiv.innerHTML = `
+          <input
+            type="text"
+            placeholder="Create your workspace"
+            id="create-workspace"
+          />
+          <button type="button" id="create-btn">+</button>
+          <button type="button" id="cancel-input-btn">x</button>
+      `;
+      replacableItem.replaceWith(itemDiv);
+    }
+
+    if (text === "Select workspace") {
+      console.log("i am selecting");
+      mobileWorkspaces.classList.add("is-visible");
+    }
   }
 
   if (button) {
@@ -90,10 +120,20 @@ nav.addEventListener("click", (e) => {
 
   if (iTag) {
     console.log(iTag);
-    if (iTag.id === "search-mobile-workspace") {
+    if (iTag.id === "search-item-icon") {
       mobileSearchContainer.classList.add("search-active");
     navlistMobileAll.forEach((item) => item.classList.add("search-active"));
     }
 
+    if (iTag.id === "search-mobile-workspace") {
+      searchMenu.classList.add("is-search-visible");
+    }
+
   }
+
+  /*main.forEach((mainItem) => {
+    if (mainItem === elem) {
+      searchMenu.classList.remove("is-search-visible");
+    }
+  });*/
 });
