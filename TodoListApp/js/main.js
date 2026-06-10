@@ -176,6 +176,14 @@ nav.addEventListener("click", (e) => {
           <button type="button" id="cancel-input-btn">x</button>
       `;
       replacableItem.replaceWith(itemDiv);
+      currTabMode = null;
+      }
+    }
+    
+    if (currTabMode === "deleteTabTab") {
+      const workspace = li;
+      if (mobileWorkspaces.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
+        const workspaceName = workspace.textContent.trim();
       }
     }
   }
