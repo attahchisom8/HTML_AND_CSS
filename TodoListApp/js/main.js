@@ -47,7 +47,7 @@ const searchMenu = document.querySelector(".dropdown-search-menu");
 // const dropDownMobileActions = searchMenu.querySelector(".dropdown-mobile-actions");
 const replacableItem = document.querySelector(".replacable-item");
 const mobileWorkspaces = document.querySelector(".workspaces");
-///const chooseWorkspaceobile = document.querySelector(".choose-workspace");
+const deleteDialog = document.querySelector(".delete-modal-box dialog");
 let currTabMode = null;
 
 nav.addEventListener("click", (e) => {
@@ -180,10 +180,11 @@ nav.addEventListener("click", (e) => {
       }
     }
     
-    if (currTabMode === "deleteTabTab") {
+    if (currTabMode === "deleteTab") {
       const workspace = li;
       if (mobileWorkspaces.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
-        const workspaceName = workspace.textContent.trim();
+        deleteDialog.showModal();
+        currTabMode = null;
       }
     }
   }

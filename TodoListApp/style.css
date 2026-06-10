@@ -589,6 +589,22 @@ MOBILE  VERSIION OF MAIN STYLE
 
 .main-content {
     padding: 0;
+ }
+ 
+ dialog {
+    background: #7855ee;
+    color: #fff;
+    border-radius: 15px;
+    outline: none;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+dialog p {
+    font-size: 1rem;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.7)
 }
 
 .dropdown-desktop-actions {
