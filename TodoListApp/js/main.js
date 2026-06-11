@@ -142,52 +142,56 @@ nav.addEventListener("click", (e) => {
     if (li.id === "workspaces-cancel-btn") {
       mobileWorkspaces.classList.remove("is-visible");
     }
-
-    if (currTabMode === "selectTab") {
-      const workspace = li;
-      if (mobileWorkspaces.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
-        const workspaceName = workspace.textContent.trim();
-        workspaceTitle.textContent = nameWorkspaceTitle(workspaceName);
-        currWorkspace = workspaceObj[workspaceName];
-        currTabMode = null;
-      }
-    }
-
-    if (currTabMode === "updateTab") {
-      const workspace = li;
-      if (mobileWorkspaces.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
-        mobileWorkspaces.classList.remove("is-visible");
-        workspaceTab.classList.remove("is-visible");
-
-        const workspaceName = workspace.textContent;
-        const itemDiv = document.createElement("div");
-        itemDiv.classList.add("create-workspace-container", "show-workspace-container");
-        itemDiv.innerHTML = `
-            <input
-              type="text"
-              value=${workspaceName}
-              placeholder="Update your workspace"
-              id="create-workspace"
-            />
-            <button 
-              type="button" 
-              id="create-btn"
-              class="fa-solid fa-sync"
-              ></button>
-            <button type="button" id="cancel-input-btn">x</button>
-        `;
-        replacableItem.replaceWith(itemDiv);
-        currTabMode = null;
-      }
-    }
     
-    if (currTabMode === "deleteTab") {
-      const workspace = li;
-      if (mobileWorkspaces.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
-        deleteDialog.showModal();
-        currTabMode = null;
+    const workspaceTabAction = (workspacesTab, tabState) => {
+      if (tabState === "selectTab") {
+        const workspace = li;
+        if (workspacesTab.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
+          const workspaceName = workspace.textContent.trim();
+          workspaceTitle.textContent = nameWorkspaceTitle(workspaceName);
+          currWorkspace = workspaceObj[workspaceName];
+          tabState = null;
+        }
+      }
+
+      if (tabState === "updateTab") {
+        const workspace = li;
+        if (workspacesTab.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
+          workspacesTab.classList.remove("is-visible");
+          workspaceTab.classList.remove("is-visible");
+
+          const workspaceName = workspace.textContent;
+          const itemDiv = document.createElement("div");
+          itemDiv.classList.add("create-workspace-container", "show-workspace-container");
+          itemDiv.innerHTML = `
+              <input
+                type="text"
+                value=${workspaceName}
+                placeholder="Update your workspace"
+                id="create-workspace"
+              />
+              <button 
+                type="button" 
+                id="create-btn"
+                class="fa-solid fa-sync"
+                ></button>
+              <button type="button" id="cancel-input-btn">x</button>
+          `;
+          replacableItem.replaceWith(itemDiv);
+          tabState = null;
+        }
+      }
+      
+      if (tabState === "deleteTab") {
+        const workspace = li;
+        if (workspacesTab.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
+          deleteDialog.showModal();
+          tabState = null;
+        }
       }
     }
+
+    workspaceTabAction(mobileWorkspaces, currTabMode);
 
     // Desktop ersion
 
@@ -198,6 +202,17 @@ nav.addEventListener("click", (e) => {
     if (li.classList.contains("dropdown-trigger")) {
       const arrow = li.querySelector(".arrow");
       const dropdownWrapper = li.nextElementSibling;
+      const desktopworkspace = dropdownWrapper.querySelector(".workspace-desktop");
+
+      if (desktopworkspace.classList.contains("selectTab")) {
+        currTabMode = "select-tab";
+      } else if (desktopworkspace.classList.contains("update-tab")) {
+        currTabMode = "updateTab";
+      } else if (desktopworkspace.classList.contains("deleteTab")) {
+        currTabMode = "deleteTab";
+      } else {
+        currTabMode = null;
+      }
 
       const isTurned = arrow.classList.toggle("item-desk-active");
       li.classList.toggle("item-desk-active", isTurned);
