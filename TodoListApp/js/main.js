@@ -48,6 +48,7 @@ const searchMenu = document.querySelector(".dropdown-search-menu");
 const replacableItem = document.querySelector(".replacable-item");
 const mobileWorkspaces = document.querySelector(".workspaces");
 const deleteDialog = document.querySelector(".delete-modal-box dialog");
+// const dropdownWrapper = document.querySelector(".dropdown-wrapper");
 let currTabMode = null;
 
 nav.addEventListener("click", (e) => {
@@ -160,23 +161,23 @@ nav.addEventListener("click", (e) => {
 
         const workspaceName = workspace.textContent;
         const itemDiv = document.createElement("div");
-      itemDiv.classList.add("create-workspace-container", "show-workspace-container");
-      itemDiv.innerHTML = `
-          <input
-            type="text"
-            value=${workspaceName}
-            placeholder="Update your workspace"
-            id="create-workspace"
-          />
-          <button 
-            type="button" 
-            id="create-btn"
-            class="fa-solid fa-sync"
-            ></button>
-          <button type="button" id="cancel-input-btn">x</button>
-      `;
-      replacableItem.replaceWith(itemDiv);
-      currTabMode = null;
+        itemDiv.classList.add("create-workspace-container", "show-workspace-container");
+        itemDiv.innerHTML = `
+            <input
+              type="text"
+              value=${workspaceName}
+              placeholder="Update your workspace"
+              id="create-workspace"
+            />
+            <button 
+              type="button" 
+              id="create-btn"
+              class="fa-solid fa-sync"
+              ></button>
+            <button type="button" id="cancel-input-btn">x</button>
+        `;
+        replacableItem.replaceWith(itemDiv);
+        currTabMode = null;
       }
     }
     
@@ -186,6 +187,41 @@ nav.addEventListener("click", (e) => {
         deleteDialog.showModal();
         currTabMode = null;
       }
+    }
+
+    // Desktop ersion
+
+    if (li.classList.contains("tut-desktop")) {
+      tutorialPanel.classList.toggle("tut-active");
+    }
+
+    if (li.classList.contains("dropdown-trigger")) {
+      const arrow = li.querySelector(".arrow");
+      const dropdownWrapper = li.nextElementSibling;
+
+      const isTurned = arrow.classList.toggle("item-desk-active");
+      li.classList.toggle("item-desk-active", isTurned);
+      dropdownWrapper.classList.toggle("item-desk-active", isTurned);
+    }
+
+    if (li.classList.contains("add-workspace-desktop")) {
+      const itemDiv = document.createElement("div");
+
+      li.classList.add("item-desk-active");
+        itemDiv.classList.add("create-workspace-container", "show-workspace-container");
+        itemDiv.innerHTML = `
+            <input
+              type="text"
+              placeholder="Create your workspace"
+              id="create-workspace"
+            />
+            <button 
+              type="button" 
+              id="create-btn"
+              >+</button>
+            <button type="button" id="cancel-input-btn">x</button>
+        `;
+        replacableItem.replaceWith(itemDiv);
     }
   }
 
@@ -197,6 +233,11 @@ nav.addEventListener("click", (e) => {
 
     if (button.id === "search-cancel-btn") {
       navlistMobileAll.forEach((item) => item.classList.remove("search-active"));
+    }
+
+    // Desltop version
+    if (button.id === "desk-search-btn") {
+      searchMenu.classList.add("is-search-visible");
     }
   }
 

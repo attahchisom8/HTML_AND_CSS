@@ -354,6 +354,7 @@ MOBILE  VERSIION OF ASIDE STYLE
 
 .tutorial-panel p {
     padding-bottom: 20px;
+    color: #fff;
     ;
 }
 
@@ -481,6 +482,10 @@ DESKTOP  VERSIION OF ASIDE STYLE
     .nav-item.item-desk-active, .nav-item-btn.item-desk-active {
         color: #00ffcc;
     }
+
+    .dropdown-trigger.item-desk-active {
+        color: #00ffcc;
+    }
     
     .dropdown-wrapper {
         padding-left: 10px;
@@ -568,6 +573,7 @@ DESKTOP  VERSIION OF ASIDE STYLE
      .tutorial-panel {
         width: 50%;
         max-height: 90vh;
+        top: 0;
         display: flex;
         flex-direction: column;
         gap: 50px;
@@ -624,14 +630,16 @@ dialog::backdrop {
     color: #fff;
     border-radius: 0 0 10px 10px;
     position: absolute;
-    transform: translate(12.5%);
+    transform: translateX(12.5%);
     transition: margin 0.3s ease opacity 0.3s ease;
+    z-index: 1000;
 }
 
 .dropdown-search-menu.is-search-visible {
     visibility: visible;
     opacity: 1;
     margin: 101px auto;
+    position: fixed;
 }
 
 .found-search {
@@ -1082,13 +1090,15 @@ DESKTOP  VERSIION OF MAIN STYLE
 
     .dropdown-search-menu {
         margin: 0 auto;
+        width: 60%;
         min-height: 100px;
-        transform: translateY(-100%);
+        transform: translateY(-150%);
         transition: transform 0.4s cubic-bezier(0.825, 0.123, 0.5, 0.95);
     }
 
     .dropdown-search-menu.is-search-visible {
-        transform: translateY(0);
+        transform: translateY(-100%);
+        margin: 100px 110px;
     }
 
     .dropdown-search-menu.is-search-visible .dropdown-desktop-actions {
