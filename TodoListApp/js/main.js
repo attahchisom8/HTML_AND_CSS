@@ -202,14 +202,17 @@ nav.addEventListener("click", (e) => {
     if (li.classList.contains("dropdown-trigger")) {
       const arrow = li.querySelector(".arrow");
       const dropdownWrapper = li.nextElementSibling;
-      const desktopworkspace = dropdownWrapper.querySelector(".workspace-desktop");
+      const desktopworkspaces = dropdownWrapper.querySelector(".workspaces-desktop");
 
-      if (desktopworkspace.classList.contains("selectTab")) {
+      if (desktopworkspaces.classList.contains("selectTab")) {
         currTabMode = "select-tab";
-      } else if (desktopworkspace.classList.contains("update-tab")) {
+        workspaceTabAction(desktopworkspaces, currTabMode);
+      } else if (desktopworkspaces.classList.contains("update-tab")) {
         currTabMode = "updateTab";
-      } else if (desktopworkspace.classList.contains("deleteTab")) {
+        workspaceTabAction(desktopworkspaces, currTabMode);
+      } else if (desktopworkspaces.classList.contains("deleteTab")) {
         currTabMode = "deleteTab";
+        workspaceTabAction(desktopworkspaces, currTabMode);
       } else {
         currTabMode = null;
       }
