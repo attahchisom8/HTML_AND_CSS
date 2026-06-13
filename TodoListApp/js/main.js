@@ -43,13 +43,73 @@ const workspaceTab = document.querySelector(".workspace-tab");
 const tutorialPanel = document.querySelector(".tutorial-panel");
 const mobileSearchContainer = document.querySelector(".mobile-search-container");
 const searchMenu = document.querySelector(".dropdown-search-menu");
-// const main = document.querySelectorAll(".main-content > *:not(:first-child)");
-// const dropDownMobileActions = searchMenu.querySelector(".dropdown-mobile-actions");
 const replacableItem = document.querySelector(".replacable-item");
+const createWorkspaceContainer = document.querySelector(".create-workspace-container");
 const mobileWorkspaces = document.querySelector(".workspaces");
 const deleteDialog = document.querySelector(".delete-modal-box dialog");
-// const dropdownWrapper = document.querySelector(".dropdown-wrapper");
+const foundWorkspace = document.querySelector("#found-workspace");
 let currTabMode = null;
+
+const getReplacableContainer = () => {
+  return document.querySelector(".replacable-item") ||
+    document.querySelector(".create-workspace-container");
+}
+
+const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
+      if (!workspacesTab || !tabState || !currTabMode)
+        return;
+
+      let workspaceName = clickedElem.dataset.workspace || clickedElem.textContent.trim();
+      if (workspacesTab.classList.contains("dropdown-mobile-actions") || workspacesTab.classList.contains("dropdown-desktop-actions")) {
+          workspaceName = foundWorkspace.textContent.trimEnd();
+        }
+  
+      if (tabState === "selectTab") {
+        const workspace = clickedElem;
+
+        if (workspacesTab.contains(workspace) && !workspace.id.endsWith("-btn")) {
+          workspaceTitle.textContent = nameWorkspaceTitle(workspaceName);
+          currWorkspace = workspaceObj[workspaceName];
+          tabState = null;
+        }
+      }
+
+      if (tabState === "updateTab") {
+        const workspace = clickedElem;
+        if (workspacesTab.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
+          workspacesTab.classList.remove("is-visible");
+          workspaceTab.classList.remove("is-visible");
+
+          const replacableTarget = getReplacableContainer();
+          const itemDiv = document.createElement("div");
+          itemDiv.classList.add("create-workspace-container", "show-workspace-container");
+          itemDiv.innerHTML = `
+              <input
+                type="text"
+                value=${workspaceName}
+                placeholder="Update your workspace"
+                id="create-workspace"
+              />
+              <button 
+                type="button" 
+                id="create-btn"
+                class="fa-solid fa-sync"
+                ></button>
+              <button type="button" id="cancel-input-btn">x</button>
+          `;
+          replacableTarget.replaceWith(itemDiv);
+          tabState = null;
+        }
+      }
+      
+      if (tabState === "deleteTab") {
+        const workspace = clickedElem;
+        if (workspacesTab.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
+          deleteDialog.showModal();
+          tabState = null;
+        }
+      }
+    }
 
 nav.addEventListener("click", (e) => {
   const elem = e.target;
@@ -61,7 +121,6 @@ nav.addEventListener("click", (e) => {
   const button = e.target.closest("button");
 
   // Handle clickable nav items
-
   if (div?.classList.contains("toggle-menu")){
     const istoggled = div.classList.toggle("is-active");
     sortTab.classList.toggle("is-visible", istoggled);
@@ -78,12 +137,6 @@ nav.addEventListener("click", (e) => {
       if (!isWsp)
         mobileWorkspaces.classList.remove("is-visible");
     }
-
-    /*if (span.id === "dropdown-icon") {
-      console.log("i was clicked");
-      console.log(dropDownMobileActions);
-      dropDownMobileActions.classList.add("is-search-active");
-    }*/
   }
 
   // Handle menuitems  pressdown
@@ -92,6 +145,7 @@ nav.addEventListener("click", (e) => {
 
   if (li) {
     const text = li.textContent.trim();
+    const parentUl = li.parentElement;
 
     if (li.classList.contains("search-workspace-mobile")) {
       mobileSearchContainer.classList.add("search-active");
@@ -100,6 +154,7 @@ nav.addEventListener("click", (e) => {
 
     if (text === "Add workspace") {
       workspaceTab.classList.remove("is-visible");
+      mobileWorkspaces.classList.remove("is-visible");
       const itemDiv = document.createElement("div");
       itemDiv.classList.add("create-workspace-container", "show-workspace-container");
       itemDiv.innerHTML = `
@@ -142,90 +197,45 @@ nav.addEventListener("click", (e) => {
     if (li.id === "workspaces-cancel-btn") {
       mobileWorkspaces.classList.remove("is-visible");
     }
-    
-    const workspaceTabAction = (workspacesTab, tabState) => {
-      if (tabState === "selectTab") {
-        const workspace = li;
-        if (workspacesTab.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
-          const workspaceName = workspace.textContent.trim();
-          workspaceTitle.textContent = nameWorkspaceTitle(workspaceName);
-          currWorkspace = workspaceObj[workspaceName];
-          tabState = null;
-        }
-      }
 
-      if (tabState === "updateTab") {
-        const workspace = li;
-        if (workspacesTab.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
-          workspacesTab.classList.remove("is-visible");
-          workspaceTab.classList.remove("is-visible");
-
-          const workspaceName = workspace.textContent;
-          const itemDiv = document.createElement("div");
-          itemDiv.classList.add("create-workspace-container", "show-workspace-container");
-          itemDiv.innerHTML = `
-              <input
-                type="text"
-                value=${workspaceName}
-                placeholder="Update your workspace"
-                id="create-workspace"
-              />
-              <button 
-                type="button" 
-                id="create-btn"
-                class="fa-solid fa-sync"
-                ></button>
-              <button type="button" id="cancel-input-btn">x</button>
-          `;
-          replacableItem.replaceWith(itemDiv);
-          tabState = null;
-        }
-      }
-      
-      if (tabState === "deleteTab") {
-        const workspace = li;
-        if (workspacesTab.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
-          deleteDialog.showModal();
-          tabState = null;
-        }
-      }
-    }
-
-    workspaceTabAction(mobileWorkspaces, currTabMode);
+    handleWorkspaceTabAction(mobileWorkspaces, currTabMode, li);
 
     // Desktop ersion
 
+    if (li.classList.contains("nav-item-btn")) {
+      li.classList.add("item-desk-active");
+    }
+
     if (li.classList.contains("tut-desktop")) {
-      tutorialPanel.classList.toggle("tut-active");
+      const isToggled = tutorialPanel.classList.toggle("tut-active");
+      li.classList.toggle("item-desk-active", isToggled);
     }
 
     if (li.classList.contains("dropdown-trigger")) {
       const arrow = li.querySelector(".arrow");
       const dropdownWrapper = li.nextElementSibling;
-      const desktopworkspaces = dropdownWrapper.querySelector(".workspaces-desktop");
-
-      if (desktopworkspaces.classList.contains("selectTab")) {
-        currTabMode = "select-tab";
-        workspaceTabAction(desktopworkspaces, currTabMode);
-      } else if (desktopworkspaces.classList.contains("update-tab")) {
-        currTabMode = "updateTab";
-        workspaceTabAction(desktopworkspaces, currTabMode);
-      } else if (desktopworkspaces.classList.contains("deleteTab")) {
-        currTabMode = "deleteTab";
-        workspaceTabAction(desktopworkspaces, currTabMode);
-      } else {
-        currTabMode = null;
-      }
 
       const isTurned = arrow.classList.toggle("item-desk-active");
       li.classList.toggle("item-desk-active", isTurned);
       dropdownWrapper.classList.toggle("item-desk-active", isTurned);
     }
+    
+    if (parentUl.classList.contains("workspaces-desktop")) {
+      if (parentUl.classList.contains("select-tab"))
+        currTabMode = "selectTab";
+      else if (parentUl.classList.contains("update-tab"))
+        currTabMode = "updateTab";
+      else if (parentUl.classList.contains("delete-tab"))
+        currTabMode = "deleteTab";
+      else currTabMode = null;
+
+      handleWorkspaceTabAction(parentUl, currTabMode, li);
+    }
 
     if (li.classList.contains("add-workspace-desktop")) {
       const itemDiv = document.createElement("div");
+      const replacableTarget = getReplacableContainer();
 
-      li.classList.add("item-desk-active");
         itemDiv.classList.add("create-workspace-container", "show-workspace-container");
         itemDiv.innerHTML = `
             <input
@@ -239,16 +249,11 @@ nav.addEventListener("click", (e) => {
               >+</button>
             <button type="button" id="cancel-input-btn">x</button>
         `;
-        replacableItem.replaceWith(itemDiv);
+        replacableTarget.replaceWith(itemDiv);
     }
   }
 
   if (button) {
-    console.log(button);
-    if (button.id === "close-panel-btn") {
-      tutorialPanel.classList.remove("tut-active");
-    }
-
     if (button.id === "search-cancel-btn") {
       navlistMobileAll.forEach((item) => item.classList.remove("search-active"));
     }
@@ -260,7 +265,6 @@ nav.addEventListener("click", (e) => {
   }
 
   if (iTag) {
-    console.log(iTag);
     if (iTag.id === "search-item-icon") {
       mobileSearchContainer.classList.add("search-active");
     navlistMobileAll.forEach((item) => item.classList.add("search-active"));
@@ -272,9 +276,87 @@ nav.addEventListener("click", (e) => {
 
   }
 
-  /*main.forEach((mainItem) => {
-    if (mainItem === elem) {
-      searchMenu.classList.remove("is-search-visible");
-    }
-  });*/
 });
+
+//  Attaching event listener to main
+
+const main = document.querySelector(".main-content");
+const dropDownMobileActions = searchMenu.querySelector(".dropdown-mobile-actions");
+const dropDownDesktopActions = searchMenu.querySelector(".dropdown-desktop-actions");
+const timeDate = document.querySelector(".time-date");
+const clock = timeDate.querySelector(".clock");
+const date = timeDate.querySelector(".date");
+
+main.addEventListener("click", (e) => {
+  const elem = e.target;
+  const text = elem.textContent;
+  const div = e.target.closest("div");
+  const span = e.target.closest("span");
+  const iTag = e.target.closest("i");
+  const button = e.target.closest("button");
+
+  if (!searchMenu.contains(elem)) {
+    searchMenu.classList.remove("is-search-visible");
+    dropDownMobileActions.classList.remove("is-search-visible");
+  }
+
+  if (span) {
+    const parentSpan = span.parentElement;
+    if (span.id === "dropdown-icon") {
+      dropDownMobileActions.classList.add("is-search-visible");
+    }
+
+    if (span.id === "mobile-action-cancel-btn") {
+      dropDownMobileActions.classList.remove("is-search-visible");
+    }
+
+    if (parentSpan.classList.contains("dropdown-mobile-actions")) {
+      if (span.id === "mobile-action-select")
+        currTabMode = "selectTab";
+      else if (span.id === "mobile-action-update")
+        currTabMode = "updateTab";
+      else if (span.id === "mobile-action-delete")
+        currTabMode = "deleteTab";
+      else
+        currTabMode = null;
+
+      handleWorkspaceTabAction(dropDownMobileActions, currTabMode, span);
+    }
+
+    //DESKTOP MODE
+    if (parentSpan.classList.contains("dropdown-desktop-actions")) {
+      if (span.id === "desktop-action-select")
+        currTabMode = "selectTab";
+      else if (span.id === "desktop-action-update")
+        currTabMode = "updateTab";
+      else if (span.id === "desktop-action-delete")
+        currTabMode = "deleteTab";
+      else
+        currTabMode = null;
+
+      handleWorkspaceTabAction(dropDownDesktopActions, currTabMode, span);
+    }
+  }
+
+  if (button) {
+    if (button.id === "cancel-input-btn") {
+      const container = getReplacableContainer();
+      container.replaceWith(replacableItem);
+      document.querySelector(".add-workspace-desktop").classList.remove("item-desk-active");
+    }
+
+    if (button.id === "close-panel-btn") {
+      tutorialPanel.classList.remove("tut-active");
+    }
+  }
+
+});
+
+// Add interactivity to clock panel
+const hour = clock.querySelector(".hour");
+const minute = clock.querySelector(".minute");
+const second = clock.querySelector(".second");
+
+panel.clockSetUp(hour, minute, second);
+if (date.textContent !== panel.formattedDate());
+date.textContent = panel.formattedDate();

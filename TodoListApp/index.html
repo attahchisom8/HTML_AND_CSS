@@ -99,7 +99,7 @@
           <li class="dropdown-wrapper">
             <ul class="workspaces-desktop select-tab">
               <li>Test Workspace</li>
-              <li>finance</li>
+              <li data-workspace="finance">finance</li>
             </ul>
           </li>
           <li class="nav-item-btn add-workspace-desktop">
@@ -111,7 +111,7 @@
           <li class="dropdown-wrapper">
             <ul class="workspaces-desktop delete-tab">
               <li>Test delete workspace</li>
-              <li>finance</li>
+              <li data-workspace="finance">finance</li>
             </ul>
           </li>
           <li class="nav-item dropdown-trigger">
@@ -159,21 +159,23 @@
           <span id="found-workspace">Test found workspace</span>
           <span class="fa-solid fa-ellipsis-vertical" id="dropdown-icon"></span>
           <div class="dropdown-mobile-actions mobile-only">
-            <span>switch into</span>
-            <span>update</span>
-            <span>delete</span>
+            <span id="mobile-action-select">switch into</span>
+            <span id="mobile-action-update">update</span>
+            <span id="mobile-action-delete">delete</span>
+            <span id="mobile-action-cancel-btn">Cancel</span>
           </div>
           <div class="dropdown-desktop-actions">
-            <span>switch into</span>
-            <span>update</span>
-            <span>delete</span>
+            <span id="desktop-action-select">switch into</span>
+            <span id="desktop-action-update">update</span>
+            <span id="desktop-action-delete">delete</span>
+            <span id="desktop-action-cancel-btn">Cancel</span>
           </div>
         </div>
       </div>
       <div class="no-search-result">
         <div class="no-result-msg">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <h5></h5>No Result Found!</h5>
+          <h5>No Result Found!</h5>
         </div>
         <p>Try adjusting your search/filters</p>
       </div>
@@ -190,7 +192,7 @@
     
     <!-- WORKSPACE SECTION SETUP -->
     <section class="section-workspace">
-      <div class="replacable-item">replace me</div>
+      <div class="replacable-item"></div>
       <h2 id="curr-workspace">Health workspace</h2>
       <div class="time-date">
         <div class="time clock">

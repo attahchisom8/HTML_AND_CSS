@@ -502,6 +502,21 @@ DESKTOP  VERSIION OF ASIDE STYLE
         overflow-y: auto;
         max-height: 500px;
     }
+
+    .workspaces-desktop, .sort-tab-desktop {
+        background: /*rgba(255, 255, 255, 0.125)*/
+        linear-gradient(1135deg, #7855ee 0%, #ff5845 100%);
+        border-radius: 5px;
+        backdrop-filter: blur(10px);
+        box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.8),
+            inset -5px -5px 10px rgba(255, 255, 255, 0.05)
+            3px 3px 10px rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        outline: 1px solid rgba(255,255, 255, 0.05);
+        outline-offset: -3px;
+        z-index: -5;
+        font-size: 1rem;
+    }
     
     .dropdown-wrapper ul {
         display: flex;
@@ -643,7 +658,7 @@ dialog::backdrop {
 }
 
 .found-search {
-    display: flex;
+    display: none;
     width: 100%;
 }
 
@@ -669,8 +684,22 @@ dialog::backdrop {
     height: 25px;
 }
 
+#dropdown-icon:active {
+    transform: scale(0.78);
+}
+
 .dropdown-mobile-actions {
     display: none;
+    font-size: 1rem;
+    height: 120px;
+}
+
+.dropdown-mobile-actions *:hover {
+    background: #dd5578;
+}
+
+.dropdown-mobile-actions *:active {
+    transform: scale(0.57);
 }
 
 .found-search.is-search-visible  .dropdown-mobile-actions {
@@ -692,15 +721,11 @@ dialog::backdrop {
     transition: transorm 0.4s ease-in-out opacity 0.4s ease-in-out;
 }
 
-.found-search.is-search-visible .dropdown-mobile-actions.is-search-active {
+.found-search.is-search-visible .dropdown-mobile-actions.is-search-visible {
     opacity: 1;
     visibility: visible;
     transform: translate(0, 0);
    
-}
-
-.dropdown-mobile-actions *:hover {
-    background: #7855ee;
 }
 
 .no-search-result {
@@ -708,7 +733,7 @@ dialog::backdrop {
 }
 
 .no-search-result.is-search-visible {
-    background-color: transparent;
+    background: green;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1121,6 +1146,12 @@ DESKTOP  VERSIION OF MAIN STYLE
 
     .dropdown-desktop-actions *:active {
         transform: scale(0.57);
+    }
+
+    dialog button {
+        position: relative;
+        left: 40%;
+        transform: translateX(-50%);
     }
 
     .mose-brand {

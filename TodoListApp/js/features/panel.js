@@ -39,3 +39,22 @@ export const clockSetUp = (hourHand, minuteHand, secondHand) => {
   moveHands();
   setInterval(moveHands, 1000);
 }
+
+/**
+ * formattedDate - return us date format
+ * 
+ * Return: void
+ */
+
+export const formattedDate = () => {
+  const now = new Date();
+  const options = {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+
+  }
+
+  return  now.toLocaleDateString("en-us", options);
+}
