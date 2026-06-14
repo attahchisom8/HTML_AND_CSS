@@ -14,7 +14,7 @@ const nameWorkspaceTitle = (workspaceName) => {
   return `${workspaceName}  workspace`;
 }
 
-const workspaceObj = JSON.parse(localStorage.getItem("workspaceObj")) || {
+const workspaceObj = store.getStoreData() || {
   "health": [],
   "finance": [],
   "work": [],
@@ -88,7 +88,7 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
                 type="text"
                 value=${workspaceName}
                 placeholder="Update your workspace"
-                id="create-workspace"
+                id="update-workspace"
               />
               <button 
                 type="button" 
@@ -132,7 +132,7 @@ nav.addEventListener("click", (e) => {
       tutorialPanel.classList.toggle("tut-active");
     }
 
-    if (text === "sel/add/del workspace") {
+    if (span.id === "choose-mobile-workspace") {
       const isWsp = workspaceTab.classList.toggle("is-visible");
       if (!isWsp)
         mobileWorkspaces.classList.remove("is-visible");
@@ -286,6 +286,7 @@ const dropDownDesktopActions = searchMenu.querySelector(".dropdown-desktop-actio
 const timeDate = document.querySelector(".time-date");
 const clock = timeDate.querySelector(".clock");
 const date = timeDate.querySelector(".date");
+const dynamicTyping = document.querySelector(".dynamic-typing");
 
 main.addEventListener("click", (e) => {
   const elem = e.target;
@@ -348,6 +349,10 @@ main.addEventListener("click", (e) => {
     if (button.id === "close-panel-btn") {
       tutorialPanel.classList.remove("tut-active");
     }
+
+    if (button.id === "dialog-cancel-btn") {
+      deleteDialog.close();
+    }
   }
 
 });
@@ -358,5 +363,83 @@ const minute = clock.querySelector(".minute");
 const second = clock.querySelector(".second");
 
 panel.clockSetUp(hour, minute, second);
-if (date.textContent !== panel.formattedDate());
-date.textContent = panel.formattedDate();
+if (date.textContent !== panel.formattedDate())
+  date.textContent = panel.formattedDate();
+
+// handle dynamic text rendering
+const myText = "Check your deadline against the date";
+let chrIdx = 0;
+const lenMyText = myText.length;
+
+const typeText = () => {
+  if (chrIdx < lenMyText) {
+    dynamicTyping.textContent += myText[chrIdx];
+    chrIdx++;
+    setTimeout(typeText, 200);
+  } else {
+    setTimeout(eraseText, 2000);
+  }
+}
+typeText();
+
+const eraseText = () => {
+  if (chrIdx > 0) {
+    chrIdx--;
+    dynamicTyping.textContent = myText.substring(0, chrIdx);
+    setTimeout(eraseText, 70);
+  } else {
+    setTimeout(typeText, 1000);
+  }
+}
+eraseText();
+
+// Handle user inputs
+const navDeskSearchInput = document.querySelector("#nav-search-input");
+const navMoileSearchInput = document.querySelector("#mobile-search");
+const createWorkspaceInput = document.querySelector("#create-workspace");
+const updateWprkspaceInput = document.querySelector("#update-workspace");
+const taskInput = document.querySelector("#task-name");
+const prioritySelector =  document.querySelector("#set-priority");
+const dateInput = document.querySelector("#task-date");
+const noSearchResultFound = searchMenu.querySelector("no-search-result");
+const foundSearch = searchMenu.querySelector(".found-search");
+
+const handleInputs = () => {
+  const navDeskSearchValue = navDeskSearchInput.value;
+  const  navMoileSearchValue = navMoileSearchInput.value;
+  const createWorkspaceValue = createWorkspaceInput?.value;
+  const updateWprkspaceValue = updateWprkspaceInput?.value;
+  const taskDetailsValue = taskInput.value;
+  const priorityValue = prioritySelector.value;
+  const dateValue = dateInput.value;
+  const now = new Date();
+
+  if (!taskDetailsValue) {
+    alert("Please enter your task details");
+    return;
+  }
+
+  if (dateValue && new Date(dateValue) < new Date(now))
+  {
+    alert("Task date cannot be in the past");
+    return;
+  }
+
+  if (!navDeskSearchValue || !navMoileSearchValue) {
+    console.log(noSearchResultFound);
+    noSearchResultFound.classList.add("is-search-visible");
+  }
+
+  const task = {
+    id: crypto.randomUUID(),
+    taskDetails: taskDetailsValue,
+    priority: priorityValue,
+    dueDate: dateValue ? new Date(dateValue).toISOString(now) :
+    new Date().toISOString(),
+    status: new Date(dateValue) < new Date(now) ? "undone" : "pending",
+  };
+  crud.addTask(workspaceObj, currWorkspace, task);
+  store.saveToStore(workspaceObj);
+}
+
+handleInputs();

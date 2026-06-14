@@ -35,8 +35,8 @@ export const testTodoData = {
  */
 
 export const getStoreData = () => {
-	const workspaces = JSON.parse(localStorage.getItem("workspaces")) || [];
-	return workspaces;
+	const workspaceObj = JSON.parse(localStorage.getItem("workspaceObj"));
+	return workspaceObj;
 
 }
 
@@ -61,7 +61,6 @@ export const save = (workspaceObj, key, value) => {
  */
 
 export  const saveToStore = (workspaceObj) => {
-	const workspaces = Object.values(workspaceObj).flat();
-	localStorage.setItem("workspaces", JSON.stringify(workspaces));
+	localStorage.setItem("workspaceObj", JSON.stringify(workspaceObj));
 
 }

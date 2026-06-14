@@ -733,7 +733,6 @@ dialog::backdrop {
 }
 
 .no-search-result.is-search-visible {
-    background: green;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -741,6 +740,7 @@ dialog::backdrop {
     width: 100%;
     font-size: 1.1rem;
     letter-spacing: 0.7px;
+    background: transparent;
 }
 
 .no-result-msg {
@@ -912,6 +912,12 @@ dialog::backdrop {
 
 .date-warning {
     font-style: italic;
+    height: 30px;
+    transform: scaleY(1.5);
+    transform-origin: center;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
 }
 
 .task-input-container {

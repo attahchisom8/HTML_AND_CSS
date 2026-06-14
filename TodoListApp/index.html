@@ -64,7 +64,7 @@
           <span class="bar"></span>
       </div>
       <span class="tut">Tutorial</span>
-      <span class="choose-workspace">sel/add/del workspace</span>
+      <span class="choose-workspace" id="choose-mobile-workspace">sel/add/del workspace</span>
       </div>
 
       <!-- Nav for Desktop -->
@@ -81,6 +81,7 @@
               type="search"
               placeholder="search workspaces"
               list="datalist-workspaces"
+              id="nav-search-input"
               required
             />
             <datalist id="datalist-workspaces"></datalist>
@@ -203,7 +204,7 @@
         </div>
         <div class="time date"></div>
       </div>
-      <div class="date-warning dynamic-typing">Check your deadline against the date</div>
+      <div class="date-warning dynamic-typing"></div>
       <div class="tutorial-panel">
         <button id="close-panel-btn">X</button>
         <h2>Welcome to Mastermose Tech</h2>
