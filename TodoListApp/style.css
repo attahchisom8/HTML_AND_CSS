@@ -841,7 +841,7 @@ dialog::backdrop {
     align-items: center;
     justify-content: flex-start;
     margin-left: 50px;
-    gap: 8px;
+    gap: 18px;
     background-color: transparent;
 }
 
@@ -861,8 +861,8 @@ dialog::backdrop {
     position: absolute;
     left: 50%;
     bottom: 50%;
-    transform: translateX(-50%);
-    transform-origin: bottom center rotate(0deg);
+    transform: translateX(-50%) rotate(0deg);
+    transform-origin: bottom center;
 }
 
 .hour {
@@ -870,6 +870,7 @@ dialog::backdrop {
     height: 35px;
     background: #777;
     border-radius: 15px 15px 0 0;
+    z-index: 200;
 }
 
 .minute {
@@ -877,6 +878,7 @@ dialog::backdrop {
     height: 40px;
     background: #a0a0a0;
     border-radius: 10px 10px 0 0;
+    z-index: 500;
 }
 
 .second {
@@ -884,6 +886,7 @@ dialog::backdrop {
     height: 45px;
     background: #ff0000;
     border-radius: 10px 10px 0 0;
+    z-index: 900;
 }
 
 .center-knob {
@@ -895,6 +898,7 @@ dialog::backdrop {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 1000;
 }
 
 .date {
@@ -904,6 +908,10 @@ dialog::backdrop {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+
+.date-warning {
+    font-style: italic;
 }
 
 .task-input-container {
