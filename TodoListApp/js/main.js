@@ -357,8 +357,11 @@ main.addEventListener("click", (e) => {
     }
     
     if (button.id === "create-btn") {
-      console.log("add button was clicked");
       handleCreateWorkspaceInputs();
+    }
+
+    if (button.id === "update-btn") {
+      handleUpdateWorkspaceInputs();
     }
   }
 
@@ -403,13 +406,15 @@ eraseText();
 // Handle user inputs
 const navDeskSearchInput = document.querySelector("#nav-search-input");
 const navMoileSearchInput = document.querySelector("#mobile-search");
-const createWorkspaceInput = document.querySelector("#create-workspace");
-const updateWprkspaceInput = document.querySelector("#update-workspace");
+// const createWorkspaceInput = document.querySelector("#create-workspace");
+// onst updateWprkspaceInput = document.querySelector("#update-workspace");
 const taskInput = document.querySelector("#task-name");
 const prioritySelector =  document.querySelector("#set-priority");
 const dateInput = document.querySelector("#task-date");
 const noSearchResultFound = searchMenu.querySelector(".no-search-result");
 const foundSearch = searchMenu.querySelector(".found-search");
+// const oldWorkspaceValue = document.querySelector("#update-workspace").value;
+
 
  const handleSearchInputs = () => {
 const navDeskSearchValue = navDeskSearchInput.value.trim();
@@ -441,7 +446,7 @@ noSearchResultFound.classList.remove("is-search-visible");
  }
 
  const handleCreateWorkspaceInputs = () => {
-  const createWorkspaceValue = createWorkspaceInput?.value.trim();
+  const createWorkspaceValue = document.querySelector("#create-workspace").value.trim();
   console.log(createWorkspaceValue);
   if (!createWorkspaceValue) {
     return;
@@ -450,12 +455,13 @@ noSearchResultFound.classList.remove("is-search-visible");
    currWorkspace = workspaceObj[createWorkspaceValue];
    workspaceTitle.textContent = nameWorkspaceTitle(createWorkspaceValue);
    store.saveToStore(workspaceObj);
-   createWorkspaceInput.value = "";
+   document.querySelector("#create-workspace").value = "";
  }
  
 const handleUpdateWorkspaceInputs = () => {
-  const oldWorkspaceValue = updateWprkspaceInput?.value;
-  const newWorkspaceValue = document.querySelector("#update-workspace");
+  const oldWorkspaceValue = document.querySelector("#update-workspace").value;
+  const newWorkspaceValue = document.querySelector("#update-workspace").value;
+  console.log("oldworkspace: ", oldWorkspaceValue, "new workspace: ", newWorkspaceValue);
   
   if (!newWorkspaceValue) {
     return;
@@ -464,6 +470,8 @@ const handleUpdateWorkspaceInputs = () => {
    currWorkspace = workspaceObj[newWorkspaceValue];
    workspaceTitle.textContent = nameWorkspaceTitle(newWorkspaceValue);
    store.saveToStore(workspaceObj);
+
+   document.querySelector("#update-workspace").value  = "";
  }
  
 const handleTaskInputs = () => {

@@ -13,7 +13,8 @@ import { testTodoData } from "./dataStore.js";
  */
 
 export const createWorkspace = (workspaceObj, newWorkspace) => {
-	workspaceObj[newWorkspace] = [];
+	if (workspaceObj[newWorkspace] === "undefined")
+		workspaceObj[newWorkspace] = [];
 
 	return workspaceObj;
 }
