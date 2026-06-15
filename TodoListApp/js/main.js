@@ -92,7 +92,7 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
               />
               <button 
                 type="button" 
-                id="create-btn"
+                id="update-btn"
                 class="fa-solid fa-sync"
                 ></button>
               <button type="button" id="cancel-input-btn">x</button>
@@ -200,7 +200,7 @@ nav.addEventListener("click", (e) => {
 
     handleWorkspaceTabAction(mobileWorkspaces, currTabMode, li);
 
-    // Desktop ersion
+    // Desktop version
 
     if (li.classList.contains("nav-item-btn")) {
       li.classList.add("item-desk-active");
@@ -261,6 +261,7 @@ nav.addEventListener("click", (e) => {
     // Desltop version
     if (button.id === "desk-search-btn") {
       searchMenu.classList.add("is-search-visible");
+      handleSearchInputs();
     }
   }
 
@@ -272,6 +273,7 @@ nav.addEventListener("click", (e) => {
 
     if (iTag.id === "search-mobile-workspace") {
       searchMenu.classList.add("is-search-visible");
+      handleSearchInputs();
     }
 
   }
@@ -353,6 +355,11 @@ main.addEventListener("click", (e) => {
     if (button.id === "dialog-cancel-btn") {
       deleteDialog.close();
     }
+    
+    if (button.id === "create-btn") {
+      console.log("add button was clicked");
+      handleCreateWorkspaceInputs();
+    }
   }
 
 });
@@ -401,14 +408,65 @@ const updateWprkspaceInput = document.querySelector("#update-workspace");
 const taskInput = document.querySelector("#task-name");
 const prioritySelector =  document.querySelector("#set-priority");
 const dateInput = document.querySelector("#task-date");
-const noSearchResultFound = searchMenu.querySelector("no-search-result");
+const noSearchResultFound = searchMenu.querySelector(".no-search-result");
 const foundSearch = searchMenu.querySelector(".found-search");
 
-const handleInputs = () => {
-  const navDeskSearchValue = navDeskSearchInput.value;
-  const  navMoileSearchValue = navMoileSearchInput.value;
-  const createWorkspaceValue = createWorkspaceInput?.value;
-  const updateWprkspaceValue = updateWprkspaceInput?.value;
+ const handleSearchInputs = () => {
+const navDeskSearchValue = navDeskSearchInput.value.trim();
+const navMoileSearchValue = navMoileSearchInput.value.trim();
+ let activeSearch = "";
+ 
+foundSearch.classList.remove("is-search-visible");
+noSearchResultFound.classList.remove("is-search-visible");
+ 
+ 
+  if (navMoileSearchValue) {
+    activeSearch = navMoileSearchValue;
+  } else if (navDeskSearchValue) {
+    activeSearch = navDeskSearchValue;
+  } else {
+    return
+  }
+  
+  if (searchRes.searchWorkspace( 
+    workspaceObj, activeSearch)) {
+    foundSearch.classList.add("is-search-visible");
+    foundWorkspace.textContent = activeSearch;
+  } else {
+    noSearchResultFound.classList.add("is-search-visible");
+  }
+
+  navMoileSearchInput.value = "";
+  navDeskSearchInput.value = "";
+ }
+
+ const handleCreateWorkspaceInputs = () => {
+  const createWorkspaceValue = createWorkspaceInput?.value.trim();
+  console.log(createWorkspaceValue);
+  if (!createWorkspaceValue) {
+    return;
+  }
+  crud.createWorkspace(workspaceObj, createWorkspaceValue);
+   currWorkspace = workspaceObj[createWorkspaceValue];
+   workspaceTitle.textContent = nameWorkspaceTitle(createWorkspaceValue);
+   store.saveToStore(workspaceObj);
+   createWorkspaceInput.value = "";
+ }
+ 
+const handleUpdateWorkspaceInputs = () => {
+  const oldWorkspaceValue = updateWprkspaceInput?.value;
+  const newWorkspaceValue = document.querySelector("#update-workspace");
+  
+  if (!newWorkspaceValue) {
+    return;
+  }
+  crud.updateWorkspace(workspaceObj, oldWorkspaceValue, newWorkspaceValue);
+   currWorkspace = workspaceObj[newWorkspaceValue];
+   workspaceTitle.textContent = nameWorkspaceTitle(newWorkspaceValue);
+   store.saveToStore(workspaceObj);
+ }
+ 
+const handleTaskInputs = () => {
   const taskDetailsValue = taskInput.value;
   const priorityValue = prioritySelector.value;
   const dateValue = dateInput.value;
@@ -425,11 +483,6 @@ const handleInputs = () => {
     return;
   }
 
-  if (!navDeskSearchValue || !navMoileSearchValue) {
-    console.log(noSearchResultFound);
-    noSearchResultFound.classList.add("is-search-visible");
-  }
-
   const task = {
     id: crypto.randomUUID(),
     taskDetails: taskDetailsValue,
@@ -441,5 +494,3 @@ const handleInputs = () => {
   crud.addTask(workspaceObj, currWorkspace, task);
   store.saveToStore(workspaceObj);
 }
-
-handleInputs();
