@@ -796,6 +796,18 @@ dialog::backdrop {
     background: #7855ee;
 }
 
+.update-marker {
+    height: 50px;
+    color: #00ff00;
+    background: red;
+    transform: scaleX(7);
+    font-weight: 1000;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
 .mose-brand {
     width: 100%;
     height: 50px;

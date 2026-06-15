@@ -359,7 +359,7 @@ main.addEventListener("click", (e) => {
     if (button.id === "create-btn") {
       handleCreateWorkspaceInputs();
     }
-
+    
     if (button.id === "update-btn") {
       handleUpdateWorkspaceInputs();
     }
@@ -407,14 +407,12 @@ eraseText();
 const navDeskSearchInput = document.querySelector("#nav-search-input");
 const navMoileSearchInput = document.querySelector("#mobile-search");
 // const createWorkspaceInput = document.querySelector("#create-workspace");
-// onst updateWprkspaceInput = document.querySelector("#update-workspace");
+// const updateWprkspaceInput = document.querySelector("#update-workspace");
 const taskInput = document.querySelector("#task-name");
 const prioritySelector =  document.querySelector("#set-priority");
 const dateInput = document.querySelector("#task-date");
 const noSearchResultFound = searchMenu.querySelector(".no-search-result");
 const foundSearch = searchMenu.querySelector(".found-search");
-// const oldWorkspaceValue = document.querySelector("#update-workspace").value;
-
 
  const handleSearchInputs = () => {
 const navDeskSearchValue = navDeskSearchInput.value.trim();
@@ -446,8 +444,7 @@ noSearchResultFound.classList.remove("is-search-visible");
  }
 
  const handleCreateWorkspaceInputs = () => {
-  const createWorkspaceValue = document.querySelector("#create-workspace").value.trim();
-  console.log(createWorkspaceValue);
+  const createWorkspaceValue = document.querySelector("#create-workspace").value;
   if (!createWorkspaceValue) {
     return;
   }
@@ -459,19 +456,34 @@ noSearchResultFound.classList.remove("is-search-visible");
  }
  
 const handleUpdateWorkspaceInputs = () => {
-  const oldWorkspaceValue = document.querySelector("#update-workspace").value;
-  const newWorkspaceValue = document.querySelector("#update-workspace").value;
-  console.log("oldworkspace: ", oldWorkspaceValue, "new workspace: ", newWorkspaceValue);
+  const oldWorkspaceValue = document.querySelector("#update-workspace").defaultValue.trim();
+  const newWorkspaceValue = document.querySelector("#update-workspace").value.trim();
   
   if (!newWorkspaceValue) {
     return;
   }
-  crud.updateWorkspace(workspaceObj, oldWorkspaceValue, newWorkspaceValue);
-   currWorkspace = workspaceObj[newWorkspaceValue];
-   workspaceTitle.textContent = nameWorkspaceTitle(newWorkspaceValue);
-   store.saveToStore(workspaceObj);
+  
+  if (oldWorkspaceValue === newWorkspaceValue) {
+      document.querySelector("#update-workspace").value = "";
+      return;
+  }
+  
+  const workspaceContainer = getReplacableContainer();
+  const divMarker = document.createElement("div");
 
-   document.querySelector("#update-workspace").value  = "";
+  divMarker.classList.add("update-marker", "fa-solid", "fa-circle-check");
+   
+
+  const res = crud.updateWorkspace(workspaceObj, oldWorkspaceValue, newWorkspaceValue);
+  if (res !== "undefined") {
+    workspaceContainer.replaceWith(divMarker);
+   
+    setTimeout(() => {
+      document.querySelector(".update-marker").replaceWith(workspaceContainer);
+      getReplacableContainer().replaceWith(replacableItem);
+    }, 7000);
+  }
+
  }
  
 const handleTaskInputs = () => {
