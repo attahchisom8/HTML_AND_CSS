@@ -13,6 +13,9 @@ import { testTodoData } from "./dataStore.js";
  */
 
 export const createWorkspace = (workspaceObj, newWorkspace) => {
+	if (workspaceObj.hasOwnProperty(newWorkspace)) {
+		return;
+	}
 	workspaceObj[newWorkspace] = [];
 
 	return workspaceObj;
@@ -31,14 +34,12 @@ let myObj = {...testTodoData};
  */
 
 export const updateWorkspace = (workspaceObj, oldWorkspaceName, newWorkspaceName) => {
-	const newWorkspaceObj = {};
+if (workspaceObj.hasOwnProperty(oldWorkspaceName) && oldWorkspaceName !==  newWorkspaceName) {
+	workspaceObj[newWorkspaceName] = workspaceObj[oldWorkspaceName];
+	delete workspaceObj[oldWorkspaceName];
+}
 
-	for (let  key in workspaceObj) {
-		const newKey = key === oldWorkspaceName ? newWorkspaceName : key;
-		newWorkspaceObj[newKey] = workspaceObj[key];
-	}
-
-	return newWorkspaceObj;
+	return workspaceObj;
 }
 
 // console.log(updateWorkspace(myObj, "Health", "Income"));
@@ -52,13 +53,10 @@ export const updateWorkspace = (workspaceObj, oldWorkspaceName, newWorkspaceName
  */
 
 export const deleteWorkspace = (workspaceObj, workspace) => {
-	const newWorkspaceObj = {};
-	const list = Object.entries(workspaceObj).filter((t) => t[0] !== workspace);
-	list.forEach((item) => {
-		newWorkspaceObj[item[0]] = item[1];
-	});
-
-	return newWorkspaceObj;
+	if (workspaceObj.hasOwnProperty(workspace)) {
+		delete workspaceObj[workspace];
+	}
+	return workspaceObj;
 }
 
 /* let workspace = "Morning Job";

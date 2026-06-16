@@ -6,11 +6,52 @@ import * as searchRes from "./features/search.js";
 
 
 /* ===================================
+VARIABLE DECLARATIONS
+=================================== */
+
+const nav = document.querySelector("nav");
+const toggleMenu = document.querySelector(".toggle-menu");
+const sortTab = document.querySelector(".sort-tab");
+const workspaceTab = document.querySelector(".workspace-tab");
+const tutorialPanel = document.querySelector(".tutorial-panel");
+const mobileSearchContainer = document.querySelector(".mobile-search-container");
+const searchMenu = document.querySelector(".dropdown-search-menu");
+const replacableItem = document.querySelector(".replacable-item");
+// const createWorkspaceContainer = document.querySelector(".create-workspace-container");
+const mobileWorkspaces = document.querySelector(".workspaces");
+const desktopWorkspaces = document.querySelectorAll(".workspaces-desktop");
+const deleteDialog = document.querySelector(".delete-modal-box dialog");
+const foundWorkspace = document.querySelector("#found-workspace");
+
+const main = document.querySelector(".main-content");
+const dropDownMobileActions = searchMenu.querySelector(".dropdown-mobile-actions");
+const dropDownDesktopActions = searchMenu.querySelector(".dropdown-desktop-actions");
+const timeDate = document.querySelector(".time-date");
+const clock = timeDate.querySelector(".clock");
+const date = timeDate.querySelector(".date");
+const dynamicTyping = document.querySelector(".dynamic-typing");
+const tableBody = document.querySelector("tbody");
+
+const navDeskSearchInput = document.querySelector("#nav-search-input");
+const navMoileSearchInput = document.querySelector("#mobile-search");
+const taskInput = document.querySelector("#task-name");
+const prioritySelector =  document.querySelector("#set-priority");
+const dateInput = document.querySelector("#task-date");
+const noSearchResultFound = searchMenu.querySelector(".no-search-result");
+const foundSearch = searchMenu.querySelector(".found-search");
+let currTabMode = null;
+let useWorkspaceLi;
+
+
+
+/* ===================================
 HANDLE DATA PARSING AND STORAGE
 =================================== */
 const workspaceTitle = document.querySelector("#curr-workspace");
+let currWWorkspaceName = "";
 
 const nameWorkspaceTitle = (workspaceName) => {
+  currWWorkspaceName = workspaceName;
   return `${workspaceName}  workspace`;
 }
 
@@ -30,25 +71,12 @@ const workspaceObj = store.getStoreData() || {
 }
 
 workspaceTitle.textContent = nameWorkspaceTitle("health");
-let currWorkspace = workspaceObj["health"];
+let currWorkspace = workspaceObj[currWWorkspaceName];
+
 
 /* ===================================
 HANDLE TASKBAR OPERATIONS
 =================================== */
-
-const nav = document.querySelector("nav");
-const toggleMenu = document.querySelector(".toggle-menu");
-const sortTab = document.querySelector(".sort-tab");
-const workspaceTab = document.querySelector(".workspace-tab");
-const tutorialPanel = document.querySelector(".tutorial-panel");
-const mobileSearchContainer = document.querySelector(".mobile-search-container");
-const searchMenu = document.querySelector(".dropdown-search-menu");
-const replacableItem = document.querySelector(".replacable-item");
-const createWorkspaceContainer = document.querySelector(".create-workspace-container");
-const mobileWorkspaces = document.querySelector(".workspaces");
-const deleteDialog = document.querySelector(".delete-modal-box dialog");
-const foundWorkspace = document.querySelector("#found-workspace");
-let currTabMode = null;
 
 const getReplacableContainer = () => {
   return document.querySelector(".replacable-item") ||
@@ -61,8 +89,10 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
 
       let workspaceName = clickedElem.dataset.workspace || clickedElem.textContent.trim();
       if (workspacesTab.classList.contains("dropdown-mobile-actions") || workspacesTab.classList.contains("dropdown-desktop-actions")) {
-          workspaceName = foundWorkspace.textContent.trimEnd();
-        }
+          workspaceName = foundWorkspace.textContent.trim();
+      }
+
+      useWorkspaceLi = clickedElem;
   
       if (tabState === "selectTab") {
         const workspace = clickedElem;
@@ -282,14 +312,6 @@ nav.addEventListener("click", (e) => {
 
 //  Attaching event listener to main
 
-const main = document.querySelector(".main-content");
-const dropDownMobileActions = searchMenu.querySelector(".dropdown-mobile-actions");
-const dropDownDesktopActions = searchMenu.querySelector(".dropdown-desktop-actions");
-const timeDate = document.querySelector(".time-date");
-const clock = timeDate.querySelector(".clock");
-const date = timeDate.querySelector(".date");
-const dynamicTyping = document.querySelector(".dynamic-typing");
-
 main.addEventListener("click", (e) => {
   const elem = e.target;
   const text = elem.textContent;
@@ -358,10 +380,36 @@ main.addEventListener("click", (e) => {
     
     if (button.id === "create-btn") {
       handleCreateWorkspaceInputs();
+      updateWorkspaceUi();
     }
     
     if (button.id === "update-btn") {
       handleUpdateWorkspaceInputs();
+      updateWorkspaceUi();
+    }
+
+    if (button.id === "dialog-delete-btn") {
+      let workspace, res;
+
+      if (foundSearch.classList.contains("is-search-visible")) {
+        workspace = foundSearch.textContent.trim();
+      } else {
+        workspace = useWorkspaceLi.textContent.trim();
+      }
+      console.log(workspace);
+      res = crud.deleteWorkspace(workspaceObj, workspace);
+      if (res !== "undefined") {
+        foundSearch.classList.remove("is-search-visible");
+        store.saveToStore(workspaceObj);
+        updateWorkspaceUi();
+      }
+
+      deleteDialog.close();
+    }
+
+    if (button.id === "add-task") {
+      handleTaskInputs();
+      updateTaskUi();
     }
   }
 
@@ -404,15 +452,6 @@ const eraseText = () => {
 eraseText();
 
 // Handle user inputs
-const navDeskSearchInput = document.querySelector("#nav-search-input");
-const navMoileSearchInput = document.querySelector("#mobile-search");
-// const createWorkspaceInput = document.querySelector("#create-workspace");
-// const updateWprkspaceInput = document.querySelector("#update-workspace");
-const taskInput = document.querySelector("#task-name");
-const prioritySelector =  document.querySelector("#set-priority");
-const dateInput = document.querySelector("#task-date");
-const noSearchResultFound = searchMenu.querySelector(".no-search-result");
-const foundSearch = searchMenu.querySelector(".found-search");
 
  const handleSearchInputs = () => {
 const navDeskSearchValue = navDeskSearchInput.value.trim();
@@ -448,11 +487,29 @@ noSearchResultFound.classList.remove("is-search-visible");
   if (!createWorkspaceValue) {
     return;
   }
-  crud.createWorkspace(workspaceObj, createWorkspaceValue);
-   currWorkspace = workspaceObj[createWorkspaceValue];
-   workspaceTitle.textContent = nameWorkspaceTitle(createWorkspaceValue);
-   store.saveToStore(workspaceObj);
-   document.querySelector("#create-workspace").value = "";
+
+  const workspaceContainer = getReplacableContainer();
+  const divMarker = document.createElement("div");
+
+  divMarker.classList.add("update-marker");
+  divMarker.innerHTML = `
+  <i class="fa-solid fa-circle-check"></i>
+  `;
+
+  const res = crud.createWorkspace(workspaceObj, createWorkspaceValue);
+  if (res !== "undefined") {
+    currWorkspace = workspaceObj[createWorkspaceValue];
+    workspaceTitle.textContent = nameWorkspaceTitle(createWorkspaceValue);
+  
+    document.querySelector("#create-workspace").value = "";
+    workspaceContainer.replaceWith(divMarker);
+    store.saveToStore(workspaceObj);
+   
+    setTimeout(() => {
+      document.querySelector(".update-marker").replaceWith(workspaceContainer);
+      getReplacableContainer().replaceWith(replacableItem);
+    }, 2000);
+  }
  }
  
 const handleUpdateWorkspaceInputs = () => {
@@ -471,17 +528,20 @@ const handleUpdateWorkspaceInputs = () => {
   const workspaceContainer = getReplacableContainer();
   const divMarker = document.createElement("div");
 
-  divMarker.classList.add("update-marker", "fa-solid", "fa-circle-check");
-   
+  divMarker.classList.add("update-marker");
+  divMarker.innerHTML = `
+  <i class="fa-solid fa-circle-check"></i>
+  `
 
   const res = crud.updateWorkspace(workspaceObj, oldWorkspaceValue, newWorkspaceValue);
   if (res !== "undefined") {
     workspaceContainer.replaceWith(divMarker);
+    store.saveToStore(workspaceObj);
    
     setTimeout(() => {
       document.querySelector(".update-marker").replaceWith(workspaceContainer);
       getReplacableContainer().replaceWith(replacableItem);
-    }, 7000);
+    }, 2000);
   }
 
  }
@@ -490,7 +550,7 @@ const handleTaskInputs = () => {
   const taskDetailsValue = taskInput.value;
   const priorityValue = prioritySelector.value;
   const dateValue = dateInput.value;
-  const now = new Date();
+  const now = new Date().setUTCHours(0, 0, 0);
 
   if (!taskDetailsValue) {
     alert("Please enter your task details");
@@ -509,8 +569,120 @@ const handleTaskInputs = () => {
     priority: priorityValue,
     dueDate: dateValue ? new Date(dateValue).toISOString(now) :
     new Date().toISOString(),
-    status: new Date(dateValue) < new Date(now) ? "undone" : "pending",
+    status: "pending",
   };
-  crud.addTask(workspaceObj, currWorkspace, task);
+  crud.addTask(workspaceObj, currWWorkspaceName, task);
   store.saveToStore(workspaceObj);
+  taskInput.value  = "";
+  dateInput.value = "";
+  prioritySelector.value = "Low";
 }
+
+// Handle updatimg UI
+
+const updateWorkspaceUi = () => {
+  const fragment = document.createDocumentFragment();
+  const workspaceList = document.querySelectorAll(".workspaces, .workspaces-desktop");
+  workspaceList.forEach(ul => {
+    ul.innerHTML = "";
+
+    if (ul.classList.contains("workspaces")) {
+      ul.innerHTML = `
+        <li id="workspaces-cancel-btn">Cancel</li>
+      `;
+    }
+  });
+
+  for (const key in workspaceObj) {
+    const li = document.createElement("li");
+    li.dataset.workspace = key;
+    li.textContent = key;
+    fragment.appendChild(li);
+  }
+
+  mobileWorkspaces.appendChild(fragment.cloneNode(true));
+  desktopWorkspaces.forEach((desk) => {
+    desk.appendChild(fragment.cloneNode(true));
+  });
+}
+
+updateWorkspaceUi();
+
+const formatDate = (date) => {
+  date = new Date(date);
+  const year = date.getUTCFullYear().toString().substring(2, 4);
+  const month = date.getUTCMonth();
+  const day = date.getUTCDate();
+
+  return `${day}/${month}/${year}`;
+}
+
+const updateTaskUi = () =>  {
+  const fragment = document.createDocumentFragment();
+  const now = new Date().setUTCHours(0, 0, 0);
+
+  console.log(currWorkspace);
+  currWorkspace.forEach((task) => {
+    const formatedDate = formatDate(task.dueDate);
+    const tr = document.createElement("tr");
+    let checkboxClass = "", status = "";
+    let disabled = false;
+
+    if (new Date(task.dueDate) < new Date(now)) {
+      const checkBox = document.getElementById(`task-marker-${task.id}`);
+      if (!checkBox.checked)
+        task.status = "undone";
+      else
+        task.status = "done";
+    }
+
+    if (task.status === "pending") {
+      checkboxClass = "status-check";
+    } else if (task.status === "done") {
+      checkboxClass = "status-check fa-solid fa-check-simple";
+    } else if (task.status === "undone") {
+      checkboxClass = "status-check fa-solid fa-xmark";
+      disabled = true;
+    }
+
+    tr.id = `row-${task.id}`;
+    tr.innerHTML = `
+      <td>
+        <div class="tb-status-container">
+          <input
+            type="checkbox"
+            disabled=${disabled}
+            class=${checkboxClass}
+            id="task-marker-${task.id}"
+            title="check the box to mark as completed"
+          />
+          <label
+            for="task-marker-${task.id}"
+          ><i class="fa-solid fa-xmark"></i></label>
+        </div>
+      </td>
+      <td id="task-details-${task.id}">${task.taskDetails}</td>
+      <td>${task.priority}</td>
+      <td>
+        <button
+          class="fa-solid fa-pen-to-square"
+          title="update item"
+          id="update-table-task-${task.id}"
+        ></button>
+        <button
+          class="fa-solid fa-trash-can"
+          title="delete item"
+          id="delete-table-task-${task.id}"
+          ></button>
+      </td>
+      <td id="date-${task.id}">${formatedDate}</td>
+    `;
+
+    fragment.appendChild(tr);
+  });
+
+  tableBody.innerHTML = "";
+  tableBody.appendChild(fragment);
+}
+
+updateTaskUi();
