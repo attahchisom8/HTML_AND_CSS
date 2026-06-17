@@ -396,14 +396,13 @@ main.addEventListener("click", (e) => {
       } else {
         workspace = useWorkspaceLi.textContent.trim();
       }
-      console.log(workspace);
+
       res = crud.deleteWorkspace(workspaceObj, workspace);
       if (res !== "undefined") {
         foundSearch.classList.remove("is-search-visible");
         store.saveToStore(workspaceObj);
         updateWorkspaceUi();
       }
-
       deleteDialog.close();
     }
 
@@ -411,6 +410,37 @@ main.addEventListener("click", (e) => {
       handleTaskInputs();
       updateTaskUi();
     }
+
+    if (button.id.startsWith("delete-table-task-")) {
+      const taskId = button.id.replace("delete-table-task-", "");
+      const warning = deleteDialog.querySelector("p");
+      const deleteBtn =  deleteDialog.querySelector("button + button");
+      deleteBtn.id = `delete-task-btn-${taskId}`;
+      warning.textContent = "Do you want to delete this task";
+      deleteDialog.showModal();
+      
+    }
+
+    if (button.id.startsWith("delete-task-btn-")) {
+      const taskId = button.id.replace("delete-task-btn-", "");
+      console.log("task id: ", taskId);
+      crud.deleteTask(workspaceObj, currWWorkspaceName, taskId);
+      store.saveToStore(workspaceObj);
+      updateTaskUi();
+      deleteDialog.close();
+    }
+  }
+
+  if (elem.type === "checkbox") {
+    const taskid = elem.id.replace("task-marker-", "");
+    const task = currWorkspace.find((t) => t.id === taskid);
+    if (elem.checked) {
+      task.status = "done";
+    } else {
+      task.status = "pending";
+    }
+    store.saveToStore(workspaceObj);
+    updateTaskUi();
   }
 
 });

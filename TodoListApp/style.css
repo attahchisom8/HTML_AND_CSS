@@ -1138,11 +1138,27 @@ td:nth-child(4) > * {
 .status-check:disabled + label {
     background: #ff1122;
     color: #fff;
+    cursor:  not-allowed;
 }
 
 .responsive-table .edit-th {
     width: 5%;
 }
+
+table button {
+    background: #d9ecff;
+    padding: 4px;
+}
+
+table button:hover {
+    background: #fff;
+}
+
+table button:active {
+    transform: scale(0.78);
+}
+
+
 /* FONT AWESOWE STYLES */
 .fa-pen-to-square {
     color: #7855ee;
