@@ -1130,12 +1130,12 @@ td:nth-child(4) > * {
     border-width: 3px;
 }
 
-.status-check.fa-check-simple:checked + label {
-    background: #54d477;
+.status-check:checked + label {
+    background: #329911;
     color: #fff;
 }
 
-.status-check.fa-xmark + label {
+.status-check:disabled + label {
     background: #ff1122;
     color: #fff;
 }

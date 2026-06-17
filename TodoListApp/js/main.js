@@ -550,14 +550,14 @@ const handleTaskInputs = () => {
   const taskDetailsValue = taskInput.value;
   const priorityValue = prioritySelector.value;
   const dateValue = dateInput.value;
-  const now = new Date().setUTCHours(0, 0, 0);
+  const today = new Date().setHours(0, 0, 0, 0);
 
   if (!taskDetailsValue) {
     alert("Please enter your task details");
     return;
   }
 
-  if (dateValue && new Date(dateValue) < new Date(now))
+  if (dateValue && new Date(dateValue) < new Date(today))
   {
     alert("Task date cannot be in the past");
     return;
@@ -567,7 +567,7 @@ const handleTaskInputs = () => {
     id: crypto.randomUUID(),
     taskDetails: taskDetailsValue,
     priority: priorityValue,
-    dueDate: dateValue ? new Date(dateValue).toISOString(now) :
+    dueDate: dateValue ? new Date(dateValue).toISOString() :
     new Date().toISOString(),
     status: "pending",
   };
@@ -611,39 +611,35 @@ updateWorkspaceUi();
 const formatDate = (date) => {
   date = new Date(date);
   const year = date.getUTCFullYear().toString().substring(2, 4);
-  const month = date.getUTCMonth();
+  const month = date.getUTCMonth() + 1;
   const day = date.getUTCDate();
 
   return `${day}/${month}/${year}`;
 }
 
+const refreshTaskState = () => {
+  const today = new Date().setHours(0, 0, 0, 0);
+  currWorkspace.forEach((task) => {
+    if (new Date(task.dueDate) < new Date(today) && task.status === "pending") {
+      task.status = "undone";
+    }
+  });
+  store.saveToStore(workspaceObj);
+}
+
 const updateTaskUi = () =>  {
   const fragment = document.createDocumentFragment();
-  const now = new Date().setUTCHours(0, 0, 0);
 
-  console.log(currWorkspace);
+  refreshTaskState();
+  console.log("currWWorkspaceName: ",currWWorkspaceName);
+   console.log("currWorkspace: ", currWorkspace);
   currWorkspace.forEach((task) => {
     const formatedDate = formatDate(task.dueDate);
     const tr = document.createElement("tr");
-    let checkboxClass = "", status = "";
-    let disabled = false;
-
-    if (new Date(task.dueDate) < new Date(now)) {
-      const checkBox = document.getElementById(`task-marker-${task.id}`);
-      if (!checkBox.checked)
-        task.status = "undone";
-      else
-        task.status = "done";
-    }
-
-    if (task.status === "pending") {
-      checkboxClass = "status-check";
-    } else if (task.status === "done") {
-      checkboxClass = "status-check fa-solid fa-check-simple";
-    } else if (task.status === "undone") {
-      checkboxClass = "status-check fa-solid fa-xmark";
-      disabled = true;
-    }
+    const isDone = task.status === "done";
+    const isUndone = task.status === "undone";
+    const iconClass = isDone ? "fa-check" : (isUndone ? "fa-xmark" : "");
+    const labelClass = isUndone ? "label-red" : (isDone ? "label-green": "");
 
     tr.id = `row-${task.id}`;
     tr.innerHTML = `
@@ -651,14 +647,16 @@ const updateTaskUi = () =>  {
         <div class="tb-status-container">
           <input
             type="checkbox"
-            disabled=${disabled}
-            class=${checkboxClass}
+            ${isDone ? "checked" : ""}
+            ${isUndone ? "disabled": ""}
+            class="status-check".
             id="task-marker-${task.id}"
             title="check the box to mark as completed"
           />
           <label
             for="task-marker-${task.id}"
-          ><i class="fa-solid fa-xmark"></i></label>
+            class=${labelClass}
+          ><i class="fa-solid ${iconClass}"></i></label>
         </div>
       </td>
       <td id="task-details-${task.id}">${task.taskDetails}</td>
