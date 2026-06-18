@@ -30,7 +30,8 @@ const timeDate = document.querySelector(".time-date");
 const clock = timeDate.querySelector(".clock");
 const date = timeDate.querySelector(".date");
 const dynamicTyping = document.querySelector(".dynamic-typing");
-const tableBody = document.querySelector("tbody");
+const table = document.querySelector("table");
+const tableBody = table.querySelector("tbody");
 
 const navDeskSearchInput = document.querySelector("#nav-search-input");
 const navMoileSearchInput = document.querySelector("#mobile-search");
@@ -420,14 +421,55 @@ main.addEventListener("click", (e) => {
       deleteDialog.showModal();
       
     }
+    
+    if (button.id.startsWith("update-table-task-")) {
+      const taskId = button.id.replace("update-table-task-", "");
+      const tbRow = document.querySelector(`#row-${taskId}`);
+      const task = currWorkspace.find((t) => t.id === taskId)
+      tbRow.innerHTML = `
+        <td>
+          <button
+            class="edit-update-btn fa-solid fa-sync"
+            id="edit-update-btn-${taskId}"
+            ></button>
+        </td>
+        <td>
+          <input
+            type="text"
+            value=${task.taskDetails}
+            class="edit-task-input"
+          />
+        </td>
+        <td>
+          <select class="edit-selector">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </td>
+        <td>
+          <input
+          type="date"
+          value=${new Date(task.dueDate)}
+          class="edit-task-date"
+        />
+        </td>
+        <td>
+          <button class="edit-cancel-btn">X</button>
+        </td>
+      `;
+    }
+      
 
     if (button.id.startsWith("delete-task-btn-")) {
       const taskId = button.id.replace("delete-task-btn-", "");
-      console.log("task id: ", taskId);
       crud.deleteTask(workspaceObj, currWWorkspaceName, taskId);
       store.saveToStore(workspaceObj);
       updateTaskUi();
       deleteDialog.close();
+    }
+    
+    if (button.id === "toggle-tb-action-btn") {
+      table.classList.toggle("is-open");
     }
   }
 

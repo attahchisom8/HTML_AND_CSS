@@ -1076,12 +1076,13 @@ th, td {
 
 #th-actions, td:nth-child(4) {
     width: 0;
+    max-width: 0;
     white-space: nowrap;
     padding: 16px 0;
     cursor: pointer;
     overflow: hidden;
     transition: padding 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)
-    width 0.s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 td:nth-child(4) > * {
@@ -1107,7 +1108,7 @@ td:nth-child(4) > * {
 
 .responsive-table.is-open #th-actions ,
 .responsive-table.is-open td:nth-child(4) {
-    width: 15%;
+    max-width: 15%;
     padding: 16px 10px;
 }
 
@@ -1147,7 +1148,7 @@ td:nth-child(4) > * {
 
 table button {
     background: #d9ecff;
-    padding: 4px;
+    padding: 0px;
 }
 
 table button:hover {
@@ -1168,6 +1169,37 @@ table .fa-trash-can {
     color: #dd0000;
 }
 
+/* Row  ontent style */
+[class^="edit-"] {
+    padding: 16px 9px;
+    border-radius: 10px;
+}
+
+.edit-task-input {
+    background: #efdeef;
+}
+
+.edit-task-input:focus {
+    transform: scale(1.01);
+    border: 2px solid #7855ee;
+    background: #fff;
+}
+
+.edit-selector {
+    background: #7855ee;
+    color: #fff;
+}
+
+.edit-task-date {
+    background: orangered;
+     olor: #fff;
+}
+
+.edit-cancel-btn, .edit-update-btn {
+    background: #7855ee;
+    color: #fff;
+    padding: 9px 12px;
+}
 /* ===================================
 DESKTOP  VERSIION OF MAIN STYLE
 =================================== */
@@ -1278,6 +1310,10 @@ DESKTOP  VERSIION OF MAIN STYLE
 
     .responsive-table td:nth-child(44) > * {
         opacity: 1;
+    }
+    
+    table button {
+        padding: 4px;
     }
 
 }
