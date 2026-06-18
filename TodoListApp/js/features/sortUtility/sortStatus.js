@@ -6,6 +6,9 @@
  * Return: A sorted array by status
  */
 
-const sortByStatus = (arr, status) => {
+export const sortByStatus = (arr, status) => {
+  if (!status || status === "")
+    return;
+
   return arr.filter((s) => s.status === status);
 }

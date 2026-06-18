@@ -140,6 +140,41 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
           tabState = null;
         }
       }
+
+      if (tabState === "sortTab") {
+        const sortElem = clickedElem;
+        let priority = "", status = "";
+
+        if (workspacesTab.contains(sortElem) && sortElem.id !== "sortTab-cancel-btn") {
+          const sortName = sortElem.dataset.sort;
+
+          if (sortName === "Task Details") {
+            sortUtility.sortName(currWorkspace, "taskDetails");
+          }
+
+          if (sortName === "Expiration Date") {
+            currWorkspace = sortUtility.sortOverdueDate(currWorkspace);
+          }
+
+          if (sortName === "Low Priority") {
+            priority = "Low";
+          }  else if (sortName === "Medium Priority") {
+            priority = "Medium";
+          } else if (sortName === "High Priority") {
+            priority = "High";
+          }
+          currWorkspace = sortUtility.sortPriority(currWorkspace, priority);
+
+          if (sortName === "Pending") {
+            status = "pending";
+          } else if (sortName === "Completed") {
+            status = "done";
+          } else if (sortName === "Uncompleted") {
+            status = "undone";
+          }
+          currWorkspace = sortUtility.sortByStatus(currWorkspace, status);
+        }
+      }
     }
 
 nav.addEventListener("click", (e) => {
@@ -231,6 +266,14 @@ nav.addEventListener("click", (e) => {
 
     handleWorkspaceTabAction(mobileWorkspaces, currTabMode, li);
 
+    if (parentUl.classList.contains("sort-tab")) {
+      currTabMode = "sortTab";
+      console.log("i am on mobile tab mode");
+      handleWorkspaceTabAction(parentUl, currTabMode, li);
+      store.saveToStore(workspaceObj);
+      updateTaskUi();
+    }
+
     // Desktop version
 
     if (li.classList.contains("nav-item-btn")) {
@@ -261,6 +304,13 @@ nav.addEventListener("click", (e) => {
       else currTabMode = null;
 
       handleWorkspaceTabAction(parentUl, currTabMode, li);
+    }
+
+    if (parentUl.classList.contains("sort-tab-desktop")) {
+      currTabMode = "sortTab";
+      handleWorkspaceTabAction(parentUl, currTabMode, li);
+      store.saveToStore(workspaceObj);
+      updateTaskUi();
     }
 
     if (li.classList.contains("add-workspace-desktop")) {
