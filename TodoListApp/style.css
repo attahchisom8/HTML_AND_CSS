@@ -580,9 +580,15 @@ DESKTOP  VERSIION OF ASIDE STYLE
         color: rgba(255, 255, 255, 0.5);
     }
 
-
     .arrow.item-desk-active {
         transform: rotate(90deg);
+    }
+
+     .item-heading {
+        color: #00ffcc !important;
+        font-style: italic;
+        cursor: not-allowed !important;
+        transform: scaleY(1.2);
     }
 
     .toggle-menu {
@@ -1315,6 +1321,11 @@ DESKTOP  VERSIION OF MAIN STYLE
     table button {
         padding: 4px;
     }
+
+    .edit-task-input {
+    width: 80%;
+    margin: auto;
+}
 
 }
 

@@ -458,6 +458,15 @@ main.addEventListener("click", (e) => {
         </td>
       `;
     }
+
+    if (button.classList.contains("edit-cancel-btn")) {
+      updateTaskUi();
+    }
+
+    if (button.id.startsWith("edit-update-btn-")) {
+      const id = button.id.replace("edit-update-btn-", "");
+      handleUpdateTaskInputs(id);
+    }
       
 
     if (button.id.startsWith("delete-task-btn-")) {
@@ -523,7 +532,9 @@ const eraseText = () => {
 }
 eraseText();
 
-// Handle user inputs
+/* ===================================
+HANDLE USER INPUTS
+=================================== */
 
  const handleSearchInputs = () => {
 const navDeskSearchValue = navDeskSearchInput.value.trim();
@@ -650,7 +661,37 @@ const handleTaskInputs = () => {
   prioritySelector.value = "Low";
 }
 
-// Handle updatimg UI
+const handleUpdateTaskInputs = (id) => {
+  const updateTaskDetailsInput = document.querySelector(".edit-task-input");
+  const selector = document.querySelector(".edit-selector");
+  const updateTaskDateInput = document.querySelector(".edit-task-date");
+  let task = currWorkspace.find((t) => t.id === id);
+  const updateTaskValue = updateTaskDetailsInput.value;
+  const updatedSelectorValue = selector.value;
+  const updatedDateValue = updateTaskDateInput.value;
+  const today = new Date().setHours(0, 0, 0, 0);
+
+  if (!updateTaskValue) {
+    alert("please enter update details");
+    return;
+  }
+
+  if (updatedDateValue && new Date(updatedDateValue) < new Date(today)) {
+    alert("Updated date can't be in the past");
+    return;
+  }
+
+  task.taskDetails =  updateTaskValue;
+  task.priority = updatedSelectorValue,
+  task.dueDate = updatedDateValue ? new Date(updatedDateValue).toISOString() :
+    new Date().toISOString();
+  store.saveToStore(workspaceObj);
+  updateTaskUi();
+}
+
+/* ===================================
+HANDLE UI UPDATE
+=================================== */
 
 const updateWorkspaceUi = () => {
   const fragment = document.createDocumentFragment();
