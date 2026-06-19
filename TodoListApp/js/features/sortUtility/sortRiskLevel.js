@@ -8,7 +8,7 @@
 
 export const sortPriority = (arr, priority) => {
   if (!priority || priority === "")
-    return;
+    return [[], arr];
 
-  return arr.filter((p) => p.priority === priority);
+  return [arr.filter((p) => p.priority === priority), arr];
 }

@@ -8,7 +8,7 @@
 
 export const sortByStatus = (arr, status) => {
   if (!status || status === "")
-    return;
+    return [[], arr];
 
-  return arr.filter((s) => s.status === status);
+  return [arr.filter((s) => s.status === status), arr];
 }

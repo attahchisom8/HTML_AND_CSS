@@ -7,8 +7,10 @@
  */
 
 export const sortOverdueDate = (arr) => {
-  console.log("arr b4", arr);
-  return arr.filter((d) => d.status === "pending")
-  .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-  console.log("arr aafter", arr);
+  const arrCopy = [...arr];
+  return [
+    arr.filter((d) => d.status === "pending")
+  .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)),
+  arr
+];
 }

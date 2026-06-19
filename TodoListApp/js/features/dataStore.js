@@ -42,17 +42,28 @@ export const getStoreData = () => {
 
 
 /**
- * save - saves an item to the global workspace object
- * @workspaceObj: A global object that stores list of workspaces
+ * saveKey - saves an item to db with key that is the vslue of the item
+ * @key: The given key
  * @key: workspace name
- * @value: A list of tasks to store in the  current workspace
+ * @value:  value to savee to key
  * 
  * Return: void
  */
-export const save = (workspaceObj, key, value) => {
-	workspaceObj[key].push(value);
+export const saveKey = (key, value) => {
+	localStorage.setItem(key, value);
 }
 
+
+/**
+ * getKeyValue - function that gets the  value corresponding to a key
+ * @key: the given key
+ * 
+ * Return: the value corresponding to the kwy
+ */
+
+export const getKeyValue = (key) => {
+  return localStorage.getItem(key);
+}
 /**
  * saveToStore - A fuunction that saves the workspaceObj to locstorage
  * @workspaceObj: the global workspace object

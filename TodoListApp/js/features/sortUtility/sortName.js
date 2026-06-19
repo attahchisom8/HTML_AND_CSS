@@ -8,6 +8,10 @@
  */
 
 export const sortName = (arr, name) => {
-	return arr.sort((a, b) =>
-		(a[name] || "").toLowerCase().localeCompare((b[name] || "").toLowerCase()));
+	const arrCopy = [...arr];
+	return [
+		arrCopy.sort((a, b) =>
+		(a[name] || "").toLowerCase().localeCompare((b[name] || "").toLowerCase())),
+		arr
+	];
 }

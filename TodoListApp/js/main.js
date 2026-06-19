@@ -49,10 +49,12 @@ let useWorkspaceLi;
 HANDLE DATA PARSING AND STORAGE
 =================================== */
 const workspaceTitle = document.querySelector("#curr-workspace");
-let currWWorkspaceName = "";
+let currWWorkspaceName = store.getKeyValue("currWorkspaceName") || "health";
+let prevWorkspaceName = null;
 
 const nameWorkspaceTitle = (workspaceName) => {
   currWWorkspaceName = workspaceName;
+  store.saveKey("currWorkspaceName", workspaceName);
   return `${workspaceName}  workspace`;
 }
 
@@ -71,8 +73,9 @@ const workspaceObj = store.getStoreData() || {
   "hobbies": [],
 }
 
-workspaceTitle.textContent = nameWorkspaceTitle("health");
+workspaceTitle.textContent = nameWorkspaceTitle(currWWorkspaceName);
 let currWorkspace = workspaceObj[currWWorkspaceName];
+let defaultWorkspace = currWorkspace;
 
 
 /* ===================================
@@ -97,11 +100,14 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
   
       if (tabState === "selectTab") {
         const workspace = clickedElem;
+        prevWorkspaceName = currWWorkspaceName;
 
         if (workspacesTab.contains(workspace) && !workspace.id.endsWith("-btn")) {
           workspaceTitle.textContent = nameWorkspaceTitle(workspaceName);
           currWorkspace = workspaceObj[workspaceName];
+          console.log("currworkspace anme: ", workspaceName, "currworkspace: ", currWorkspace);
           tabState = null;
+          updateTaskUi();
         }
       }
 
@@ -117,7 +123,7 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
           itemDiv.innerHTML = `
               <input
                 type="text"
-                value=${workspaceName}
+                value="${workspaceName}"
                 placeholder="Update your workspace"
                 id="update-workspace"
               />
@@ -143,17 +149,20 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
 
       if (tabState === "sortTab") {
         const sortElem = clickedElem;
-        let priority = "", status = "";
+        let priority = null, status = null;
+        let workspaceArr;
 
         if (workspacesTab.contains(sortElem) && sortElem.id !== "sortTab-cancel-btn") {
           const sortName = sortElem.dataset.sort;
 
           if (sortName === "Task Details") {
-            sortUtility.sortName(currWorkspace, "taskDetails");
+            workspaceArr = sortUtility.sortName(currWorkspace, "taskDetails");
+            currWorkspace = workspaceArr[0];
           }
 
           if (sortName === "Expiration Date") {
-            currWorkspace = sortUtility.sortOverdueDate(currWorkspace);
+            workspaceArr = sortUtility.sortOverdueDate(currWorkspace);
+            currWorkspace = workspaceArr[0];
           }
 
           if (sortName === "Low Priority") {
@@ -163,7 +172,11 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
           } else if (sortName === "High Priority") {
             priority = "High";
           }
-          currWorkspace = sortUtility.sortPriority(currWorkspace, priority);
+          if (priority) {
+            workspaceArr = sortUtility.sortPriority(currWorkspace, priority);
+            console.log("workspaceArr: ", workspaceArr);
+            currWorkspace = workspaceArr[0];
+          }
 
           if (sortName === "Pending") {
             status = "pending";
@@ -172,7 +185,14 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
           } else if (sortName === "Uncompleted") {
             status = "undone";
           }
-          currWorkspace = sortUtility.sortByStatus(currWorkspace, status);
+          if (status) {
+            workspaceArr = sortUtility.sortByStatus(currWorkspace, status);
+            currWorkspace = workspaceArr[0];
+          }
+
+          if (sortName === "Default") {
+            currWorkspace = defaultWorkspace;
+          }
         }
       }
     }
@@ -453,6 +473,9 @@ main.addEventListener("click", (e) => {
         foundSearch.classList.remove("is-search-visible");
         store.saveToStore(workspaceObj);
         updateWorkspaceUi();
+        workspaceTitle.textContent = nameWorkspaceTitle(prevWorkspaceName || "health");
+        currWorkspace = workspaceObj[prevWorkspaceName || "health"];
+        updateTaskUi()
       }
       deleteDialog.close();
     }
@@ -476,7 +499,7 @@ main.addEventListener("click", (e) => {
       const taskId = button.id.replace("update-table-task-", "");
       const tbRow = document.querySelector(`#row-${taskId}`);
       const task = currWorkspace.find((t) => t.id === taskId)
-      tbRow.innerHTML = `
+      const prevTaskDate = new Date(task.dueDate).toISOString().split("T")[0];      tbRow.innerHTML = `
         <td>
           <button
             class="edit-update-btn fa-solid fa-sync"
@@ -486,7 +509,7 @@ main.addEventListener("click", (e) => {
         <td>
           <input
             type="text"
-            value=${task.taskDetails}
+            value="${task.taskDetails}"
             class="edit-task-input"
           />
         </td>
@@ -499,7 +522,7 @@ main.addEventListener("click", (e) => {
         <td>
           <input
           type="date"
-          value=${new Date(task.dueDate)}
+          value="${prevTaskDate}"
           class="edit-task-date"
         />
         </td>
@@ -637,6 +660,7 @@ noSearchResultFound.classList.remove("is-search-visible");
     document.querySelector("#create-workspace").value = "";
     workspaceContainer.replaceWith(divMarker);
     store.saveToStore(workspaceObj);
+    updateTaskUi();
    
     setTimeout(() => {
       document.querySelector(".update-marker").replaceWith(workspaceContainer);
@@ -670,6 +694,7 @@ const handleUpdateWorkspaceInputs = () => {
   if (res !== "undefined") {
     workspaceContainer.replaceWith(divMarker);
     store.saveToStore(workspaceObj);
+    updateTaskUi();
    
     setTimeout(() => {
       document.querySelector(".update-marker").replaceWith(workspaceContainer);
@@ -738,6 +763,18 @@ const handleUpdateTaskInputs = (id) => {
   store.saveToStore(workspaceObj);
   updateTaskUi();
 }
+
+
+/* ===================================
+HANDLE UI KEYBOARD PRESSES
+=================================== */
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    handleTaskInputs();
+      updateTaskUi();
+  }
+})
 
 /* ===================================
 HANDLE UI UPDATE
@@ -847,3 +884,6 @@ const updateTaskUi = () =>  {
 }
 
 updateTaskUi();
+
+
+// window.updateTaskUi = updateTaskUi;
