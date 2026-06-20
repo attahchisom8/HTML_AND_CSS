@@ -53,6 +53,9 @@ let currWWorkspaceName = store.getKeyValue("currWorkspaceName") || "health";
 let prevWorkspaceName = null;
 
 const nameWorkspaceTitle = (workspaceName) => {
+  if (!workspaceName)
+  return null;
+
   currWWorkspaceName = workspaceName;
   store.saveKey("currWorkspaceName", workspaceName);
   return `${workspaceName}  workspace`;
@@ -105,7 +108,7 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
         if (workspacesTab.contains(workspace) && !workspace.id.endsWith("-btn")) {
           workspaceTitle.textContent = nameWorkspaceTitle(workspaceName);
           currWorkspace = workspaceObj[workspaceName];
-          console.log("currworkspace anme: ", workspaceName, "currworkspace: ", currWorkspace);
+          console.log("currworkspaceName: ", currWWorkspaceName, "prevworkspace: ", prevWorkspaceName);
           tabState = null;
           updateTaskUi();
         }
@@ -473,8 +476,10 @@ main.addEventListener("click", (e) => {
         foundSearch.classList.remove("is-search-visible");
         store.saveToStore(workspaceObj);
         updateWorkspaceUi();
-        workspaceTitle.textContent = nameWorkspaceTitle(prevWorkspaceName || "health");
+        const wpText = nameWorkspaceTitle(prevWorkspaceName) || "health";
+        workspaceTitle.textContent = wpText;
         currWorkspace = workspaceObj[prevWorkspaceName || "health"];
+        store.saveKey("currWorkspaceName", prevWorkspaceName ?? "health");
         updateTaskUi()
       }
       deleteDialog.close();
@@ -623,7 +628,7 @@ noSearchResultFound.classList.remove("is-search-visible");
   } else if (navDeskSearchValue) {
     activeSearch = navDeskSearchValue;
   } else {
-    return
+    return;
   }
   
   if (searchRes.searchWorkspace( 
@@ -693,6 +698,11 @@ const handleUpdateWorkspaceInputs = () => {
   const res = crud.updateWorkspace(workspaceObj, oldWorkspaceValue, newWorkspaceValue);
   if (res !== "undefined") {
     workspaceContainer.replaceWith(divMarker);
+    
+    if (oldWorkspaceValue === currWWorkspaceName) {
+      workspaceTitle.textContent = nameWorkspaceTitle(newWorkspaceValue);
+    }
+    
     store.saveToStore(workspaceObj);
     updateTaskUi();
    
@@ -715,11 +725,11 @@ const handleTaskInputs = () => {
     return;
   }
 
-  if (dateValue && new Date(dateValue) < new Date(today))
+  /*if (dateValue && new Date(dateValue) < new Date(today))
   {
     alert("Task date cannot be in the past");
     return;
-  }
+  }*/
 
   const task = {
     id: crypto.randomUUID(),
@@ -829,6 +839,7 @@ const refreshTaskState = () => {
 
 const updateTaskUi = () =>  {
   const fragment = document.createDocumentFragment();
+  const today = new Date().setHours(0, 0, 0, 0);
 
   refreshTaskState();
   console.log("currWWorkspaceName: ",currWWorkspaceName);
@@ -837,9 +848,10 @@ const updateTaskUi = () =>  {
     const formatedDate = formatDate(task.dueDate);
     const tr = document.createElement("tr");
     const isDone = task.status === "done";
+    const completed = isDone && (new Date(task.dueDate) < new Date(today));
     const isUndone = task.status === "undone";
     const iconClass = isDone ? "fa-check" : (isUndone ? "fa-xmark" : "");
-    const labelClass = isUndone ? "label-red" : (isDone ? "label-green": "");
+    const labelClass = isUndone ? "label-red" : (isDone ? "label-green" : "");
 
     tr.id = `row-${task.id}`;
     tr.innerHTML = `
@@ -848,6 +860,7 @@ const updateTaskUi = () =>  {
           <input
             type="checkbox"
             ${isDone ? "checked" : ""}
+            ${completed ? "disabled" : ""}
             ${isUndone ? "disabled": ""}
             class="status-check".
             id="task-marker-${task.id}"

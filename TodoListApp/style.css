@@ -1137,12 +1137,13 @@ td:nth-child(4) > * {
     border-width: 3px;
 }
 
-.status-check:checked + label {
+.status-check:checked + .label-green,
+.status-check:disabled + .label-green {
     background: #329911;
     color: #fff;
 }
 
-.status-check:disabled + label {
+.status-check:disabled + .label-red {
     background: #ff1122;
     color: #fff;
     cursor:  not-allowed;
