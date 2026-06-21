@@ -847,6 +847,20 @@ document.addEventListener("keydown", (e) => {
   }
 })
 
+
+/* ===================================
+HANDLE DRAGGING TABLE ROWS
+=================================== */
+
+tableBody.addEventListener("dragstart", (e) => {
+  e.target.closest("tr").classList.add("dragging");
+});
+
+tableBody.addEventListener("dragend", (e) => {
+  e.target.closest("tr").classList.remove("dragging");
+})
+
+
 /* ===================================
 HANDLE UI UPDATE
 =================================== */
@@ -925,6 +939,8 @@ const updateTaskUi = () =>  {
       completed ? "Completed task" : (isDone ? "Unmark if not completed" : "Pending"));
 
     tr.id = `row-${task.id}`;
+    tr.dataset.id = task.id;
+    tr.draggable = true;
     tr.innerHTML = `
       <td>
         <div class="tb-status-container">
