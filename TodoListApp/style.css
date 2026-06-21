@@ -651,7 +651,7 @@ dialog::backdrop {
     margin: 0;
     visibility: hidden;
     opacity: 0;
-    background: #7855aa;
+    background: #124;
     color: #fff;
     border-radius: 0 0 10px 10px;
     position: absolute;
@@ -814,11 +814,6 @@ dialog::backdrop {
     align-items: center;
     justify-content: flex-start;
 }
-
-/*.update-marker i {
-    width: 50px;
-    height: 50px;
-}*/
 
 .mose-brand {
     width: 100%;
@@ -1143,6 +1138,10 @@ td:nth-child(4) > * {
     color: #fff;
 }
 
+.status-check:disabled + .label-green {
+    cursor: not-allowed;
+}
+
 .status-check:disabled + .label-red {
     background: #ff1122;
     color: #fff;
@@ -1183,7 +1182,7 @@ table .fa-trash-can {
 }
 
 .edit-task-input {
-    background: #efdeef;
+    background: #ebeeff;
 }
 
 .edit-task-input:focus {
@@ -1309,6 +1308,9 @@ DESKTOP  VERSIION OF MAIN STYLE
     }
 
     /* Table style */
+     table {
+        margin-bottom: 50px;
+     }
 
     #th-actions, td:nth-child(4) {
         width: 15%;
@@ -1341,5 +1343,7 @@ section {
 
 .space-at-bottom {
     height: 50px;
+    background: transparent;
 }
+
 

@@ -9,6 +9,7 @@ import * as searchRes from "./features/search.js";
 VARIABLE DECLARATIONS
 =================================== */
 
+const body = document.querySelector("body");
 const nav = document.querySelector("nav");
 const toggleMenu = document.querySelector(".toggle-menu");
 const sortTab = document.querySelector(".sort-tab");
@@ -17,11 +18,11 @@ const tutorialPanel = document.querySelector(".tutorial-panel");
 const mobileSearchContainer = document.querySelector(".mobile-search-container");
 const searchMenu = document.querySelector(".dropdown-search-menu");
 const replacableItem = document.querySelector(".replacable-item");
-// const createWorkspaceContainer = document.querySelector(".create-workspace-container");
 const mobileWorkspaces = document.querySelector(".workspaces");
 const desktopWorkspaces = document.querySelectorAll(".workspaces-desktop");
 const deleteDialog = document.querySelector(".delete-modal-box dialog");
 const foundWorkspace = document.querySelector("#found-workspace");
+const dataList = nav.querySelector("#datalist-workspaces");
 
 const main = document.querySelector(".main-content");
 const dropDownMobileActions = searchMenu.querySelector(".dropdown-mobile-actions");
@@ -41,7 +42,8 @@ const dateInput = document.querySelector("#task-date");
 const noSearchResultFound = searchMenu.querySelector(".no-search-result");
 const foundSearch = searchMenu.querySelector(".found-search");
 let currTabMode = null;
-let useWorkspaceLi;
+let workspaceToDelete = null;
+let mobileScrollPos = null, desktopScrollPos = null;
 
 
 
@@ -51,6 +53,7 @@ HANDLE DATA PARSING AND STORAGE
 const workspaceTitle = document.querySelector("#curr-workspace");
 let currWWorkspaceName = store.getKeyValue("currWorkspaceName") || "health";
 let prevWorkspaceName = null;
+let currWorkspace;
 
 const nameWorkspaceTitle = (workspaceName) => {
   if (!workspaceName)
@@ -58,6 +61,7 @@ const nameWorkspaceTitle = (workspaceName) => {
 
   currWWorkspaceName = workspaceName;
   store.saveKey("currWorkspaceName", workspaceName);
+  currWorkspace = workspaceObj[currWWorkspaceName];
   return `${workspaceName}  workspace`;
 }
 
@@ -77,7 +81,6 @@ const workspaceObj = store.getStoreData() || {
 }
 
 workspaceTitle.textContent = nameWorkspaceTitle(currWWorkspaceName);
-let currWorkspace = workspaceObj[currWWorkspaceName];
 let defaultWorkspace = currWorkspace;
 
 
@@ -98,8 +101,6 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
       if (workspacesTab.classList.contains("dropdown-mobile-actions") || workspacesTab.classList.contains("dropdown-desktop-actions")) {
           workspaceName = foundWorkspace.textContent.trim();
       }
-
-      useWorkspaceLi = clickedElem;
   
       if (tabState === "selectTab") {
         const workspace = clickedElem;
@@ -138,6 +139,8 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
               <button type="button" id="cancel-input-btn">x</button>
           `;
           replacableTarget.replaceWith(itemDiv);
+          document.querySelector(".create-workspace-container")
+          .scrollIntoView({behavior: "smooth", block: "center"});
           tabState = null;
         }
       }
@@ -145,9 +148,17 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
       if (tabState === "deleteTab") {
         const workspace = clickedElem;
         if (workspacesTab.contains(workspace) && workspace.id !== "workspaces-cancel-btn") {
+          workspaceToDelete = workspace.dataset.workspace || workspace.textContent.trim();
           deleteDialog.showModal();
-          tabState = null;
+        tabState = null;
         }
+
+        if (workspacesTab.classList.contains("dropdown-mobile-actions") || workspacesTab.classList.contains("dropdown-desktop-actions")) {
+          workspaceToDelete = foundWorkspace.textContent.trim();
+          deleteDialog.showModal();
+        tabState = null;
+        }
+
       }
 
       if (tabState === "sortTab") {
@@ -198,6 +209,8 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
           }
         }
       }
+      workspacesTab.classList.remove("is-search-visible");
+      searchMenu.classList.remove("is-search-visible");
     }
 
 nav.addEventListener("click", (e) => {
@@ -238,7 +251,7 @@ nav.addEventListener("click", (e) => {
 
     if (li.classList.contains("search-workspace-mobile")) {
       mobileSearchContainer.classList.add("search-active");
-    navlistMobileAll.forEach((item) => item.classList.add("search-active"));
+      navlistMobileAll.forEach((item) => item.classList.add("search-active"));
     }
 
     if (text === "Add workspace") {
@@ -256,6 +269,8 @@ nav.addEventListener("click", (e) => {
           <button type="button" id="cancel-input-btn">x</button>
       `;
       replacableItem.replaceWith(itemDiv);
+      document.querySelector(".create-workspace-container")
+          .scrollIntoView({behavior: "smooth", block: "center"});
     }
 
     if (text === "Select workspace") {
@@ -266,6 +281,7 @@ nav.addEventListener("click", (e) => {
     if (text === "Update workspace") {
       mobileWorkspaces.classList.add("is-visible");
       currTabMode = "updateTab";
+      mobileScrollPos = body.scrollTop;
     }
 
     if (text === "Delete workspace") {
@@ -320,8 +336,10 @@ nav.addEventListener("click", (e) => {
     if (parentUl.classList.contains("workspaces-desktop")) {
       if (parentUl.classList.contains("select-tab"))
         currTabMode = "selectTab";
-      else if (parentUl.classList.contains("update-tab"))
+      else if (parentUl.classList.contains("update-tab")) {
         currTabMode = "updateTab";
+        desktopScrollPos = main.scrollTop;
+      }
       else if (parentUl.classList.contains("delete-tab"))
         currTabMode = "deleteTab";
       else currTabMode = null;
@@ -354,6 +372,8 @@ nav.addEventListener("click", (e) => {
             <button type="button" id="cancel-input-btn">x</button>
         `;
         replacableTarget.replaceWith(itemDiv);
+        document.querySelector(".create-workspace-container")
+          .scrollIntoView({behavior: "smooth", block: "center"});
     }
   }
 
@@ -402,11 +422,16 @@ main.addEventListener("click", (e) => {
   if (span) {
     const parentSpan = span.parentElement;
     if (span.id === "dropdown-icon") {
-      dropDownMobileActions.classList.add("is-search-visible");
+      dropDownMobileActions.classList.toggle("is-search-visible");
     }
 
     if (span.id === "mobile-action-cancel-btn") {
       dropDownMobileActions.classList.remove("is-search-visible");
+    }
+
+    if (span.id === "desktop-action-cancel-btn") {
+      console.log("search menu button was clicked");
+      searchMenu.classList.remove("is-search-visible");
     }
 
     if (parentSpan.classList.contains("dropdown-mobile-actions")) {
@@ -442,6 +467,15 @@ main.addEventListener("click", (e) => {
       const container = getReplacableContainer();
       container.replaceWith(replacableItem);
       document.querySelector(".add-workspace-desktop").classList.remove("item-desk-active");
+       if (mobileScrollPos) {
+        body.scrollTo({top: mobileScrollPos, behavior: "smooth"});
+        mobileScrollPos = null;
+      }
+
+      if (desktopScrollPos) {
+        main.scrollTo({top: desktopScrollPos, behavior: "smooth"});
+        desktopScrollPos = null;
+      }
     }
 
     if (button.id === "close-panel-btn") {
@@ -463,24 +497,20 @@ main.addEventListener("click", (e) => {
     }
 
     if (button.id === "dialog-delete-btn") {
-      let workspace, res;
+      if (workspaceToDelete) {
+        const res = crud.deleteWorkspace(workspaceObj, workspaceToDelete);
+        if (res !== "undefined") {
+          foundSearch.classList.remove("is-search-visible");
+          store.saveToStore(workspaceObj);
 
-      if (foundSearch.classList.contains("is-search-visible")) {
-        workspace = foundSearch.textContent.trim();
-      } else {
-        workspace = useWorkspaceLi.textContent.trim();
-      }
-
-      res = crud.deleteWorkspace(workspaceObj, workspace);
-      if (res !== "undefined") {
-        foundSearch.classList.remove("is-search-visible");
-        store.saveToStore(workspaceObj);
-        updateWorkspaceUi();
-        const wpText = nameWorkspaceTitle(prevWorkspaceName) || "health";
-        workspaceTitle.textContent = wpText;
-        currWorkspace = workspaceObj[prevWorkspaceName || "health"];
-        store.saveKey("currWorkspaceName", prevWorkspaceName ?? "health");
-        updateTaskUi()
+          if (currWWorkspaceName === workspaceToDelete) {
+            currWWorkspaceName = Object.keys(workspaceObj)[0];
+            workspaceTitle.textContent = nameWorkspaceTitle(currWWorkspaceName);
+          }
+          updateWorkspaceUi();
+          updateTaskUi();
+        }
+        workspaceToDelete = null;
       }
       deleteDialog.close();
     }
@@ -659,8 +689,8 @@ noSearchResultFound.classList.remove("is-search-visible");
 
   const res = crud.createWorkspace(workspaceObj, createWorkspaceValue);
   if (res !== "undefined") {
-    currWorkspace = workspaceObj[createWorkspaceValue];
     workspaceTitle.textContent = nameWorkspaceTitle(createWorkspaceValue);
+     document.querySelector(".add-workspace-desktop").classList.remove("item-desk-active");
   
     document.querySelector("#create-workspace").value = "";
     workspaceContainer.replaceWith(divMarker);
@@ -709,6 +739,15 @@ const handleUpdateWorkspaceInputs = () => {
     setTimeout(() => {
       document.querySelector(".update-marker").replaceWith(workspaceContainer);
       getReplacableContainer().replaceWith(replacableItem);
+      if (mobileScrollPos) {
+        body.scrollTo({top: mobileScrollPos, behavior: "smooth"});
+        mobileScrollPos = null;
+      }
+
+      if (desktopScrollPos) {
+        main.scrollTo({top: desktopScrollPos, behavior: "smooth"});
+        desktopScrollPos = null;
+      }
     }, 2000);
   }
 
@@ -725,11 +764,11 @@ const handleTaskInputs = () => {
     return;
   }
 
-  /*if (dateValue && new Date(dateValue) < new Date(today))
+  if (dateValue && new Date(dateValue) < new Date(today))
   {
     alert("Task date cannot be in the past");
     return;
-  }*/
+  }
 
   const task = {
     id: crypto.randomUUID(),
@@ -780,9 +819,31 @@ HANDLE UI KEYBOARD PRESSES
 =================================== */
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    handleTaskInputs();
-      updateTaskUi();
+  const key = e.key;
+
+  if (key === "Enter") {
+    const inputFocus = document.querySelector("input:focus");
+
+    if (inputFocus.id === "task-name" || inputFocus.type === "date") {
+      handleTaskInputs();
+        updateTaskUi();
+    }
+
+    if (inputFocus.id === "mobile-search" ||
+      inputFocus.id === "nav-search-input") {
+      searchMenu.classList.add("is-search-visible");
+      handleSearchInputs();
+    }
+
+    if (inputFocus.id === "create-workspace") {
+       handleCreateWorkspaceInputs();
+      updateWorkspaceUi();
+    }
+
+    if (inputFocus.id === "update-workspace") {
+      handleUpdateWorkspaceInputs();
+      updateWorkspaceUi();
+    }
   }
 })
 
@@ -792,7 +853,10 @@ HANDLE UI UPDATE
 
 const updateWorkspaceUi = () => {
   const fragment = document.createDocumentFragment();
+  const dataFragment = document.createDocumentFragment();
   const workspaceList = document.querySelectorAll(".workspaces, .workspaces-desktop");
+
+  dataList.innerHTML = "";
   workspaceList.forEach(ul => {
     ul.innerHTML = "";
 
@@ -805,11 +869,16 @@ const updateWorkspaceUi = () => {
 
   for (const key in workspaceObj) {
     const li = document.createElement("li");
+    const option = document.createElement("option")
+    option.value = key;
     li.dataset.workspace = key;
     li.textContent = key;
+
+    dataFragment.appendChild(option);
     fragment.appendChild(li);
   }
 
+  dataList.appendChild(dataFragment);
   mobileWorkspaces.appendChild(fragment.cloneNode(true));
   desktopWorkspaces.forEach((desk) => {
     desk.appendChild(fragment.cloneNode(true));
@@ -852,6 +921,8 @@ const updateTaskUi = () =>  {
     const isUndone = task.status === "undone";
     const iconClass = isDone ? "fa-check" : (isUndone ? "fa-xmark" : "");
     const labelClass = isUndone ? "label-red" : (isDone ? "label-green" : "");
+    const labelTitle =  isUndone ? "Uncompleted task": (
+      completed ? "Completed task" : (isDone ? "Unmark if not completed" : "Pending"));
 
     tr.id = `row-${task.id}`;
     tr.innerHTML = `
@@ -862,13 +933,14 @@ const updateTaskUi = () =>  {
             ${isDone ? "checked" : ""}
             ${completed ? "disabled" : ""}
             ${isUndone ? "disabled": ""}
-            class="status-check".
+            class="status-check"
             id="task-marker-${task.id}"
             title="check the box to mark as completed"
           />
           <label
             for="task-marker-${task.id}"
             class=${labelClass}
+            title="${labelTitle}"
           ><i class="fa-solid ${iconClass}"></i></label>
         </div>
       </td>
