@@ -852,13 +852,62 @@ document.addEventListener("keydown", (e) => {
 HANDLE DRAGGING TABLE ROWS
 =================================== */
 
+let lastAfterElement = null;
+let rafId = null;
+let lastY = 0;
+let draggingRow = null;
+
 tableBody.addEventListener("dragstart", (e) => {
-  e.target.closest("tr").classList.add("dragging");
+  draggingRow = e.target.closest("tr");
+  draggingRow.classList.add("dragging");
 });
 
 tableBody.addEventListener("dragend", (e) => {
-  e.target.closest("tr").classList.remove("dragging");
-})
+  draggingRow.classList.remove("dragging");
+  draggingRow = null;
+  lastAfterElement = null;
+  cancelAnimationFrame(rafId);
+});
+
+tableBody.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  lastY = e.clientY;
+  
+  rafId = requestAnimationFrame(() => {
+    rafId = null;
+    updateRowPosition(lastY);
+  });
+});
+
+const updateRowPosition = (y) => {
+  const afterElement = getAfterElement(tableBody, y);
+  
+  if (afterElement === lastAfterElement)
+  return;
+  
+  lastAfterElement = afterElement;
+  if (!afterElement) {
+    tableBody.appendChild(draggingRow);
+  } else {
+    tableBody.insertBefore(draggingRow, afterElement);
+  }
+}
+
+ 
+ const getAfterElement = (container, y) => {
+   const notDraggedRows = [...tableBody.querySelectorAll("tr:not(.dragging)")];
+   return notDraggedRows.reduce((closest, row) => {
+     const box = row.getBoundingClientRect();
+     const rowMidpoint = box.top + box.height / 2;
+     const offset = y - rowMidpoint;
+     
+     if (offset < 0 && offset > closest.offset) {
+       return {offset, element: row}
+     } else {
+       return closest;
+     }
+   }, {offset: Number.NEGATIVE_INFINITY, element: null}).element;
+ }
 
 
 /* ===================================
