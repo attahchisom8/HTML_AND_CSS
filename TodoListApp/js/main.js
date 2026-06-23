@@ -546,6 +546,7 @@ main.addEventListener("click", (e) => {
             type="text"
             value="${task.taskDetails}"
             class="edit-task-input"
+            id="edit-task-input-${taskId}"
           />
         </td>
         <td>
@@ -559,10 +560,14 @@ main.addEventListener("click", (e) => {
           type="date"
           value="${prevTaskDate}"
           class="edit-task-date"
+          id="edit-task-date-${taskId}"
         />
         </td>
         <td>
-          <button class="edit-cancel-btn">X</button>
+          <button
+            class="edit-cancel-btn"
+            id="edit-cancel-btn-${taskId}"
+            >X</button>
         </td>
       `;
     }
@@ -809,6 +814,7 @@ const handleUpdateTaskInputs = (id) => {
   task.priority = updatedSelectorValue,
   task.dueDate = updatedDateValue ? new Date(updatedDateValue).toISOString() :
     new Date().toISOString();
+    task.status = "pending";
   store.saveToStore(workspaceObj);
   updateTaskUi();
 }
@@ -844,6 +850,18 @@ document.addEventListener("keydown", (e) => {
       handleUpdateWorkspaceInputs();
       updateWorkspaceUi();
     }
+
+    if (inputFocus.id.startsWith("edit-task-input-")) {
+      const id = inputFocus.id.replace("edit-task-input-", "");
+      handleUpdateTaskInputs(id);
+    }
+
+    if (inputFocus.id.startsWith("edit-task-date-")) {
+      console.log(inputFocus);
+      const id = inputFocus.id.replace("edit-task-date-", "");
+      handleUpdateTaskInputs(id);
+    }
+    }
   }
 })
 
@@ -856,10 +874,19 @@ let lastAfterElement = null;
 let rafId = null;
 let lastY = 0;
 let draggingRow = null;
+let rowBoxes = [];
 
 tableBody.addEventListener("dragstart", (e) => {
   draggingRow = e.target.closest("tr");
   draggingRow.classList.add("dragging");
+  rowBoxes = [...tableBody.children].filter((row) => row !== draggingRow)
+    .map((r) => {
+      const box = r.getBoundingClientRect();
+      return {
+        row: r,
+        midPoint: box.top + box.height / 2,
+      }
+    })
 });
 
 tableBody.addEventListener("dragend", (e) => {
@@ -867,6 +894,7 @@ tableBody.addEventListener("dragend", (e) => {
   draggingRow = null;
   lastAfterElement = null;
   cancelAnimationFrame(rafId);
+  reOrderTasks();
 });
 
 tableBody.addEventListener("dragover", (e) => {
@@ -880,7 +908,7 @@ tableBody.addEventListener("dragover", (e) => {
 });
 
 const updateRowPosition = (y) => {
-  const afterElement = getAfterElement(tableBody, y);
+  const afterElement = getAfterElement(y);
   
   if (afterElement === lastAfterElement)
   return;
@@ -894,19 +922,48 @@ const updateRowPosition = (y) => {
 }
 
  
- const getAfterElement = (container, y) => {
-   const notDraggedRows = [...tableBody.querySelectorAll("tr:not(.dragging)")];
-   return notDraggedRows.reduce((closest, row) => {
-     const box = row.getBoundingClientRect();
-     const rowMidpoint = box.top + box.height / 2;
-     const offset = y - rowMidpoint;
-     
-     if (offset < 0 && offset > closest.offset) {
-       return {offset, element: row}
-     } else {
-       return closest;
-     }
-   }, {offset: Number.NEGATIVE_INFINITY, element: null}).element;
+ const getAfterElement = (y) => {
+   return binarySearch(y);
+ }
+
+ const binarySearch = (y) => {
+  if (rowBoxes.length === 0)
+    return null;
+
+  let high = rowBoxes.length, low = 0;
+
+  while (low < high) {
+    const mid =  (low + high) >> 1;
+    const rowMid = rowBoxes[mid].midPoint;
+
+    /* In both if and else condition we are searching for an eleent whose
+    midpoint  is greater than y and hence when this loop terinates we have
+    found thar elenment or we didn't find it and hence return null */
+    if (y > rowMid) {
+      low = mid + 1; // search below the current row
+    } else {
+      high = mid; // take this row or  search the ones above it 
+    }
+  }
+
+  if (low >= rowBoxes.length)
+    return null;
+
+  return rowBoxes[low].row || null;
+ }
+
+
+ const reOrderTasks = () => {
+  const newOrderIds = [...tableBody.querySelectorAll("tr")]
+    .map((row) => row.dataset.id);
+    const orderMap = new Map(currWorkspace.map((task) => [task.id, task]));
+    const reOrderedTasks = newOrderIds.map((id) => orderMap.get(id));
+    console.log("orderap", orderMap);
+
+    currWorkspace.length = 0;
+    currWorkspace.push(...reOrderedTasks);
+    
+    store.saveToStore(workspaceObj);
  }
 
 
