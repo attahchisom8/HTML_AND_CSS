@@ -8,7 +8,7 @@ MOBILE  VERSIION OF BODY STYLE
 html, body {
     height: 100vh;
     width: 100%;
-    overflow: hidden;
+    overflow-y: auto;
     padding: 0;
     margin: 0;
 }
@@ -301,7 +301,7 @@ MOBILE  VERSIION OF ASIDE STYLE
 }
 
 .choose-workspace {
-    display: inline-block;
+    display: block;
     position: relative;
     background: transparent;
     height: auto;

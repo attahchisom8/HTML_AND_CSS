@@ -139,9 +139,13 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
               <button type="button" id="cancel-input-btn">x</button>
           `;
           replacableTarget.replaceWith(itemDiv);
-          document.querySelector(".create-workspace-container")
-          .scrollIntoView({behavior: "smooth", block: "center"});
-          tabState = null;
+          setTimeout(() => {
+            const container = document.querySelector(".create-workspace-container");
+            const realContainerPos = container.getBoundingClientRect().top + window.scrollY - 120;
+            console.log("realContainerPodition", realContainerPos);
+            body.scrollTo({ behavior: "smooth", top: realContainerPos });
+            main.scrollTo({ behavior: "smooth", top: realContainerPos });
+          }, 100);
         }
       }
       
@@ -269,8 +273,12 @@ nav.addEventListener("click", (e) => {
           <button type="button" id="cancel-input-btn">x</button>
       `;
       replacableItem.replaceWith(itemDiv);
-      document.querySelector(".create-workspace-container")
-          .scrollIntoView({behavior: "smooth", block: "center"});
+      setTimeout(() => {
+        const container = document.querySelector(".create-workspace-container");
+        const realContainerPos = container.getBoundingClientRect().top + window.scrollY - 120;
+        console.log("realContainerPodition", realContainerPos);
+        body.scrollTo({ behavior: "smooth", top: realContainerPos });
+      }, 100);
     }
 
     if (text === "Select workspace") {
@@ -372,14 +380,18 @@ nav.addEventListener("click", (e) => {
             <button type="button" id="cancel-input-btn">x</button>
         `;
         replacableTarget.replaceWith(itemDiv);
+        setTimeout(() => {
         document.querySelector(".create-workspace-container")
           .scrollIntoView({behavior: "smooth", block: "center"});
+        }, 10);
     }
   }
 
   if (button) {
     if (button.id === "search-cancel-btn") {
       navlistMobileAll.forEach((item) => item.classList.remove("search-active"));
+      toggleMenu.classList.remove("is-active");
+      sortTab.classList.remove("is-visible");
     }
 
     // Desltop version
@@ -861,9 +873,8 @@ document.addEventListener("keydown", (e) => {
       const id = inputFocus.id.replace("edit-task-date-", "");
       handleUpdateTaskInputs(id);
     }
-    }
   }
-})
+});
 
 
 /* ===================================
