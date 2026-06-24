@@ -261,6 +261,7 @@ nav.addEventListener("click", (e) => {
     if (text === "Add workspace") {
       workspaceTab.classList.remove("is-visible");
       mobileWorkspaces.classList.remove("is-visible");
+      mobileScrollPos = body.scrollTop;
       const itemDiv = document.createElement("div");
       itemDiv.classList.add("create-workspace-container", "show-workspace-container");
       itemDiv.innerHTML = `
@@ -365,6 +366,8 @@ nav.addEventListener("click", (e) => {
     if (li.classList.contains("add-workspace-desktop")) {
       const itemDiv = document.createElement("div");
       const replacableTarget = getReplacableContainer();
+      console.log("add workspace in desktop was clicked");
+      desktopScrollPos = main.scrollTop;
 
         itemDiv.classList.add("create-workspace-container", "show-workspace-container");
         itemDiv.innerHTML = `
@@ -476,6 +479,7 @@ main.addEventListener("click", (e) => {
 
   if (button) {
     if (button.id === "cancel-input-btn") {
+      console.log("cancel input btn was clicked");
       const container = getReplacableContainer();
       container.replaceWith(replacableItem);
       document.querySelector(".add-workspace-desktop").classList.remove("item-desk-active");

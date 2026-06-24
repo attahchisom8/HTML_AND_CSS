@@ -628,6 +628,7 @@ MOBILE  VERSIION OF MAIN STYLE
     border-radius: 15px;
     outline: none;
     border: 1px solid rgba(255, 255, 255, 0.5);
+    z-index: 1000;
 }
 
 dialog p {
