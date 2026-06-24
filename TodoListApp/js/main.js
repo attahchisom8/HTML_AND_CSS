@@ -53,7 +53,7 @@ HANDLE DATA PARSING AND STORAGE
 const workspaceTitle = document.querySelector("#curr-workspace");
 let currWWorkspaceName = store.getKeyValue("currWorkspaceName") || "health";
 let prevWorkspaceName = null;
-let currWorkspace;
+let currWorkspace, defaultWorkspace;
 
 const nameWorkspaceTitle = (workspaceName) => {
   if (!workspaceName)
@@ -62,6 +62,8 @@ const nameWorkspaceTitle = (workspaceName) => {
   currWWorkspaceName = workspaceName;
   store.saveKey("currWorkspaceName", workspaceName);
   currWorkspace = workspaceObj[currWWorkspaceName];
+
+  defaultWorkspace = currWorkspace;
   return `${workspaceName}  workspace`;
 }
 
@@ -81,7 +83,6 @@ const workspaceObj = store.getStoreData() || {
 }
 
 workspaceTitle.textContent = nameWorkspaceTitle(currWWorkspaceName);
-let defaultWorkspace = currWorkspace;
 
 
 /* ===================================
