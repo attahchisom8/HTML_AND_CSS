@@ -110,7 +110,7 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
         if (workspacesTab.contains(workspace) && !workspace.id.endsWith("-btn")) {
           workspaceTitle.textContent = nameWorkspaceTitle(workspaceName);
           currWorkspace = workspaceObj[workspaceName];
-          console.log("currworkspaceName: ", currWWorkspaceName, "prevworkspace: ", prevWorkspaceName);
+          ;
           tabState = null;
           updateTaskUi();
         }
@@ -143,7 +143,7 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
           setTimeout(() => {
             const container = document.querySelector(".create-workspace-container");
             const realContainerPos = container.getBoundingClientRect().top + window.scrollY - 120;
-            console.log("realContainerPodition", realContainerPos);
+            ;
             body.scrollTo({ behavior: "smooth", top: realContainerPos });
             main.scrollTo({ behavior: "smooth", top: realContainerPos });
           }, 100);
@@ -193,7 +193,7 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
           }
           if (priority) {
             workspaceArr = sortUtility.sortPriority(currWorkspace, priority);
-            console.log("workspaceArr: ", workspaceArr);
+            ;
             currWorkspace = workspaceArr[0];
           }
 
@@ -219,12 +219,12 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
     }
 
 const closeAllDropdownWrapperTabs = (id) => {
-  console.log("closeAllDropdownWrapper was called");
+  ;
   if (!id)
     return;
 
   const dropdownWrapperTabs = nav.querySelectorAll(".dropdown-wrapper");
-  console.log("dropdownwrapperTabs", dropdownWrapperTabs);
+  ;
   dropdownWrapperTabs.forEach((tab) => {
     if (tab.id !== id) {
       if (tab.classList.contains("item-desk-active")) {
@@ -301,7 +301,7 @@ nav.addEventListener("click", (e) => {
       setTimeout(() => {
         const container = document.querySelector(".create-workspace-container");
         const realContainerPos = container.getBoundingClientRect().top + window.scrollY - 120;
-        console.log("realContainerPodition", realContainerPos);
+        ;
         body.scrollTo({ behavior: "smooth", top: realContainerPos });
       }, 100);
     }
@@ -340,7 +340,7 @@ nav.addEventListener("click", (e) => {
 
     if (parentUl.classList.contains("sort-tab")) {
       currTabMode = "sortTab";
-      console.log("i am on mobile tab mode");
+      ;
       handleWorkspaceTabAction(parentUl, currTabMode, li);
       store.saveToStore(workspaceObj);
       updateTaskUi();
@@ -376,7 +376,7 @@ nav.addEventListener("click", (e) => {
         id = null;
       }
       dropdownWrapper.id = id;
-      console.log("wrapper id: ", id);
+      ;
 
       const isTurned = arrow.classList.toggle("item-desk-active");
       li.classList.toggle("item-desk-active", isTurned);
@@ -409,7 +409,7 @@ nav.addEventListener("click", (e) => {
     if (li.classList.contains("add-workspace-desktop")) {
       const itemDiv = document.createElement("div");
       const replacableTarget = getReplacableContainer();
-      console.log("add workspace in desktop was clicked");
+      ;
       desktopScrollPos = main.scrollTop;
 
         itemDiv.classList.add("create-workspace-container", "show-workspace-container");
@@ -488,7 +488,7 @@ main.addEventListener("click", (e) => {
     }
 
     if (span.id === "desktop-action-cancel-btn") {
-      console.log("search menu button was clicked");
+      ;
       searchMenu.classList.remove("is-search-visible");
     }
 
@@ -522,7 +522,7 @@ main.addEventListener("click", (e) => {
 
   if (button) {
     if (button.id === "cancel-input-btn") {
-      console.log("cancel input btn was clicked");
+      ;
       const container = getReplacableContainer();
       container.replaceWith(replacableItem);
       document.querySelector(".add-workspace-desktop").classList.remove("item-desk-active");
@@ -916,7 +916,7 @@ document.addEventListener("keydown", (e) => {
     }
 
     if (inputFocus.id.startsWith("edit-task-date-")) {
-      console.log(inputFocus);
+      ;
       const id = inputFocus.id.replace("edit-task-date-", "");
       handleUpdateTaskInputs(id);
     }
@@ -1016,7 +1016,7 @@ const updateRowPosition = (y) => {
     .map((row) => row.dataset.id);
     const orderMap = new Map(currWorkspace.map((task) => [task.id, task]));
     const reOrderedTasks = newOrderIds.map((id) => orderMap.get(id));
-    console.log("orderap", orderMap);
+    ;
 
     currWorkspace.length = 0;
     currWorkspace.push(...reOrderedTasks);
@@ -1037,7 +1037,7 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
       entry.target.classList.add("show-section");
-      console.log(entry.target);
+      ;
     } else {
       entry.target.classList.remove("show-section");
     }
@@ -1112,8 +1112,8 @@ const updateTaskUi = () =>  {
   const today = new Date().setHours(0, 0, 0, 0);
 
   refreshTaskState();
-  console.log("currWWorkspaceName: ",currWWorkspaceName);
-   console.log("currWorkspace: ", currWorkspace);
+  ;
+   ;
   currWorkspace.forEach((task) => {
     const formatedDate = formatDate(task.dueDate);
     const tr = document.createElement("tr");
