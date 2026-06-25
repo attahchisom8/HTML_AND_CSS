@@ -344,13 +344,14 @@ MOBILE  VERSIION OF ASIDE STYLE
     position: fixed;
     top: 100px;
     right: 0;
-    background: #000;
+    background: #124;
+    color: #fff;
     z-index: 1000;
     font-family: sans-serif;
     opacity: 0;
     visibility: hidden;
     transform: translateX(100%);
-    border: 1px solid #dd5578;
+    border: 1px solid #7855ee;
     overflow-y: scroll;
     transition: transform 0.4s ease-out;
 }
@@ -361,23 +362,80 @@ MOBILE  VERSIION OF ASIDE STYLE
     transform: translateX(0);
 }
 
-.tutorial-panel p {
-    padding-bottom: 20px;
-    color: #fff;
-    ;
+.tut-welcome {
+    color: #00ffcc;
+    padding: 5px;
 }
 
-.tutorial-panel strong {
-    color: rgb(255, 2255, 0);
+.tut-article {
+    padding: 10px;
+    margin-top: 20px;
 }
 
-.tutorial-panel>*:not(h2) {
+.tut-article section {
+    padding: 0 15px;
+    display: block;
+    border: 1px solid rgba(120, 85, 238, 0.5);
+    border-radius: 5px;
+    adding: 10px 0 20px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(60px);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    &:not(:last-of-type) {
+        margin-bottom: 30px;
+    }
+}
+
+.tut-article section.show-section {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+
+.tut-article p {
+    width: 80%;
+    margin: auto;
+    text-align: left;
+}
+
+.tut-article section > strong {
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+    padding-left: 10px;
+}
+
+.tut-article h1 {
+    text-align: center;
+}
+
+.tut-article h2 {
+    font-style: italic;
+}
+
+.tut-article ul {
+    list-style: none;
+    padding: 5px;
+    text-align: left;
+}
+
+.tut-article li {
+    padding-bottom: 10px;
+}
+
+.tut-article strong {
+    color: rgb(255, 255, 0);
+}
+
+.tutorial-panel > *:not(h2) {
     font-size: 0.95rem;
 }
 
-.tutorial-panel p {
-    width: 80%;
-    margin: auto;
+.tut-article em {
+    color: #ff5577;
 }
 
 #close-panel-btn {
@@ -386,10 +444,6 @@ MOBILE  VERSIION OF ASIDE STYLE
     width: auto;
     top: 0;
     right: 0;
-}
-
-.tutorial-panel em {
-    color: #dd7722;
 }
 
 

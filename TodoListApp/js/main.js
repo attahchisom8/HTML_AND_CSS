@@ -62,8 +62,8 @@ const nameWorkspaceTitle = (workspaceName) => {
   currWWorkspaceName = workspaceName;
   store.saveKey("currWorkspaceName", workspaceName);
   currWorkspace = workspaceObj[currWWorkspaceName];
-
   defaultWorkspace = currWorkspace;
+
   return `${workspaceName}  workspace`;
 }
 
@@ -218,6 +218,29 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
       searchMenu.classList.remove("is-search-visible");
     }
 
+const closeAllDropdownWrapperTabs = (id) => {
+  console.log("closeAllDropdownWrapper was called");
+  if (!id)
+    return;
+
+  const dropdownWrapperTabs = nav.querySelectorAll(".dropdown-wrapper");
+  console.log("dropdownwrapperTabs", dropdownWrapperTabs);
+  dropdownWrapperTabs.forEach((tab) => {
+    if (tab.id !== id) {
+      if (tab.classList.contains("item-desk-active")) {
+        const dropdownTrigger = tab.previousElementSibling;
+        const arrow = dropdownTrigger.querySelector(".arrow");
+  
+        arrow.classList.remove("item-desk-active");
+        dropdownTrigger.classList.remove("item-desk-active");
+        tab.classList.remove("item-desk-active");
+        return;
+      }
+
+    }
+  })
+}
+
 nav.addEventListener("click", (e) => {
   const elem = e.target;
   const text = elem.textContent;
@@ -337,10 +360,29 @@ nav.addEventListener("click", (e) => {
     if (li.classList.contains("dropdown-trigger")) {
       const arrow = li.querySelector(".arrow");
       const dropdownWrapper = li.nextElementSibling;
+      const  childUl = dropdownWrapper.querySelector("ul");
+      let id = null;
+
+      if (childUl.classList.contains("select-tab") &&
+      dropdownWrapper.contains(childUl)) {
+        id = "wrapper-select-tab";
+      } else if (childUl.classList.contains("update-tab") &&
+    dropdownWrapper.contains(childUl)) {
+        id = "wrapper-update-tab";
+      } else if (childUl.classList.contains("delete-tab") &&
+      dropdownWrapper.contains(childUl)) {
+        id = "wrapper-delete-tab";
+      } else  {
+        id = null;
+      }
+      dropdownWrapper.id = id;
+      console.log("wrapper id: ", id);
 
       const isTurned = arrow.classList.toggle("item-desk-active");
       li.classList.toggle("item-desk-active", isTurned);
       dropdownWrapper.classList.toggle("item-desk-active", isTurned);
+      // dropdownWrapper.classList.toggle("active-wrapper", isTurned);
+      closeAllDropdownWrapperTabs(id);
     }
     
     if (parentUl.classList.contains("workspaces-desktop")) {
@@ -981,6 +1023,29 @@ const updateRowPosition = (y) => {
     
     store.saveToStore(workspaceObj);
  }
+
+
+/* ===================================
+HANDLE ANIMATING TOGGLE MENU SECTIONS
+=================================== */
+
+const options = {
+  threshold: 0.2,
+  rootMargin: "-100px 0px 0px 0px",
+} 
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show-section");
+      console.log(entry.target);
+    } else {
+      entry.target.classList.remove("show-section");
+    }
+  })
+ }, options);
+
+const tutorialPanelSections = tutorialPanel.querySelectorAll(".tut-article > section");
+tutorialPanelSections.forEach((section) => observer.observe(section));
 
 
 /* ===================================
