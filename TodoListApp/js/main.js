@@ -56,8 +56,10 @@ let prevWorkspaceName = null;
 let currWorkspace, defaultWorkspace;
 
 const nameWorkspaceTitle = (workspaceName) => {
-  if (!workspaceName)
-  return null;
+  if (!workspaceName) {
+    store.saveKey("currWorkspaceName", "");
+    return null;
+  }
 
   currWWorkspaceName = workspaceName;
   store.saveKey("currWorkspaceName", workspaceName);
