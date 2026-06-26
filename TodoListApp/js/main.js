@@ -537,6 +537,7 @@ main.addEventListener("click", (e) => {
 
     if (button.id === "close-panel-btn") {
       tutorialPanel.classList.remove("tut-active");
+      nav.querySelector(".tut-desktop").classList.remove("item-desk-active");
     }
 
     if (button.id === "dialog-cancel-btn") {
@@ -1028,8 +1029,8 @@ HANDLE ANIMATING TOGGLE MENU SECTIONS
 =================================== */
 
 const options = {
-  threshold: 0.2,
-  rootMargin: "0px 0px -45px 0px",
+  threshold: 0.03,
+  rootMargin: "0px 0px -50px 0px",
 } 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
