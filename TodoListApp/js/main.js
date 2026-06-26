@@ -33,6 +33,7 @@ const date = timeDate.querySelector(".date");
 const dynamicTyping = document.querySelector(".dynamic-typing");
 const table = document.querySelector("table");
 const tableBody = table.querySelector("tbody");
+const dropdownWrapperTabs = nav.querySelectorAll(".dropdown-wrapper");
 
 const navDeskSearchInput = document.querySelector("#nav-search-input");
 const navMoileSearchInput = document.querySelector("#mobile-search");
@@ -50,24 +51,6 @@ let mobileScrollPos = null, desktopScrollPos = null;
 /* ===================================
 HANDLE DATA PARSING AND STORAGE
 =================================== */
-const workspaceTitle = document.querySelector("#curr-workspace");
-let currWWorkspaceName = store.getKeyValue("currWorkspaceName") || "health";
-let prevWorkspaceName = null;
-let currWorkspace, defaultWorkspace;
-
-const nameWorkspaceTitle = (workspaceName) => {
-  if (!workspaceName) {
-    store.saveKey("currWorkspaceName", "");
-    return null;
-  }
-
-  currWWorkspaceName = workspaceName;
-  store.saveKey("currWorkspaceName", workspaceName);
-  currWorkspace = workspaceObj[currWWorkspaceName];
-  defaultWorkspace = currWorkspace;
-
-  return `${workspaceName}  workspace`;
-}
 
 const workspaceObj = store.getStoreData() || {
   "health": [],
@@ -82,6 +65,24 @@ const workspaceObj = store.getStoreData() || {
   "social": [],
   "shopping": [],
   "hobbies": [],
+}
+
+const workspaceTitle = document.querySelector("#curr-workspace");
+const storedName = store.getKeyValue("currWorkspaceName");
+let currWWorkspaceName = (storedName && workspaceObj.hasOwnProperty(storedName)) ? storedName : "health";
+let currWorkspace, defaultWorkspace;
+console.log("currWorkspaceName: ", currWWorkspaceName);
+
+const nameWorkspaceTitle = (workspaceName) => {
+  let refinedName = (workspaceName && workspaceObj.hasOwnProperty(workspaceName)) ? workspaceName : "health";
+
+  currWWorkspaceName = refinedName;
+  store.saveKey("currWorkspaceName", refinedName);
+  currWorkspace = workspaceObj[currWWorkspaceName] ||
+  crud.createWorkspace(workspaceObj, currWWorkspaceName)[currWWorkspaceName];
+  defaultWorkspace = currWorkspace;
+
+  return `${refinedName}  workspace`;
 }
 
 workspaceTitle.textContent = nameWorkspaceTitle(currWWorkspaceName);
@@ -107,7 +108,6 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
   
       if (tabState === "selectTab") {
         const workspace = clickedElem;
-        prevWorkspaceName = currWWorkspaceName;
 
         if (workspacesTab.contains(workspace) && !workspace.id.endsWith("-btn")) {
           workspaceTitle.textContent = nameWorkspaceTitle(workspaceName);
@@ -224,21 +224,18 @@ const closeAllDropdownWrapperTabs = (id) => {
   if (!id)
     return;
 
-  const dropdownWrapperTabs = nav.querySelectorAll(".dropdown-wrapper");
-  dropdownWrapperTabs.forEach((tab) => {
-    if (tab.id !== id) {
-      if (tab.classList.contains("item-desk-active")) {
-        const dropdownTrigger = tab.previousElementSibling;
-        const arrow = dropdownTrigger.querySelector(".arrow");
-  
-        arrow.classList.remove("item-desk-active");
-        dropdownTrigger.classList.remove("item-desk-active");
-        tab.classList.remove("item-desk-active");
-        return;
-      }
+  for (const tab of dropdownWrapperTabs) {
+    if (tab.id !== id && tab.classList.contains("item-desk-active")) {
+      const dropdownTrigger = tab.previousElementSibling;
+      const arrow = dropdownTrigger.querySelector(".arrow");
+
+      arrow.classList.remove("item-desk-active");
+      dropdownTrigger.classList.remove("item-desk-active");
+      tab.classList.remove("item-desk-active");
+      return;
 
     }
-  })
+  }
 }
 
 nav.addEventListener("click", (e) => {
@@ -564,7 +561,7 @@ main.addEventListener("click", (e) => {
           store.saveToStore(workspaceObj);
 
           if (currWWorkspaceName === workspaceToDelete) {
-            currWWorkspaceName = Object.keys(workspaceObj)[0];
+            currWWorkspaceName = Object.keys(workspaceObj)[0] || "health";
             workspaceTitle.textContent = nameWorkspaceTitle(currWWorkspaceName);
           }
           updateWorkspaceUi();
@@ -917,7 +914,6 @@ document.addEventListener("keydown", (e) => {
     }
 
     if (inputFocus.id.startsWith("edit-task-date-")) {
-      ;
       const id = inputFocus.id.replace("edit-task-date-", "");
       handleUpdateTaskInputs(id);
     }
@@ -1112,8 +1108,6 @@ const updateTaskUi = () =>  {
   const today = new Date().setHours(0, 0, 0, 0);
 
   refreshTaskState();
-  ;
-   ;
   currWorkspace.forEach((task) => {
     const formatedDate = formatDate(task.dueDate);
     const tr = document.createElement("tr");

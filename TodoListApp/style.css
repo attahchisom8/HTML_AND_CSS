@@ -1320,10 +1320,11 @@ DESKTOP  VERSIION OF MAIN STYLE
         transform: scale(0.57);
     }
 
-    dialog button {
-        position: relative;
-        left: 40%;
-        transform: translateX(-50%);
+    .dialog-btn-container {
+       display: flex;
+       justify-content: center;
+       gap: 10px;
+       width: 100%;
     }
 
     .mose-brand {
