@@ -219,12 +219,10 @@ const handleWorkspaceTabAction = (workspacesTab, tabState, clickedElem) => {
     }
 
 const closeAllDropdownWrapperTabs = (id) => {
-  ;
   if (!id)
     return;
 
   const dropdownWrapperTabs = nav.querySelectorAll(".dropdown-wrapper");
-  ;
   dropdownWrapperTabs.forEach((tab) => {
     if (tab.id !== id) {
       if (tab.classList.contains("item-desk-active")) {
@@ -1031,13 +1029,12 @@ HANDLE ANIMATING TOGGLE MENU SECTIONS
 
 const options = {
   threshold: 0.2,
-  rootMargin: "-100px 0px 0px 0px",
+  rootMargin: "0px 0px -45px 0px",
 } 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
       entry.target.classList.add("show-section");
-      ;
     } else {
       entry.target.classList.remove("show-section");
     }

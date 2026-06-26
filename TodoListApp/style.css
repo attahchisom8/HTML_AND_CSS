@@ -377,7 +377,8 @@ MOBILE  VERSIION OF ASIDE STYLE
     display: block;
     border: 1px solid rgba(120, 85, 238, 0.5);
     border-radius: 5px;
-    adding: 10px 0 20px 0;
+    min-height: 100px;
+    padding: 10px 0 20px 0;
     opacity: 0;
     visibility: hidden;
     transform: translateY(60px);
@@ -669,6 +670,10 @@ DESKTOP  VERSIION OF ASIDE STYLE
         transform: scale(1.01);
     }
 
+    #close-panel-btn {
+        width: 30px;
+        height: 30px;
+    }
 
 }
 
